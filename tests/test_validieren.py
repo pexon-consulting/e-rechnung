@@ -1,6 +1,9 @@
 import re
 
+import pytest
+
 from erechnung import offiziell
+from erechnung.lesen import KeineERechnung, lesen
 from erechnung.validieren import iban_gueltig, leitweg_id_gueltig, leitweg_pruefziffer, validieren
 from erechnung.schreiben_cii import cii
 from erechnung.schreiben_ubl import ubl
@@ -120,3 +123,31 @@ def test_vorpruefung_falsche_leitweg_id():
     r.kaeufer.elektronische_adresse = "04011000-12345-04"
     codes = {b.code for b in validieren(ubl(r), offiziell_pruefen=False).vorpruefung}
     assert "VP-LEITWEG" in codes
+
+
+def test_doctype_mit_externer_entitaet_wird_abgelehnt(tmp_path):
+    geheim = tmp_path / "geheim.txt"
+    geheim.write_text("GEHEIMNIS123")
+    xml = ubl(beispiel("01_standard")).decode()
+    kopf, rest = xml.split("?>", 1)
+    xml = f'{kopf}?>\n<!DOCTYPE Invoice [<!ENTITY e SYSTEM "{geheim.as_uri()}">]>{rest}'
+    xml = xml.replace("<cbc:ID>RE-", "<cbc:ID>&e;RE-", 1)
+    assert "&e;" in xml
+    with pytest.raises(KeineERechnung, match="DOCTYPE"):
+        lesen(xml.encode())
+    e = validieren(xml.encode(), offiziell_pruefen=False)
+    assert not e.vorpruefung_ok
+    assert "DOCTYPE" in e.vorpruefung[0].text
+    assert "GEHEIMNIS" not in repr(e.als_dict())
+
+
+@braucht_saxon
+def test_doctype_offiziell_abgelehnt_ohne_absturz():
+    from erechnung import offiziell
+
+    xml = ubl(beispiel("01_standard")).decode()
+    kopf, rest = xml.split("?>", 1)
+    xml = f"{kopf}?>\n<!DOCTYPE Invoice [<!ENTITY e \"x\">]>{rest}"
+    b = offiziell.validieren(xml.encode(), offline=True)
+    assert not b.akzeptiert
+    assert "DOCTYPE" in b.befunde[0].text

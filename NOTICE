@@ -1,0 +1,35 @@
+e-rechnung
+Copyright (c) Pexon Consulting GmbH, MIT License (see LICENSE)
+
+This package does not bundle third-party rule files. On first use it downloads
+the following artifacts from GitHub, verifies their SHA-256 checksums and
+stores them in a local cache (~/.cache/erechnung or ERECHNUNG_CACHE):
+
+1. XRechnung validator configuration 3.0.2 (release v2026-08-31)
+   https://github.com/itplr-kosit/validator-configuration-xrechnung
+   Koordinierungsstelle für IT-Standards (KoSIT), Apache License 2.0.
+   Contains the XRechnung Schematron (Apache License 2.0) and the
+   EN 16931 validation artifacts of CEN/TC 434 (European Union Public
+   Licence 1.2, https://github.com/ConnectingEurope/eInvoicing-EN16931),
+   as well as the UBL 2.1 (OASIS) and UN/CEFACT CII D16B XML schemas.
+
+2. XRechnung visualization 3.0.2 (release v2026-10-13)
+   https://github.com/itplr-kosit/xrechnung-visualization
+   KoSIT, Apache License 2.0.
+
+For development and CI only (scripts/), the following are downloaded:
+
+3. XRechnung test suite 3.0.2 (release v2026-08-31)
+   https://github.com/itplr-kosit/xrechnung-testsuite, KoSIT, Apache License 2.0.
+4. KoSIT validator 1.6.3, https://github.com/itplr-kosit/validator, Apache License 2.0.
+5. Mustang CLI 2.26.0, https://github.com/ZUGFeRD/mustangproject, Apache License 2.0.
+
+Runtime dependencies: lxml (BSD-3-Clause), pypdf (BSD-3-Clause),
+saxonche / SaxonC-HE (Mozilla Public License 2.0, optional extra "offiziell"),
+mcp (MIT, optional extra "mcp").
+
+Column layout of the DATEV EXTF booking batch cross-checked against
+ledermann/datev (MIT), https://github.com/ledermann/datev.
+DATEV is a trademark of DATEV eG. XRechnung is a standard of KoSIT.
+ZUGFeRD is a standard of Forum elektronische Rechnung Deutschland (FeRD).
+This project is not affiliated with any of them.

@@ -222,6 +222,6 @@ def validieren(quelle: str | Path | bytes, offiziell_pruefen: bool = True, offli
     if offiziell_pruefen:
         try:
             erg.offiziell = offiziell.validieren(xml, offline=offline)
-        except offiziell.NichtVerfuegbar as e:
+        except (offiziell.NichtVerfuegbar, RuntimeError) as e:
             erg.offiziell_fehler = str(e)
     return erg

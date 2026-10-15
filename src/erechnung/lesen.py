@@ -85,6 +85,8 @@ def format_erkennen(xml: bytes, pdf: bool = False, anhang: str = "") -> Format:
         wurzel = etree.fromstring(xml, PARSER)
     except etree.XMLSyntaxError as e:
         raise KeineERechnung(f"Kein wohlgeformtes XML: {e}") from e
+    if wurzel.getroottree().docinfo.doctype:
+        raise KeineERechnung("DOCTYPE ist in Rechnungen nicht erlaubt (EN 16931 kennt keine DTD).")
     tag = etree.QName(wurzel).localname
     if tag == "CrossIndustryInvoice":
         spez = (wurzel.findtext(".//{*}GuidelineSpecifiedDocumentContextParameter/{*}ID") or "").strip()

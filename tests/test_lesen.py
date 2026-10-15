@@ -58,8 +58,9 @@ def test_entities_werden_nicht_aufgeloest(tmp_path):
            '<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" '
            'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">'
            '<cbc:CustomizationID>urn:cen.eu:en16931:2017</cbc:CustomizationID><cbc:ID>&e;</cbc:ID></Invoice>').encode()
-    r = lesen(xml)
-    assert "GEHEIM" not in r.nummer
+    with pytest.raises(KeineERechnung, match="DOCTYPE") as fehler:
+        lesen(xml)
+    assert "GEHEIM" not in str(fehler.value)
 
 
 def test_menge_mit_nachkommastellen():

@@ -191,7 +191,11 @@ class _SaxonThread:
             try:
                 ergebnis.set_result(funktion(*args, **kwargs))
             except BaseException as e:  # noqa: BLE001 - Fehler an den Aufrufer weiterreichen
+                if type(e).__module__.startswith("saxon"):
+                    # Saxon-Objekte im Traceback dürfen den Thread nicht verlassen, sonst stürzt GraalVM ab.
+                    e = RuntimeError(f"Saxon: {' '.join(str(e).split())}")
                 ergebnis.set_exception(e)
+                del e
 
     def ausfuehren(self, funktion, *args, **kwargs):
         if self._thread is not None and threading.current_thread() is self._thread:
@@ -292,10 +296,17 @@ def validieren(xml: bytes, offline: bool = False) -> Bericht:
     return _im_saxon_thread(_validieren, xml, ordner)
 
 
+def _xml_parsen(xml: bytes) -> etree._Element:
+    wurzel = etree.fromstring(xml, etree.XMLParser(resolve_entities=False, no_network=True, huge_tree=False))
+    if wurzel.getroottree().docinfo.doctype:
+        raise etree.XMLSyntaxError("DOCTYPE ist in Rechnungen nicht erlaubt", None, 0, 0)
+    return wurzel
+
+
 def _validieren(xml: bytes, ordner: Path) -> Bericht:
     alle = szenarien(str(ordner))
     try:
-        wurzel = etree.fromstring(xml, etree.XMLParser(resolve_entities=False, no_network=True, huge_tree=False))
+        wurzel = _xml_parsen(xml)
     except etree.XMLSyntaxError as e:
         return Bericht("kein Szenario", False, [Befund("error", "XML", f"Kein wohlgeformtes XML: {e}")])
     xml_text = etree.tostring(wurzel, encoding="unicode")
@@ -340,7 +351,7 @@ def html_ansicht(xml: bytes, offline: bool = False) -> str:
 
 
 def _html_ansicht(xml: bytes, ordner: Path) -> str:
-    wurzel = etree.fromstring(xml, etree.XMLParser(resolve_entities=False, no_network=True))
+    wurzel = _xml_parsen(xml)
     if wurzel.tag.endswith("CrossIndustryInvoice"):
         erster = "cii-xr.xsl"
     elif wurzel.tag.endswith("CreditNote"):

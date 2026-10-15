@@ -65,7 +65,8 @@ def befehl_lesen(a) -> int:
         _ausgabe(f"E-Rechnung:   {'ja, strukturiert nach EN 16931' if fmt.ist_e_rechnung else 'nein'}")
         _ausgabe(f"Art:          {text(RECHNUNGSARTEN, r.art)}")
         _ausgabe(f"Nummer:       {r.nummer} vom {r.datum:%d.%m.%Y}" if r.datum else f"Nummer:       {r.nummer}")
-        _ausgabe(f"Verkäufer:    {v.name}, {v.adresse.plz} {v.adresse.ort} {('USt-IdNr. ' + v.ust_id) if v.ust_id else ''}".rstrip())
+        kennung = f", USt-IdNr. {v.ust_id}" if v.ust_id else (f", Steuernummer {v.steuernummer}" if v.steuernummer else "")
+        _ausgabe(f"Verkäufer:    {v.name}, {v.adresse.plz} {v.adresse.ort}{kennung}")
         _ausgabe(f"Käufer:       {k.name}, {k.adresse.plz} {k.adresse.ort}")
         if r.leitweg_id:
             _ausgabe(f"Käuferref.:   {r.leitweg_id}")
