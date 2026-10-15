@@ -196,18 +196,18 @@ def bericht_speichern(e: Ergebnis, quelle: bytes, ordner: str | Path) -> Path:
     ziel.mkdir(parents=True, exist_ok=True)
     pruefsumme = hashlib.sha256(quelle).hexdigest()
     daten = {
-        "geprueft_am": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "validiert_am": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "werkzeug": f"e-rechnung {__version__}",
         "regeln": offiziell.KONFIG_VERSION,
         "sha256": pruefsumme,
         **e.als_dict(),
     }
-    datei = ziel / f"{Path(e.datei).name}.{pruefsumme[:12]}.pruefbericht.json"
+    datei = ziel / f"{Path(e.datei).name}.{pruefsumme[:12]}.validierungsbericht.json"
     datei.write_text(json.dumps(daten, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return datei
 
 
-def pruefen(quelle: str | Path | bytes, offiziell_pruefen: bool = True, offline: bool = False) -> Ergebnis:
+def validieren(quelle: str | Path | bytes, offiziell_pruefen: bool = True, offline: bool = False) -> Ergebnis:
     name = str(quelle) if isinstance(quelle, (str, Path)) else "(Daten)"
     try:
         xml, aus_pdf, anhang = xml_aus_eingabe(quelle)
@@ -221,7 +221,7 @@ def pruefen(quelle: str | Path | bytes, offiziell_pruefen: bool = True, offline:
         erg.vorpruefung = [Befund("error", "VP-LESEN", f"Rechnung konnte nicht gelesen werden: {e}", quelle="Vorprüfung")]
     if offiziell_pruefen:
         try:
-            erg.offiziell = offiziell.pruefen(xml, offline=offline)
+            erg.offiziell = offiziell.validieren(xml, offline=offline)
         except offiziell.NichtVerfuegbar as e:
             erg.offiziell_fehler = str(e)
     return erg

@@ -95,7 +95,7 @@ def main() -> int:
     gleich = abgelehnt = 0
     for d in dateien:
         k_ok, k_codes = kosit_ergebnis(aus / f"{d.stem}-report.xml")
-        u = offiziell.pruefen(d.read_bytes())
+        u = offiziell.validieren(d.read_bytes())
         u_codes = sorted({(b.stufe_original or b.stufe, b.code) for b in u.befunde})
         abgelehnt += not k_ok
         if k_ok == u.akzeptiert and k_codes == u_codes:

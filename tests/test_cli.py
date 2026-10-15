@@ -39,17 +39,17 @@ def test_erstellen_mit_falscher_eingabe(tmp_path, capsys):
 
 def test_pruefen_ohne_offiziell(tmp_path, capsys):
     main(["beispiele", str(tmp_path)])
-    assert main(["pruefen", "--ohne-offiziell", str(tmp_path / "01_standard_xrechnung_ubl.xml")]) == 0
+    assert main(["validieren", "--ohne-offiziell", str(tmp_path / "01_standard_xrechnung_ubl.xml")]) == 0
 
 
 @braucht_saxon
 def test_pruefen_exit_codes(tmp_path, capsys):
     main(["beispiele", str(tmp_path)])
     gut = tmp_path / "01_standard_xrechnung_ubl.xml"
-    assert main(["pruefen", str(gut)]) == 0
+    assert main(["validieren", str(gut)]) == 0
     schlecht = tmp_path / "schlecht.xml"
     schlecht.write_bytes(gut.read_bytes().replace(b"<cbc:BuyerReference>BH-2026-0815</cbc:BuyerReference>", b""))
-    assert main(["pruefen", str(schlecht)]) == 1
+    assert main(["validieren", str(schlecht)]) == 1
     assert "BR-DE-15" in capsys.readouterr().out
 
 

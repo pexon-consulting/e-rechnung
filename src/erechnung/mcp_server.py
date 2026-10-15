@@ -23,13 +23,13 @@ from . import offiziell
 from .anzeigen import html
 from .eingabe import aus_dict
 from .lesen import erkennen, lesen
-from .pruefen import pruefen
+from .validieren import validieren
 
 server = _Server(
     "e-rechnung",
     instructions=(
         "Werkzeuge für deutsche E-Rechnungen (XRechnung, ZUGFeRD, Factur-X). "
-        "erechnung_pruefen nutzt die offiziellen KoSIT-Regeln. Maßgeblich ist immer das XML."
+        "erechnung_validieren nutzt die offiziellen KoSIT-Regeln. Maßgeblich ist immer das XML."
     ),
 )
 
@@ -52,9 +52,9 @@ def erechnung_lesen(datei: str) -> str:
 
 
 @server.tool()
-def erechnung_pruefen(datei: str, offiziell_pruefen: bool = True) -> str:
+def erechnung_validieren(datei: str, offiziell_pruefen: bool = True) -> str:
     """Prüft eine E-Rechnung mit den offiziellen KoSIT-Regeln (XRechnung 3.0.2, EN 16931) und einer Vorprüfung."""
-    return json.dumps(pruefen(_pfad(datei), offiziell_pruefen=offiziell_pruefen).als_dict(), ensure_ascii=False, indent=2)
+    return json.dumps(validieren(_pfad(datei), offiziell_pruefen=offiziell_pruefen).als_dict(), ensure_ascii=False, indent=2)
 
 
 @server.tool()
@@ -85,9 +85,35 @@ def erechnung_erstellen(rechnung_json: str, ziel: str, format: str = "xrechnung-
     daten, _ = _erzeugen(r, format, None, False)
     ausgabe = Path(ziel).expanduser()
     ausgabe.write_bytes(daten)
-    e = pruefen(ausgabe)
+    e = validieren(ausgabe)
     return json.dumps({"datei": str(ausgabe), "zahlbetrag": str(r.summen.zahlbetrag),
-                       "pruefung": e.als_dict()}, ensure_ascii=False, indent=2)
+                       "validierung": e.als_dict()}, ensure_ascii=False, indent=2)
+
+
+@server.tool()
+def erechnung_datev(dateien: list[str], ziel: str, skr: str = "03", kreditor: int = 70000) -> str:
+    """Exportiert Eingangsrechnungen als DATEV-Buchungsstapel (EXTF, cp1252) und gibt Hinweise zurück."""
+    from . import datev
+
+    rechnungen = [lesen(_pfad(d)) for d in dateien]
+    daten, hinweise = datev.stapel(rechnungen, datev.Einstellungen(skr=skr, kreditor=kreditor))
+    ausgabe = Path(ziel).expanduser()
+    ausgabe.write_bytes(daten)
+    return json.dumps({"datei": str(ausgabe), "buchungen": daten.count(b"\r\n") - 2, "hinweise": hinweise},
+                      ensure_ascii=False, indent=2)
+
+
+@server.tool()
+def erechnung_leitweg_id(leitweg_id: str) -> str:
+    """Prüft Format und Prüfziffer einer Leitweg-ID (Formatspezifikation 2.0.2)."""
+    from .validieren import LEITWEG_MUSTER, leitweg_id_gueltig, leitweg_pruefziffer
+
+    m = LEITWEG_MUSTER.fullmatch(leitweg_id.strip())
+    richtig = None
+    if m:
+        richtig = "-".join(t for t in (m.group(1), m.group(2)) if t) + "-" + leitweg_pruefziffer(m.group(1), m.group(2) or "")
+    return json.dumps({"leitweg_id": leitweg_id, "gueltig": leitweg_id_gueltig(leitweg_id), "richtig": richtig},
+                      ensure_ascii=False)
 
 
 def main() -> None:

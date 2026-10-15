@@ -14,7 +14,7 @@ from conftest import beispiel, beispiel_namen, braucht_saxon
 @pytest.mark.parametrize("syntax", ["ubl", "cii"])
 def test_beispiele_sind_offiziell_gueltig(name, syntax):
     xml = (ubl if syntax == "ubl" else cii)(beispiel(name))
-    bericht = offiziell.pruefen(xml)
+    bericht = offiziell.validieren(xml)
     assert bericht.szenario.startswith("EN16931 XRechnung")
     assert bericht.akzeptiert, [(b.code, b.text) for b in bericht.fehler]
     assert not bericht.warnungen, [(b.code, b.text) for b in bericht.warnungen]
@@ -25,7 +25,7 @@ def test_beispiele_sind_offiziell_gueltig(name, syntax):
 def test_en16931_ohne_xrechnung(syntax):
     r = beispiel("01_standard")
     r.spezifikation = EN16931
-    bericht = offiziell.pruefen((ubl if syntax == "ubl" else cii)(r))
+    bericht = offiziell.validieren((ubl if syntax == "ubl" else cii)(r))
     assert bericht.szenario.startswith("EN16931 (")
     assert bericht.akzeptiert
 

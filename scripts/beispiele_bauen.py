@@ -54,8 +54,8 @@ def _eingaben() -> dict[str, tuple[str, object]]:
     return ergebnis
 
 
-def _pruefergebnis(xml: bytes) -> str:
-    b = offiziell.pruefen(xml)
+def _validierungsergebnis(xml: bytes) -> str:
+    b = offiziell.validieren(xml)
     zeilen = [
         f"Regeln: {offiziell.KONFIG_VERSION}",
         f"Szenario: {b.szenario}",
@@ -76,8 +76,8 @@ def bauen(ordner: Path, mit_pdf: bool) -> dict[str, bytes]:
         dateien[f"{name}/xrechnung_cii.xml"] = xml_cii
         fmt = erkennen(xml_cii)
         dateien[f"{name}/ansicht.html"] = html(lesen(xml_cii), fmt.ist_e_rechnung, fmt.bezeichnung).encode()
-        dateien[f"{name}/pruefung_ubl.txt"] = _pruefergebnis(xml_ubl).encode()
-        dateien[f"{name}/pruefung_cii.txt"] = _pruefergebnis(xml_cii).encode()
+        dateien[f"{name}/validierung_ubl.txt"] = _validierungsergebnis(xml_ubl).encode()
+        dateien[f"{name}/validierung_cii.txt"] = _validierungsergebnis(xml_cii).encode()
         if name == "08_b2g_leitweg_id":
             dateien[f"{name}/ansicht_kosit.html"] = offiziell.html_ansicht(xml_ubl).encode()
         if mit_pdf and name in MIT_PDF:

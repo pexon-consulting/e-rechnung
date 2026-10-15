@@ -3,7 +3,7 @@
 Beispiele::
 
     erechnung lesen rechnung.xml
-    erechnung pruefen rechnung.xml rechnung.pdf
+    erechnung validieren rechnung.xml rechnung.pdf
     erechnung anzeigen rechnung.xml -o rechnung.html
     erechnung erstellen rechnung.json --format xrechnung-ubl -o rechnung.xml
     erechnung erstellen rechnung.json --format zugferd -o rechnung.pdf
@@ -92,17 +92,17 @@ def _befund_zeile(b) -> str:
     return f"  {stufe} {b.code}: {b.text}"
 
 
-def befehl_pruefen(a) -> int:
-    from .pruefen import pruefen
+def befehl_validieren(a) -> int:
+    from .validieren import validieren
 
     gesamt = 0
     ergebnisse = []
     for pfad in a.dateien:
-        e = pruefen(pfad, offiziell_pruefen=not a.ohne_offiziell, offline=a.offline)
+        e = validieren(pfad, offiziell_pruefen=not a.ohne_offiziell, offline=a.offline)
         ergebnisse.append(e)
         gespeichert = None
         if a.bericht:
-            from .pruefen import bericht_speichern
+            from .validieren import bericht_speichern
 
             gespeichert = bericht_speichern(e, Path(pfad).read_bytes(), a.bericht)
         if e.offiziell is not None:
@@ -195,7 +195,7 @@ def befehl_erstellen(a) -> int:
         _ausgabe(f"Eingabe fehlerhaft: {e}", sys.stderr)
         return 1
     from .codelisten import XRECHNUNG_ARTEN
-    from .pruefen import pruefen
+    from .validieren import validieren
 
     if a.format.startswith(("xrechnung", "zugferd-xrechnung")) and r.art not in XRECHNUNG_ARTEN:
         _ausgabe(f"Rechnungsart {r.art} ist in XRechnung nicht erlaubt (BR-DE-17). Erlaubt: "
@@ -209,12 +209,12 @@ def befehl_erstellen(a) -> int:
     ziel = Path(a.ausgabe) if a.ausgabe else Path(a.eingabe).with_suffix(endung)
     ziel.write_bytes(daten)
     _ausgabe(f"{ziel}: {a.format}, Rechnung {r.nummer}, Zahlbetrag {_geld(r.summen.zahlbetrag, r.waehrung)}")
-    if not a.pruefen:
-        for b in pruefen(daten, offiziell_pruefen=False).vorpruefung:
+    if not a.validieren:
+        for b in validieren(daten, offiziell_pruefen=False).vorpruefung:
             if b.stufe != "information":
                 _ausgabe(_befund_zeile(b), sys.stderr)
-    if a.pruefen:
-        e = pruefen(ziel, offline=a.offline)
+    if a.validieren:
+        e = validieren(ziel, offline=a.offline)
         if e.offiziell:
             _ausgabe(f"  KoSIT: {'GÜLTIG' if e.offiziell.akzeptiert else 'UNGÜLTIG'} ({e.offiziell.szenario})")
             for b in e.offiziell.befunde:
@@ -227,7 +227,7 @@ def befehl_erstellen(a) -> int:
 
 
 def befehl_leitweg_id(a) -> int:
-    from .pruefen import LEITWEG_MUSTER, leitweg_id_gueltig, leitweg_pruefziffer
+    from .validieren import LEITWEG_MUSTER, leitweg_id_gueltig, leitweg_pruefziffer
 
     ok = True
     for wert in a.leitweg_id:
@@ -339,7 +339,7 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("--positionen", type=int, default=20, help="maximal so viele Positionen zeigen")
     s.set_defaults(f=befehl_lesen)
 
-    s = u.add_parser("pruefen", help="Prüfen mit den offiziellen KoSIT-Regeln plus Vorprüfung")
+    s = u.add_parser("validieren", aliases=["check", "prüfen"], help="E-Rechnung mit den offiziellen KoSIT-Regeln prüfen, plus Vorprüfung")
     s.add_argument("dateien", nargs="+")
     s.add_argument("--json", action="store_true")
     s.add_argument("--ohne-offiziell", action="store_true", help="nur Vorprüfung, ohne Download und saxonche")
@@ -347,7 +347,7 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("--streng", action="store_true", help="Warnungen zählen als Fehler (Exit-Code 1)")
     s.add_argument("--alle", action="store_true", help="auch Informationen ausgeben")
     s.add_argument("--bericht", metavar="ORDNER", help="Prüfbericht je Datei als JSON ablegen (zum Aufbewahren)")
-    s.set_defaults(f=befehl_pruefen)
+    s.set_defaults(f=befehl_validieren)
 
     s = u.add_parser("anzeigen", help="Rechnung als HTML anzeigen (Viewer)")
     s.add_argument("datei")
@@ -362,7 +362,7 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("-o", "--ausgabe")
     s.add_argument("--pdf", help="vorhandenes PDF als Vorlage für ZUGFeRD (sonst einfache Lesefassung über Ghostscript)")
     s.add_argument("--pdfa", action="store_true", help="Vorlage vorher mit Ghostscript nach PDF/A-3b wandeln")
-    s.add_argument("--pruefen", action="store_true", help="Ergebnis sofort offiziell prüfen")
+    s.add_argument("--validieren", action="store_true", help="Ergebnis sofort offiziell prüfen")
     s.add_argument("--offline", action="store_true")
     s.set_defaults(f=befehl_erstellen)
 

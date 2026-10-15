@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from erechnung.lesen import format_erkennen, lesen
-from erechnung.pruefen import vorpruefung
+from erechnung.validieren import vorpruefung
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "scripts"))
 

@@ -50,7 +50,7 @@ jobs:
       - name: CLI von außen
         run: |
           erechnung beispiele bsp
-          erechnung pruefen bsp/01_standard_xrechnung_ubl.xml bsp/08_b2g_leitweg_id_xrechnung_cii.xml
+          erechnung validieren bsp/01_standard_xrechnung_ubl.xml bsp/08_b2g_leitweg_id_xrechnung_cii.xml
           erechnung datev bsp/01_standard_xrechnung_ubl.xml -o EXTF.csv
 
   kosit-abgleich:

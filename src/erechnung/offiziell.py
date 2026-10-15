@@ -286,13 +286,13 @@ def _ersatzszenario(alle: list[Szenario], wurzel: etree._Element) -> tuple[Szena
     return None, ""
 
 
-def pruefen(xml: bytes, offline: bool = False) -> Bericht:
+def validieren(xml: bytes, offline: bool = False) -> Bericht:
     """Prüft ein Rechnungs-XML wie der KoSIT-Validator."""
     ordner = konfiguration(offline)
-    return _im_saxon_thread(_pruefen, xml, ordner)
+    return _im_saxon_thread(_validieren, xml, ordner)
 
 
-def _pruefen(xml: bytes, ordner: Path) -> Bericht:
+def _validieren(xml: bytes, ordner: Path) -> Bericht:
     alle = szenarien(str(ordner))
     try:
         wurzel = etree.fromstring(xml, etree.XMLParser(resolve_entities=False, no_network=True, huge_tree=False))
