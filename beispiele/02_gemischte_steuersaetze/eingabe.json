@@ -1,0 +1,82 @@
+{
+  "nummer": "RE-2026-0002",
+  "datum": "2026-10-15",
+  "faellig": "2026-11-14",
+  "leitweg_id": "BH-2026-0815",
+  "verkaeufer": {
+    "name": "Buchhandlung am Markt GmbH",
+    "adresse": {
+      "strasse": "Musterstraße 1",
+      "plz": "20095",
+      "ort": "Hamburg",
+      "land": "DE"
+    },
+    "ust_id": "DE123456789",
+    "register": "HRB 123456",
+    "rechtliches": "Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann",
+    "elektronische_adresse": "rechnung@buchhandlung.example",
+    "kontakt": {
+      "name": "Erika Mustermann",
+      "telefon": "+49 40 1234567",
+      "email": "buchhaltung@nordlicht.example"
+    }
+  },
+  "kaeufer": {
+    "name": "Beispiel Handel AG",
+    "adresse": {
+      "strasse": "Hauptstraße 5",
+      "plz": "80331",
+      "ort": "München",
+      "land": "DE"
+    },
+    "kennung": "K-10023",
+    "elektronische_adresse": "eingangsrechnung@beispiel-handel.example"
+  },
+  "zahlung": {
+    "art": "58",
+    "iban": "DE79000000001234567890",
+    "bic": "",
+    "kontoinhaber": "Nordlicht Software GmbH"
+  },
+  "notizen": [
+    "Gemischte Steuersätze: Bücher 7 %, Zubehör 19 %."
+  ],
+  "positionen": [
+    {
+      "id": "1",
+      "name": "Fachbuch Umsatzsteuer 2026",
+      "menge": "3",
+      "einheit": "C62",
+      "preis": "49.90",
+      "satz": "7"
+    },
+    {
+      "id": "2",
+      "name": "E-Book Reader Hülle",
+      "menge": "2",
+      "einheit": "C62",
+      "preis": "19.99",
+      "satz": "19"
+    },
+    {
+      "id": "3",
+      "name": "Versandkostenpauschale",
+      "menge": "1",
+      "einheit": "LS",
+      "preis": "4.90",
+      "satz": "19"
+    }
+  ],
+  "nachlaesse": [
+    {
+      "betrag": "5.00",
+      "grund": "Treuerabatt",
+      "grund_code": "95",
+      "kategorie": "S",
+      "satz": "19"
+    }
+  ],
+  "lieferung": {
+    "datum": "2026-10-14"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "nummer": "RE-2026-0006",
+  "datum": "2026-10-15",
+  "faellig": "2026-11-14",
+  "leitweg_id": "04011000-12345-03",
+  "verkaeufer": {
+    "name": "Nordlicht Software GmbH",
+    "adresse": {
+      "strasse": "Musterstraße 1",
+      "plz": "20095",
+      "ort": "Hamburg",
+      "land": "DE"
+    },
+    "ust_id": "DE123456789",
+    "register": "HRB 123456",
+    "rechtliches": "Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann",
+    "elektronische_adresse": "rechnung@nordlicht.example",
+    "kontakt": {
+      "name": "Erika Mustermann",
+      "telefon": "+49 40 1234567",
+      "email": "buchhaltung@nordlicht.example"
+    }
+  },
+  "kaeufer": {
+    "name": "Stadt Musterstadt, Amt für Digitalisierung",
+    "adresse": {
+      "strasse": "Rathausplatz 1",
+      "plz": "12345",
+      "ort": "Musterstadt",
+      "land": "DE"
+    },
+    "elektronische_adresse": "04011000-12345-03",
+    "elektronische_adresse_schema": "0204"
+  },
+  "zahlung": {
+    "art": "58",
+    "iban": "DE79000000001234567890",
+    "bic": "",
+    "kontoinhaber": "Nordlicht Software GmbH"
+  },
+  "bestellnummer": "VG-2026-118",
+  "vertragsnummer": "RV-2025-33",
+  "positionen": [
+    {
+      "id": "1",
+      "name": "Betrieb Bürgerportal, Oktober 2026",
+      "menge": "1",
+      "einheit": "MON",
+      "preis": "2400.00",
+      "satz": "19"
+    },
+    {
+      "id": "2",
+      "name": "Support-Stunden",
+      "menge": "6.5",
+      "einheit": "HUR",
+      "preis": "95.00",
+      "satz": "19"
+    }
+  ],
+  "lieferung": {
+    "datum": "2026-10-14"
+  }
+}

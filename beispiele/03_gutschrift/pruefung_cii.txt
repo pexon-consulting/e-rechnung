@@ -1,0 +1,4 @@
+Regeln: xrechnung-3.0.2-validator-configuration-2026-08-31
+Szenario: EN16931 XRechnung (CII)
+Ergebnis: angenommen
+Fehler: 0, Warnungen: 0

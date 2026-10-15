@@ -1,0 +1,71 @@
+{
+  "nummer": "RE-2026-0001",
+  "datum": "2026-10-15",
+  "faellig": "2026-11-14",
+  "leitweg_id": "BH-2026-0815",
+  "verkaeufer": {
+    "name": "Nordlicht Software GmbH",
+    "adresse": {
+      "strasse": "Musterstraße 1",
+      "plz": "20095",
+      "ort": "Hamburg",
+      "land": "DE"
+    },
+    "ust_id": "DE123456789",
+    "register": "HRB 123456",
+    "rechtliches": "Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann",
+    "elektronische_adresse": "rechnung@nordlicht.example",
+    "kontakt": {
+      "name": "Erika Mustermann",
+      "telefon": "+49 40 1234567",
+      "email": "buchhaltung@nordlicht.example"
+    }
+  },
+  "kaeufer": {
+    "name": "Beispiel Handel AG",
+    "adresse": {
+      "strasse": "Hauptstraße 5",
+      "plz": "80331",
+      "ort": "München",
+      "land": "DE"
+    },
+    "kennung": "K-10023",
+    "elektronische_adresse": "eingangsrechnung@beispiel-handel.example"
+  },
+  "zahlung": {
+    "art": "58",
+    "iban": "DE79000000001234567890",
+    "bic": "",
+    "kontoinhaber": "Nordlicht Software GmbH",
+    "verwendungszweck": "RE-2026-0001",
+    "bedingungen": "Zahlbar innerhalb von 30 Tagen ohne Abzug.",
+    "skonto_tage": 10,
+    "skonto_prozent": "2"
+  },
+  "bestellnummer": "PO-4711",
+  "leistung_von": "2026-09-01",
+  "leistung_bis": "2026-09-30",
+  "notizen": [
+    "Vielen Dank für Ihren Auftrag."
+  ],
+  "positionen": [
+    {
+      "id": "1",
+      "name": "Beratung Einführung E-Rechnung",
+      "menge": "12",
+      "einheit": "HUR",
+      "preis": "120.00",
+      "satz": "19",
+      "beschreibung": "Workshop und Umsetzung, September 2026"
+    },
+    {
+      "id": "2",
+      "name": "Softwarelizenz Rechnungseingang (Monat)",
+      "menge": "1",
+      "einheit": "MON",
+      "preis": "249.00",
+      "satz": "19",
+      "artikelnummer": "LIC-ER-01"
+    }
+  ]
+}

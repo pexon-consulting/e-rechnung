@@ -1,0 +1,60 @@
+{
+  "nummer": "2026-017",
+  "datum": "2026-10-15",
+  "faellig": "2026-11-14",
+  "leitweg_id": "BH-2026-0815",
+  "verkaeufer": {
+    "name": "Grafikdesign Lena Beispiel",
+    "adresse": {
+      "strasse": "Gartenweg 3",
+      "plz": "50667",
+      "ort": "Köln",
+      "land": "DE"
+    },
+    "steuernummer": "214/5678/1234",
+    "elektronische_adresse": "lena@grafik-beispiel.example",
+    "kontakt": {
+      "name": "Lena Beispiel",
+      "telefon": "+49 221 987654",
+      "email": "lena@grafik-beispiel.example"
+    },
+    "kennung": "LIEF-0815"
+  },
+  "kaeufer": {
+    "name": "Beispiel Handel AG",
+    "adresse": {
+      "strasse": "Hauptstraße 5",
+      "plz": "80331",
+      "ort": "München",
+      "land": "DE"
+    },
+    "kennung": "K-10023",
+    "elektronische_adresse": "eingangsrechnung@beispiel-handel.example"
+  },
+  "zahlung": {
+    "art": "58",
+    "iban": "DE79000000001234567890",
+    "bic": "",
+    "kontoinhaber": "Lena Beispiel"
+  },
+  "notizen": [
+    "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.",
+    "Lieferantennummer beim Kunden: LIEF-0815."
+  ],
+  "leistung_von": "2026-10-01",
+  "leistung_bis": "2026-10-10",
+  "positionen": [
+    {
+      "id": "1",
+      "name": "Logo-Entwicklung inkl. drei Entwürfe",
+      "menge": "1",
+      "einheit": "LS",
+      "preis": "850.00",
+      "kategorie": "E",
+      "satz": "0"
+    }
+  ],
+  "befreiungsgruende": {
+    "E": "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."
+  }
+}

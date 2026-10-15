@@ -1,0 +1,61 @@
+{
+  "nummer": "GS-2026-0001",
+  "datum": "2026-10-15",
+  "faellig": "2026-11-14",
+  "leitweg_id": "BH-2026-0815",
+  "verkaeufer": {
+    "name": "Nordlicht Software GmbH",
+    "adresse": {
+      "strasse": "Musterstraße 1",
+      "plz": "20095",
+      "ort": "Hamburg",
+      "land": "DE"
+    },
+    "ust_id": "DE123456789",
+    "register": "HRB 123456",
+    "rechtliches": "Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann",
+    "elektronische_adresse": "rechnung@nordlicht.example",
+    "kontakt": {
+      "name": "Erika Mustermann",
+      "telefon": "+49 40 1234567",
+      "email": "buchhaltung@nordlicht.example"
+    }
+  },
+  "kaeufer": {
+    "name": "Beispiel Handel AG",
+    "adresse": {
+      "strasse": "Hauptstraße 5",
+      "plz": "80331",
+      "ort": "München",
+      "land": "DE"
+    },
+    "kennung": "K-10023",
+    "elektronische_adresse": "eingangsrechnung@beispiel-handel.example"
+  },
+  "zahlung": {
+    "art": "58",
+    "iban": "DE79000000001234567890",
+    "bic": "",
+    "kontoinhaber": "Nordlicht Software GmbH",
+    "bedingungen": "Der Betrag wird Ihnen innerhalb von 14 Tagen erstattet."
+  },
+  "art": "381",
+  "vorgaenger_nummer": "RE-2026-0001",
+  "vorgaenger_datum": "2026-10-15",
+  "notizen": [
+    "Gutschrift zu Rechnung RE-2026-0001: zwei Stunden wurden doppelt berechnet."
+  ],
+  "positionen": [
+    {
+      "id": "1",
+      "name": "Beratung Einführung E-Rechnung (Korrektur)",
+      "menge": "2",
+      "einheit": "HUR",
+      "preis": "120.00",
+      "satz": "19"
+    }
+  ],
+  "lieferung": {
+    "datum": "2026-10-14"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "nummer": "RE-2026-0005",
+  "datum": "2026-10-15",
+  "faellig": "2026-11-14",
+  "leitweg_id": "BH-2026-0815",
+  "verkaeufer": {
+    "name": "Nordlicht Software GmbH",
+    "adresse": {
+      "strasse": "Musterstraße 1",
+      "plz": "20095",
+      "ort": "Hamburg",
+      "land": "DE"
+    },
+    "ust_id": "DE123456789",
+    "register": "HRB 123456",
+    "rechtliches": "Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann",
+    "elektronische_adresse": "rechnung@nordlicht.example",
+    "kontakt": {
+      "name": "Erika Mustermann",
+      "telefon": "+49 40 1234567",
+      "email": "buchhaltung@nordlicht.example"
+    }
+  },
+  "kaeufer": {
+    "name": "Alpen Technik GmbH",
+    "adresse": {
+      "strasse": "Ringstraße 10",
+      "plz": "1010",
+      "ort": "Wien",
+      "land": "AT"
+    },
+    "ust_id": "ATU12345678",
+    "elektronische_adresse": "invoice@alpen-technik.example"
+  },
+  "zahlung": {
+    "art": "58",
+    "iban": "DE79000000001234567890",
+    "bic": "",
+    "kontoinhaber": "Nordlicht Software GmbH"
+  },
+  "lieferung": {
+    "datum": "2026-10-12",
+    "name": "Alpen Technik GmbH",
+    "adresse": {
+      "strasse": "Ringstraße 10",
+      "plz": "1010",
+      "ort": "Wien",
+      "land": "AT"
+    }
+  },
+  "positionen": [
+    {
+      "id": "1",
+      "name": "Industrie-Gateway G2",
+      "menge": "4",
+      "einheit": "C62",
+      "preis": "890.00",
+      "kategorie": "K",
+      "satz": "0",
+      "artikelnummer": "GW-G2"
+    }
+  ],
+  "befreiungsgruende": {
+    "K": "Steuerfreie innergemeinschaftliche Lieferung (§ 4 Nr. 1b UStG)"
+  }
+}

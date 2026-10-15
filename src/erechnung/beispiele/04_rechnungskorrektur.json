@@ -1,0 +1,60 @@
+{
+  "nummer": "RE-2026-0003",
+  "datum": "2026-10-15",
+  "faellig": "2026-11-14",
+  "leitweg_id": "BH-2026-0815",
+  "verkaeufer": {
+    "name": "Nordlicht Software GmbH",
+    "adresse": {
+      "strasse": "Musterstraße 1",
+      "plz": "20095",
+      "ort": "Hamburg",
+      "land": "DE"
+    },
+    "ust_id": "DE123456789",
+    "register": "HRB 123456",
+    "rechtliches": "Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann",
+    "elektronische_adresse": "rechnung@nordlicht.example",
+    "kontakt": {
+      "name": "Erika Mustermann",
+      "telefon": "+49 40 1234567",
+      "email": "buchhaltung@nordlicht.example"
+    }
+  },
+  "kaeufer": {
+    "name": "Beispiel Handel AG",
+    "adresse": {
+      "strasse": "Hauptstraße 5",
+      "plz": "80331",
+      "ort": "München",
+      "land": "DE"
+    },
+    "kennung": "K-10023",
+    "elektronische_adresse": "eingangsrechnung@beispiel-handel.example"
+  },
+  "zahlung": {
+    "art": "58",
+    "iban": "DE79000000001234567890",
+    "bic": "",
+    "kontoinhaber": "Nordlicht Software GmbH"
+  },
+  "art": "384",
+  "vorgaenger_nummer": "RE-2026-0002",
+  "vorgaenger_datum": "2026-10-15",
+  "notizen": [
+    "Diese Rechnung ersetzt Rechnung RE-2026-0002 (falsche Anschrift)."
+  ],
+  "positionen": [
+    {
+      "id": "1",
+      "name": "Fachbuch Umsatzsteuer 2026",
+      "menge": "3",
+      "einheit": "C62",
+      "preis": "49.90",
+      "satz": "7"
+    }
+  ],
+  "lieferung": {
+    "datum": "2026-10-14"
+  }
+}

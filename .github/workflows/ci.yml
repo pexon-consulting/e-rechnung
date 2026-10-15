@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 5 * * 1"
+
+permissions:
+  contents: read
+
+env:
+  ERECHNUNG_CACHE: ${{ github.workspace }}/.kosit-cache
+
+jobs:
+  tests:
+    name: Tests (Python ${{ matrix.python }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.10", "3.13"]
+        include:
+          - os: windows-latest
+            python: "3.13"
+          - os: macos-latest
+            python: "3.12"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Ghostscript
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y ghostscript
+      - uses: actions/cache@v4
+        with:
+          path: .kosit-cache
+          key: kosit-${{ hashFiles('src/erechnung/offiziell.py', 'scripts/_werkzeuge.py') }}
+      - run: pip install -e ".[dev,mcp]"
+      - name: pytest
+        env:
+          ERECHNUNG_TESTSUITE_LADEN: "1"
+        run: python -m pytest -q
+      - name: Beispiele aktuell
+        if: runner.os == 'Linux'
+        run: python scripts/beispiele_bauen.py --check
+      - name: CLI von außen
+        run: |
+          erechnung beispiele bsp
+          erechnung pruefen bsp/01_standard_xrechnung_ubl.xml bsp/08_b2g_leitweg_id_xrechnung_cii.xml
+          erechnung datev bsp/01_standard_xrechnung_ubl.xml -o EXTF.csv
+
+  kosit-abgleich:
+    name: Abgleich mit KoSIT-Validator und Mustang (Java)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - run: sudo apt-get update && sudo apt-get install -y ghostscript
+      - run: pip install -e ".[dev]"
+      - name: Offizielle Prüfung in Python gleich KoSIT-Validator
+        run: python scripts/abgleich_kosit.py
+      - name: ZUGFeRD-PDFs mit Mustang
+        run: |
+          erechnung erstellen src/erechnung/beispiele/02_gemischte_steuersaetze.json --format zugferd -o neu.pdf
+          erechnung erstellen src/erechnung/beispiele/01_standard.json --format zugferd-xrechnung -o neu_xr.pdf
+          python scripts/mustang_check.py beispiele/*/zugferd_en16931.pdf neu.pdf neu_xr.pdf

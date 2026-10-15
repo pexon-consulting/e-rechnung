@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "e-rechnung"
+version = "0.1.0"
+description = "E-Rechnung in Python: XRechnung und ZUGFeRD lesen, prüfen (offizielle KoSIT-Regeln ohne Java), erstellen, anzeigen und als DATEV-Buchungsstapel exportieren."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Pexon Consulting" }]
+keywords = ["e-rechnung", "xrechnung", "zugferd", "factur-x", "en16931", "kosit", "validator", "datev", "ubl", "cii", "peppol"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Natural Language :: German",
+  "Topic :: Office/Business :: Financial :: Accounting",
+  "Intended Audience :: Developers",
+]
+dependencies = ["lxml>=5", "pypdf>=4"]
+
+[project.optional-dependencies]
+offiziell = ["saxonche>=12.5"]
+mcp = ["mcp>=1.2", "saxonche>=12.5"]
+toml = ["tomli>=2; python_version < '3.11'"]
+dev = ["pytest>=8", "saxonche>=12.5", "tomli>=2; python_version < '3.11'"]
+
+[project.scripts]
+erechnung = "erechnung.cli:main"
+erechnung-mcp = "erechnung.mcp_server:main"
+
+[project.urls]
+Homepage = "https://github.com/pexon-consulting/e-rechnung"
+Issues = "https://github.com/pexon-consulting/e-rechnung/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+erechnung = ["beispiele/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

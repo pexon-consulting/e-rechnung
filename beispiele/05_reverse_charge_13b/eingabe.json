@@ -1,0 +1,62 @@
+{
+  "nummer": "RE-2026-0004",
+  "datum": "2026-10-15",
+  "faellig": "2026-11-14",
+  "leitweg_id": "BH-2026-0815",
+  "verkaeufer": {
+    "name": "Elektro Schmidt GmbH",
+    "adresse": {
+      "strasse": "Musterstraße 1",
+      "plz": "20095",
+      "ort": "Hamburg",
+      "land": "DE"
+    },
+    "ust_id": "DE123456789",
+    "register": "HRB 123456",
+    "rechtliches": "Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann",
+    "elektronische_adresse": "rechnung@elektro-schmidt.example",
+    "kontakt": {
+      "name": "Erika Mustermann",
+      "telefon": "+49 40 1234567",
+      "email": "buchhaltung@nordlicht.example"
+    }
+  },
+  "kaeufer": {
+    "name": "Bauträger Süd GmbH",
+    "adresse": {
+      "strasse": "Hauptstraße 5",
+      "plz": "80331",
+      "ort": "München",
+      "land": "DE"
+    },
+    "kennung": "K-10023",
+    "elektronische_adresse": "eingangsrechnung@beispiel-handel.example",
+    "ust_id": "DE987654321"
+  },
+  "zahlung": {
+    "art": "58",
+    "iban": "DE79000000001234567890",
+    "bic": "",
+    "kontoinhaber": "Nordlicht Software GmbH"
+  },
+  "notizen": [
+    "Steuerschuldnerschaft des Leistungsempfängers nach § 13b UStG."
+  ],
+  "lieferung": {
+    "datum": "2026-10-10"
+  },
+  "positionen": [
+    {
+      "id": "1",
+      "name": "Elektroinstallation Neubau, Bauabschnitt 2",
+      "menge": "1",
+      "einheit": "LS",
+      "preis": "18500.00",
+      "kategorie": "AE",
+      "satz": "0"
+    }
+  ],
+  "befreiungsgruende": {
+    "AE": "Steuerschuldnerschaft des Leistungsempfängers (§ 13b UStG)"
+  }
+}

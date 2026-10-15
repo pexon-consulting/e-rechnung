@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>380 RE-2026-0006</title><style>
+body{font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#1a1a1a;max-width:960px;margin:2rem auto;padding:0 1rem}
+h1{font-size:1.5rem;margin:.2rem 0}h2{font-size:1rem;margin:1.2rem 0 .4rem;color:#444;text-transform:uppercase;letter-spacing:.04em}
+.kopf{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:2px solid #1a1a1a;padding-bottom:.6rem}
+.status{padding:.5rem .8rem;border-radius:6px;font-weight:600}.ja{background:#e6f4ea;color:#0f5132}.nein{background:#fdecea;color:#842029}
+.parteien{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}@media(max-width:700px){.parteien{grid-template-columns:1fr}}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:.1rem .8rem;margin:0}dt{color:#555}dd{margin:0}
+table{width:100%;border-collapse:collapse;margin:.4rem 0}th,td{padding:.35rem .5rem;border-bottom:1px solid #ddd;vertical-align:top}
+th{text-align:left;background:#f4f4f4}td.z,th.z{text-align:right;white-space:nowrap}small{color:#666}
+.summen{margin-left:auto;max-width:420px}.summen td{border:0}.gesamt td{font-weight:700;border-top:2px solid #1a1a1a}
+.hinweis{font-size:.85rem;color:#555;margin-top:2rem}
+</style></head>
+<body>
+<div class="kopf"><div><small>380 (Rechnung)</small><h1>RE-2026-0006</h1></div><div class="status ja">E-Rechnung nach EN 16931<br><small>XRechnung 3.0 (CII)</small></div></div>
+<div class="parteien"><section class="partei"><h2>Verkäufer</h2><p><strong>Nordlicht Software GmbH</strong><br>Musterstraße 1<br>20095 Hamburg<br>DE</p><dl><dt>USt-IdNr.</dt><dd>DE123456789</dd><dt>Register</dt><dd>HRB 123456</dd><dt>Elektronische Adresse</dt><dd>rechnung@nordlicht.example <small>(E-Mail-Adresse)</small></dd><dt>Kontakt</dt><dd>Erika Mustermann, +49 40 1234567, buchhaltung@nordlicht.example</dd><dt>Rechtliches</dt><dd>Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann</dd></dl></section><section class="partei"><h2>Käufer</h2><p><strong>Stadt Musterstadt, Amt für Digitalisierung</strong><br>Rathausplatz 1<br>12345 Musterstadt<br>DE</p><dl><dt>Elektronische Adresse</dt><dd>04011000-12345-03 <small>(Leitweg-ID (deutsche öffentliche Auftraggeber))</small></dd></dl></section></div>
+<h2>Rechnungsdaten</h2><dl><dt>Rechnungsart</dt><dd>380 (Rechnung)</dd><dt>Rechnungsdatum</dt><dd>15.10.2026</dd><dt>Fällig</dt><dd>14.11.2026</dd><dt>Währung</dt><dd>EUR</dd><dt>Käuferreferenz / Leitweg-ID</dt><dd>04011000-12345-03</dd><dt>Bestellnummer</dt><dd>VG-2026-118</dd><dt>Vertrag</dt><dd>RV-2025-33</dd><dt>Liefer-/Leistungsdatum</dt><dd>14.10.2026</dd></dl>
+
+<h2>Positionen</h2>
+<table><thead><tr><th>Pos.</th><th>Bezeichnung</th><th class="z">Menge</th><th>Einheit</th><th class="z">Preis</th><th>USt</th><th class="z">Netto</th></tr></thead>
+<tbody><tr><td>1</td><td>Betrieb Bürgerportal, Oktober 2026</td><td class="z">1</td><td>Monat</td><td class="z">2.400,00</td><td>S 19 %</td><td class="z">2.400,00</td></tr><tr><td>2</td><td>Support-Stunden</td><td class="z">6,5</td><td>Stunde</td><td class="z">95,00</td><td>S 19 %</td><td class="z">617,50</td></tr></tbody></table>
+
+<table class="summen"><tr><td>Summe Positionen</td><td class='z'>3.017,50 EUR</td></tr><tr><td>Nettobetrag</td><td class='z'>3.017,50 EUR</td></tr><tr><td>Umsatzsteuer</td><td class='z'>573,33 EUR</td></tr><tr><td>Bruttobetrag</td><td class='z'>3.590,83 EUR</td></tr><tr class='gesamt'><td>Zahlbetrag</td><td class='z'>3.590,83 EUR</td></tr></table>
+<h2>Umsatzsteuer</h2>
+<table><thead><tr><th>Kategorie</th><th class="z">Satz</th><th class="z">Basis</th><th class="z">Steuer</th><th>Befreiungsgrund</th></tr></thead><tbody><tr><td>S (Regelsteuersatz oder ermäßigter Satz)</td><td class='z'>19 %</td><td class='z'>3.017,50 EUR</td><td class='z'>573,33 EUR</td><td></td></tr></tbody></table>
+<h2>Zahlung</h2><dl><dt>Zahlungsart</dt><dd>58 (SEPA-Überweisung)</dd><dt>IBAN</dt><dd>DE79000000001234567890</dd><dt>Kontoinhaber</dt><dd>Nordlicht Software GmbH</dd></dl>
+<p class="hinweis">Ansicht erzeugt mit e-rechnung (Python). Rechtlich maßgeblich ist der XML-Inhalt der E-Rechnung.</p>
+</body></html>
