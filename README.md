@@ -268,7 +268,7 @@ Mehr dazu: [E-Rechnung mit KI prüfen](docs/anleitungen/e-rechnung-ki-mcp.md)
 
 ### Skills für Claude Code und Codex
 
-Im Ordner [`skills/`](skills/) liegen drei Skills, die einem Coding-Agenten den Ablauf beibringen: [E-Rechnung validieren](skills/e-rechnung-validieren/SKILL.md), [E-Rechnung erstellen](skills/e-rechnung-erstellen/SKILL.md) und [E-Rechnungen an DATEV übergeben](skills/e-rechnung-datev/SKILL.md). Für Claude Code kopierst du einen Ordner nach `~/.claude/skills/` oder `.claude/skills/` im Projekt.
+Im Ordner [`skills/`](skills/) liegen drei Skills, die einem Coding-Agenten den Ablauf beibringen: [E-Rechnung validieren](skills/e-rechnung-validieren/SKILL.md), [E-Rechnung erstellen](skills/e-rechnung-erstellen/SKILL.md) und [E-Rechnungen an DATEV übergeben](skills/e-rechnung-datev/SKILL.md). Für Claude Code kopieren Sie einen Ordner nach `~/.claude/skills/` oder `.claude/skills/` im Projekt.
 
 ## Beispieldateien
 
@@ -401,6 +401,14 @@ python3 -m venv .venv && .venv/bin/pip install -e ".[dev,mcp]"
 Lizenz: [MIT](LICENSE). Die KoSIT-Prüfregeln, die KoSIT-Visualisierung und die Testsuite stehen unter Apache-2.0, die enthaltenen CEN-Schematron-Regeln unter EUPL-1.2. Sie werden nicht mitgeliefert, sondern beim ersten Aufruf geladen, siehe [NOTICE](NOTICE). Änderungen: [CHANGELOG.md](CHANGELOG.md).
 
 Primärquellen: [§ 14 UStG](https://www.gesetze-im-internet.de/ustg_1980/__14.html), [§ 27 UStG](https://www.gesetze-im-internet.de/ustg_1980/__27.html), [BMF-FAQ zur E-Rechnung](https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html), [XRechnung bei xeinkauf.de](https://xeinkauf.de/xrechnung/), [KoSIT-Validator](https://github.com/itplr-kosit/validator), [ZUGFeRD bei FeRD](https://www.ferd-net.de/standards/zugferd).
+
+### Haftungsausschluss
+
+- **Keine Steuer- oder Rechtsberatung.** Die Anleitungen und das Werkzeug erklären Gesetz, BMF-Schreiben und technische Standards nach dem genannten Stand. Die Autoren sind keine Steuerberater und keine Rechtsanwälte. Ob ein Vorgang steuerlich richtig behandelt ist, klären Sie mit Ihrer Steuerberatung oder Ihrem Finanzamt.
+- **Keine Gewähr.** Die Software steht unter der MIT-Lizenz und wird ohne jede Gewährleistung bereitgestellt. Ein Ergebnis "gültig" bedeutet, dass die Datei die offiziellen Formatregeln erfüllt, nicht, dass die Rechnung inhaltlich oder steuerlich richtig ist.
+- **Kein Ersatz für die Prüfung beim Empfänger.** Rechnungsplattformen von Bund und Ländern und die Systeme Ihrer Kunden können zusätzliche Regeln anwenden.
+- **DATEV-Buchungsvorschläge** (Konten, BU-Schlüssel) sind Vorschläge und müssen vor dem Import von der Buchhaltung oder Steuerberatung freigegeben werden.
+- **Rechtsstand und Versionen ändern sich.** Prüfen Sie bei wichtigen Entscheidungen die verlinkten Primärquellen.
 
 Dieses Projekt ist unabhängig und nicht mit der KoSIT, dem FeRD oder der DATEV eG verbunden. XRechnung, ZUGFeRD und DATEV sind Marken ihrer jeweiligen Inhaber.
 

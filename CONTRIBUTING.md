@@ -1,6 +1,6 @@
 # Mitmachen
 
-Danke, dass du helfen willst. Am meisten hilft uns eine Rechnung, die dieses Werkzeug anders bewertet als der KoSIT-Validator, oder ein Fall, den es noch nicht abbildet.
+Danke für Ihre Hilfe. Am meisten hilft uns eine Rechnung, die dieses Werkzeug anders bewertet als der KoSIT-Validator, oder ein Fall, den es noch nicht abbildet.
 
 ## Entwicklungsumgebung
 
