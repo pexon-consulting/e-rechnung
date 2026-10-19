@@ -54,7 +54,7 @@ def test_kein_xml():
 def test_entities_werden_nicht_aufgeloest(tmp_path):
     geheim = tmp_path / "geheim.txt"
     geheim.write_text("GEHEIM")
-    xml = (f'<?xml version="1.0"?><!DOCTYPE x [<!ENTITY e SYSTEM "file://{geheim}">]>'
+    xml = (f'<?xml version="1.0"?><!DOCTYPE x [<!ENTITY e SYSTEM "{geheim.as_uri()}">]>'
            '<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" '
            'xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">'
            '<cbc:CustomizationID>urn:cen.eu:en16931:2017</cbc:CustomizationID><cbc:ID>&e;</cbc:ID></Invoice>').encode()
