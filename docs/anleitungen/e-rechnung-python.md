@@ -2,7 +2,9 @@
 
 XRechnung und ZUGFeRD in Python verarbeiten Sie ohne Java, indem Sie die offiziellen KoSIT-Prüfregeln (kompiliertes XSLT) mit saxonche ausführen, statt den Java-Validator aufzurufen. Das Paket `e-rechnung` macht genau das: Es liest XRechnung (UBL und CII) und ZUGFeRD-PDFs, baut Rechnungen aus Python-Dataclasses, prüft sie mit den KoSIT-Regeln und schreibt DATEV-Buchungsstapel. Die bekannten Python-Bibliotheken drafthorse, factur-x und pycheval decken jeweils nur einen Teil davon ab.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Entwickler und IT-Teams.
 
 ## Das Wichtigste in Kürze
 
@@ -75,11 +77,11 @@ rechnung = Rechnung(
     leistung_von=date(2026, 9, 1),
     leistung_bis=date(2026, 9, 30),
     verkaeufer=Partei(
-        name="Nordlicht Software GmbH",
+        name="Nordlicht Beispiel GmbH",
         adresse=Adresse(strasse="Musterstraße 1", plz="20095", ort="Hamburg"),
         ust_id="DE123456789",
         elektronische_adresse="rechnung@nordlicht.example",
-        kontakt=Kontakt(name="Erika Mustermann", telefon="+49 40 1234567",
+        kontakt=Kontakt(name="Erika Mustermann", telefon="+49 40 66969123",
                         email="buchhaltung@nordlicht.example"),
     ),
     kaeufer=Partei(
@@ -125,7 +127,7 @@ Statt Python-Code geht auch JSON oder TOML mit denselben Feldnamen: `laden("eing
 | `erechnung.modell.XRECHNUNG_3` (Standard) | XRechnung 3.0 UBL | XRechnung 3.0 CII, ZUGFeRD-Profil XRECHNUNG |
 | `erechnung.modell.EN16931` | EN 16931 UBL | ZUGFeRD-Profil EN 16931 (COMFORT) |
 
-Rechnungsarten für Gutschriften (zum Beispiel 381) schreibt `ubl()` automatisch als UBL `CreditNote`.
+Minderungen mit Rechnungsart 381 (kaufmännische Gutschrift) schreibt `ubl()` automatisch als UBL `CreditNote`.
 
 ```python
 from erechnung import cii, ubl
@@ -227,7 +229,7 @@ print(erkennen("beispiele/08_b2g_leitweg_id/xrechnung_ubl.xml").bezeichnung)
 
 ```text
 Format(syntax='CII', spezifikation='urn:cen.eu:en16931:2017', bezeichnung='ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)', ist_e_rechnung=True, pdf=True, anhang='factur-x.xml')
-RE-2026-0001 2026-10-15 Nordlicht Software GmbH 2009.91 CII
+RE-2026-0001 2026-10-15 Nordlicht Beispiel GmbH 2009.91 CII
 1 Beratung Einführung E-Rechnung 12 HUR 1440.00
 2 Softwarelizenz Rechnungseingang (Monat) 1 MON 249.00
 XRechnung 3.0 (UBL)
@@ -261,7 +263,7 @@ print(xml_auslesen(neu)[0])
 ```
 
 ```text
-factur-x.xml 8019 Bytes
+factur-x.xml 8020 Bytes
 factur-x.xml
 ```
 
@@ -349,7 +351,8 @@ Beim ersten Prüfen lädt das Paket die KoSIT-Konfiguration `xrechnung-3.0.2-val
 | Variable | Wirkung |
 | --- | --- |
 | `ERECHNUNG_CACHE` | anderer Cache-Ordner statt `~/.cache/erechnung` |
-| `ERECHNUNG_KOSIT_KONFIG` | Pfad zur ZIP-Datei oder zum entpackten Ordner der KoSIT-Konfiguration, kein Download |
+| `ERECHNUNG_KOSIT_KONFIG` | Pfad zur ZIP-Datei oder zum entpackten Ordner der KoSIT-Konfiguration, kein Download. Eine ZIP mit dem Originalnamen wird gegen die SHA-256-Summe geprüft |
+| `ERECHNUNG_KOSIT_KONFIG_OHNE_HASH` | `1` erlaubt eine ZIP mit Originalnamen, deren Prüfsumme abweicht (bewusst geänderte Regeln) |
 | `ERECHNUNG_KOSIT_VISUALISIERUNG` | dasselbe für die KoSIT-Visualisierung (`html_ansicht()`) |
 
 Für Rechner ohne Internet laden Sie die ZIP einmal woanders herunter und legen sie ab. Mit `offline=True` in `validieren()` (oder `--offline` auf der Kommandozeile) lädt das Paket nie etwas nach:
@@ -363,7 +366,7 @@ beispiele/01_standard/xrechnung_ubl.xml: XRechnung 3.0 (UBL)
 $ export ERECHNUNG_KOSIT_KONFIG=/pfad/xrechnung-3.0.2-validator-configuration-2026-08-31.zip
 $ erechnung validieren --offline beispiele/01_standard/xrechnung_ubl.xml
 beispiele/01_standard/xrechnung_ubl.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
 ```
 
 Im ersten Fall ist der Exit-Code 2 (Prüfung nicht möglich), in Python steht der Grund in `ergebnis.offiziell_fehler` und `gueltig` ist `None`.
@@ -438,9 +441,9 @@ test_vorlagen.py::test_vorlage_besteht_kosit[cii-standard] PASSED        [100%]
 
 Die Vorlagen `standard.json` und `reverse_charge.json` sind Kopien von `beispiele/01_standard/eingabe.json` und `beispiele/05_reverse_charge_13b/eingabe.json`. In CI setzen Sie `ERECHNUNG_KOSIT_KONFIG` oder cachen `~/.cache/erechnung`.
 
-## Beispiele
+## XRechnung und ZUGFeRD in Python: Codebeispiele
 
-### Beispiel 1: Gutschrift als UBL CreditNote
+### Beispiel 1: Minderung (381) als UBL CreditNote
 
 ```python
 from erechnung import laden, ubl
@@ -453,7 +456,7 @@ print(xml.splitlines()[1][:60].decode())
 <CreditNote xmlns="urn:oasis:names:specification:ubl:schema:
 ```
 
-Für Gutschriften mit Rechnungsart 381: `ubl()` wählt das Wurzelelement `CreditNote` selbst.
+Für Minderungen mit Rechnungsart 381: `ubl()` wählt das Wurzelelement `CreditNote` selbst.
 
 ### Beispiel 2: Rechnung aus JSON laden und als ZUGFeRD-XML mit Profil XRECHNUNG schreiben
 
@@ -466,7 +469,7 @@ print(r.leitweg_id, r.summen.zahlbetrag, len(xml), "Bytes")
 ```
 
 ```text
-04011000-12345-03 3590.83 7675 Bytes
+04011000-12345-03 3590.83 7676 Bytes
 ```
 
 Für Rechnungen an Behörden, die CII erwarten. `r.spezifikation` bleibt auf XRechnung 3.0, BT-10 enthält die Leitweg-ID aus der Vorlage.
@@ -561,7 +564,9 @@ Noch nicht. Laut KoSIT gibt es seit 15.09.2026 eine Vorversion 4.0.0, die finale
 
 Ja, aber nur gegen die Regeln der EN 16931. Die KoSIT-Konfiguration hat für diese Profile kein eigenes Szenario; das Ergebnis enthält dann einen `hinweis`. Profilregeln von ZUGFeRD prüft zum Beispiel Mustang.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

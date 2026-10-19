@@ -2,7 +2,9 @@
 
 Die Leitweg-ID ist die Adresse einer öffentlichen Verwaltungseinheit für E-Rechnungen: Sie steht in der XRechnung im Feld BT-10 (Buyer reference) und sorgt dafür, dass die Rechnung bei der richtigen Stelle der Behörde ankommt. Sie bekommen die Leitweg-ID vom Auftraggeber, meist mit dem Auftrag, und schicken die XRechnung dann über das Portal oder den Kanal, den die Behörde nennt, beim Bund über die OZG-RE. Ob die Leitweg-ID richtig abgetippt ist, verrät ihre zweistellige Prüfziffer.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Unternehmen, die Rechnungen an Behörden schicken, und ihre Buchhaltung.
 
 ## Das Wichtigste in Kürze
 
@@ -150,7 +152,7 @@ Laut [e-rechnung-bund.de](https://www.e-rechnung-bund.de/faq/) nimmt die unmitte
 | Kanäle | Peppol, E-Mail, Upload, Weberfassung |
 | Registrierung | kostenlos, auch über "Mein Unternehmenskonto" (ELSTER) |
 | Größe | höchstens 10 MB per E-Mail, 11 MB in der Weberfassung |
-| Speicherdauer | Rechnungen werden 28 Tage nach Bereitstellung gelöscht |
+| Speicherdauer | Rechnungen werden 28 Tage nach Bereitstellung bzw. nach der letzten Statusänderung gelöscht |
 
 Die Löschung nach 28 Tagen ersetzt nicht Ihre eigene Aufbewahrung. Heben Sie die XRechnung selbst auf, siehe [E-Rechnung archivieren](./e-rechnung-archivieren.md).
 
@@ -166,7 +168,7 @@ Nein. Die Leitweg-ID ist nur für Rechnungen an öffentliche Auftraggeber gedach
 
 Fehlt BT-10 ganz, ist das ein Geschäftsregelfehler (BR-DE-15). Laut BMF-Schreiben vom 15.10.2025, Rn. 35a, ist ein fehlendes BT-10 umsatzsteuerlich unbeachtlich. Die Prüfung meldet die XRechnung trotzdem als ungültig, und eine Behörde braucht BT-10 für die Zuordnung.
 
-## Beispiele
+## Leitweg-ID prüfen und eintragen: Beispiele
 
 ### Beispiel 1: Gültige Leitweg-ID prüfen
 
@@ -227,7 +229,7 @@ erechnung validieren rechnung-falsche-ziffer.xml
 
 ```text
 rechnung-falsche-ziffer.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
   Vorprüfung (Erklärungen, nicht maßgeblich):
   WARNUNG VP-LEITWEG: Leitweg-ID 04011000-12345-04 hat ein falsches Format oder eine falsche Prüfziffer (Formatspezifikation 2.0.2). Die Behörde kann die Rechnung dann nicht zuordnen.
 ```
@@ -242,7 +244,7 @@ erechnung validieren rechnung-ohne-bt10.xml
 
 ```text
 rechnung-ohne-bt10.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-DE-15: [BR-DE-15] Das Element "Buyer reference" (BT-10) muss übermittelt werden.
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-BR-DE-15: Käuferreferenz (BT-10) fehlt. In XRechnung Pflicht, bei Behörden die Leitweg-ID.
@@ -272,7 +274,7 @@ erechnung erstellen beispiele/08_b2g_leitweg_id/eingabe.json -o rechnung-stadt.x
 
 ```text
 rechnung-stadt.xml: xrechnung-ubl, Rechnung RE-2026-0006, Zahlbetrag 3.590,83 EUR
-  KoSIT: GÜLTIG (EN16931 XRechnung (UBL Invoice))
+  KoSIT-Regeln: GÜLTIG (EN16931 XRechnung (UBL Invoice))
 ```
 
 Ist die Leitweg-ID in der Eingabe falsch, erscheint beim Erstellen auf stderr die Warnung `VP-LEITWEG`. Die Datei wird trotzdem geschrieben.
@@ -315,7 +317,7 @@ Für KI-Assistenten gibt es das gleiche als MCP-Werkzeug `erechnung_leitweg_id`,
 4. **XRechnung erzeugen.** Mit diesem Werkzeug: `erechnung erstellen eingabe.json -o rechnung.xml`, siehe [E-Rechnung erstellen](./e-rechnung-erstellen.md). Welches Format die Behörde annimmt, steht in ihren Vorgaben.
 5. **XRechnung prüfen.** `erechnung validieren rechnung.xml` muss "GÜLTIG" zeigen und darf keine Warnung `VP-LEITWEG` enthalten. Mit `--bericht prüfberichte` legen Sie einen Prüfbericht zum Aufbewahren ab.
 6. **Einreichen.** Beim Bund über die OZG-RE (Peppol, E-Mail, Upload oder Weberfassung), bei Ländern und Kommunen über den Kanal, den der Auftraggeber nennt.
-7. **Aufbewahren.** Heben Sie die XRechnung im Ursprungsformat auf. Die OZG-RE löscht sie nach 28 Tagen.
+7. **Aufbewahren.** Heben Sie die XRechnung im Ursprungsformat auf. Die OZG-RE löscht sie 28 Tage nach Bereitstellung bzw. letzter Statusänderung.
 
 ## Häufige Fehler
 
@@ -327,7 +329,7 @@ Für KI-Assistenten gibt es das gleiche als MCP-Werkzeug `erechnung_leitweg_id`,
 | Unterstrich, Leerzeichen oder Punkt statt Bindestrich | "kein gültiges Format" | Nur `-` (U+002D) verwenden |
 | Leitweg-ID nur in BT-49, nicht in BT-10 | `BR-DE-15` | Leitweg-ID in BT-10 eintragen |
 | Elektronische Adresse des Käufers fehlt | `PEPPOL-EN16931-R010` "Buyer electronic address MUST be provided" | BT-49 füllen, bei Behörden die Adresse nach deren Vorgabe, zum Beispiel die Leitweg-ID mit Schema `0204` |
-| ZUGFeRD EN 16931, obwohl die Behörde XRechnung verlangt | Prüfung "GÜLTIG" im Szenario EN16931, nicht im Szenario XRechnung | Format nach Vorgabe der Behörde wählen |
+| ZUGFeRD EN 16931, obwohl die Behörde XRechnung verlangt | Prüfung "GÜLTIG" im Szenario EN16931, nicht im Szenario XRechnung | Format nach Vorgabe der Behörde wählen; beim Bund ZUGFeRD XRECHNUNG nur als reine XML-Datei, nicht als PDF |
 | Leitweg-ID einer anderen Abteilung | Rechnung landet bei der falschen Stelle | Für jeden Auftrag die Leitweg-ID aus dem Auftrag nehmen |
 
 ## Häufige Fragen
@@ -360,7 +362,9 @@ Ja, die unmittelbare Bundesverwaltung nimmt E-Rechnungen laut e-rechnung-bund.de
 
 Beim Bund sind laut e-rechnung-bund.de unter anderem Direktaufträge bis 1.000 EUR Auftragswert von der ERechV ausgenommen. Länder und Kommunen regeln das selbst. Fragen Sie im Zweifel den Auftraggeber.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

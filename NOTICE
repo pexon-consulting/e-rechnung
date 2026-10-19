@@ -28,6 +28,13 @@ Runtime dependencies: lxml (BSD-3-Clause), pypdf (BSD-3-Clause),
 saxonche / SaxonC-HE (Mozilla Public License 2.0, optional extra "offiziell"),
 mcp (MIT, optional extra "mcp").
 
+Ghostscript (Artifex Software, AGPL-3.0) is optionally called as an external
+program and is not part of this package. The example PDFs under beispiele/
+were created with it. They contain subsets of the URW base 35 fonts (Nimbus
+Sans, embedded under the names Helvetica and Helvetica-Bold; AGPL-3.0 with
+font exception) and the "Artifex Software sRGB ICC Profile" (Copyright
+Artifex Software 2011).
+
 Column layout of the DATEV EXTF booking batch cross-checked against
 ledermann/datev (MIT), https://github.com/ledermann/datev.
 DATEV is a trademark of DATEV eG. XRechnung is a standard of KoSIT.

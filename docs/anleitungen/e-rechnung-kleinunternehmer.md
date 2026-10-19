@@ -2,7 +2,9 @@
 
 Für die E-Rechnung gilt bei Kleinunternehmern: Seit dem 01.01.2025 müssen auch Kleinunternehmer nach § 19 UStG E-Rechnungen empfangen können, eine Ausnahme gibt es dafür nicht. Eigene Rechnungen dürfen Kleinunternehmer dagegen weiter als sonstige Rechnung ausstellen, also auf Papier oder mit Zustimmung des Empfängers zum Beispiel als PDF (§ 34a UStDV). Wer freiwillig E-Rechnungen schreibt, braucht die Steuerkategorie E, einen Befreiungsgrund mit Hinweis auf § 19 UStG und die Steuernummer oder USt-IdNr.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Kleinunternehmer, Selbstständige und ihre Steuerkanzleien. Technische Beispiele stehen weiter unten und sind optional.
 
 ## Das Wichtigste in Kürze
 
@@ -21,8 +23,8 @@ Empfangen können heißt nicht, dass Sie teure Software brauchen:
 
 - Der Empfang per E-Mail genügt, ein gesondertes Postfach ist nicht nötig (BMF-Schreiben vom 15.10.2025, UStAE 14.1).
 - Ein Übermittlungsweg ist nicht vorgeschrieben: E-Mail, Schnittstelle, Portal-Download oder USB-Stick sind möglich (BMF-FAQ).
-- Sie müssen die Rechnung lesen können. Dafür reicht ein kostenloser Viewer, der das XML in eine Lesefassung umwandelt (siehe Beispiel 6).
-- Sie müssen die E-Rechnung im empfangenen Format aufbewahren, den strukturierten Teil unversehrt (UStAE 14b.1 neu). Die Aufbewahrungsfrist beträgt 8 Jahre (§ 14b Abs. 1 UStG, BMF-Schreiben vom 15.10.2025, Rn. 60).
+- Sie müssen die Rechnung lesen können. Dafür reicht ein kostenloser Viewer, der das XML als lesbare Ansicht darstellt (siehe Beispiel 6).
+- Sie müssen die E-Rechnung im empfangenen Format aufbewahren, den strukturierten Teil unversehrt (UStAE 14b.1 neu). Die Aufbewahrungsfrist beträgt acht Jahre (§ 14b Abs. 1 UStG, BMF-Schreiben vom 15.10.2025, Rn. 60).
 
 Ihr Lieferant entscheidet, ob er Ihnen eine E-Rechnung schickt. Ist er selbst zur E-Rechnung verpflichtet, braucht er Ihre Zustimmung nicht (§ 14 Abs. 1 Satz 5 UStG). Ein PDF anzunehmen statt einer E-Rechnung ist in der Übergangszeit nur möglich, wenn Sie zustimmen.
 
@@ -37,9 +39,9 @@ Nein. Rechnungen von Kleinunternehmern gehören zu den Ausnahmen von der Ausstel
 | Papierrechnung ausstellen | zulässig | § 34a UStDV, BMF-FAQ |
 | PDF-Rechnung ausstellen | zulässig mit Zustimmung des Empfängers | § 34a UStDV, BMF-FAQ |
 | Freiwillig E-Rechnung ausstellen | zulässig | § 14 Abs. 1 UStG |
-| Empfangene E-Rechnung aufbewahren | 8 Jahre, im Ursprungsformat | § 14b Abs. 1 UStG, BMF-Schreiben vom 15.10.2025, Rn. 60 |
+| Empfangene E-Rechnung aufbewahren | acht Jahre, im Ursprungsformat | § 14b Abs. 1 UStG, BMF-Schreiben vom 15.10.2025, Rn. 60 |
 
-Ob Sie Kleinunternehmer sind, regelt § 19 UStG mit seinen Umsatzgrenzen. Ob die Regelung bei Ihnen greift, klären Sie mit der Steuerberatung.
+Kleinunternehmer ist nach § 19 Abs. 1 UStG (Fassung ab 01.01.2025), wessen Gesamtumsatz im Vorjahr 25.000 EUR nicht überschritten hat und im laufenden Jahr 100.000 EUR nicht überschreitet. Wird die Grenze von 100.000 EUR im laufenden Jahr überschritten, unterliegt laut BMF schon der Umsatz, mit dem das passiert, der Regelbesteuerung (UStAE 19.1 Abs. 2 in der Fassung des BMF-Schreibens vom 18.03.2025). Ob die Regelung in Ihrem Fall greift, klärt Ihre Steuerberatung.
 
 ## Warum freiwillig E-Rechnungen schreiben?
 
@@ -48,14 +50,17 @@ Viele Kunden von Kleinunternehmern sind selbst Unternehmen. Ab dem 01.01.2028 is
 Gründe, die für eine freiwillige E-Rechnung sprechen können:
 
 - Der Kunde bittet darum, zum Beispiel weil sein Rechnungseingang nur noch XML verarbeitet.
-- Der Kunde ist eine Behörde. Für Aufträge des Bundes gilt die E-Rechnungsverordnung des Bundes (ERechV), mit Ausnahmen etwa für Direktaufträge bis 1.000 EUR Auftragswert. Mehr in [Leitweg-ID](./leitweg-id.md).
 - Sie wollen nicht zwei Wege pflegen, wenn Sie später die Kleinunternehmerregelung verlassen.
+
+Getrennt davon: Ist der Kunde eine Bundesbehörde, verlangt die E-Rechnungsverordnung des Bundes (ERechV) die E-Rechnung unabhängig von § 34a UStDV, auch von Kleinunternehmern; ausgenommen sind Direktaufträge bis 1.000 EUR. Länder und Kommunen haben eigene Regeln. Mehr in [Leitweg-ID](./leitweg-id.md).
 
 Eine E-Rechnung zu erstellen kostet mit Open-Source-Werkzeugen nichts. Das Werkzeug aus diesem Repo erzeugt eine XRechnung oder ein ZUGFeRD-PDF aus einer JSON-Datei (siehe Schritt für Schritt).
 
 ## Was muss auf einer Kleinunternehmer-Rechnung stehen?
 
-Die Pflichtangaben nach § 14 Abs. 4 UStG gelten für jede Rechnung: Name und Anschrift, Steuernummer oder USt-IdNr., Ausstellungsdatum, Rechnungsnummer, Menge und Art der Leistung, Leistungszeitpunkt, Entgelt und statt Steuersatz und Steuerbetrag ein Hinweis auf die Steuerbefreiung. Laut BMF-Schreiben vom 15.10.2025 (UStAE 14.5 Abs. 14) brauchen Rechnungen von Kleinunternehmern keine fortlaufende Nummer. Welche Angaben Ihre Rechnung im Einzelfall braucht, klären Sie mit der Steuerberatung.
+Für Rechnungen von Kleinunternehmern gelten die verringerten Angaben nach § 34a UStDV: Name und Anschrift von Ihnen und Ihrem Kunden, Ihre Steuernummer, USt-IdNr. oder Kleinunternehmer-Identifikationsnummer, das Ausstellungsdatum, Menge und Art der Leistung, das Entgelt und ein Hinweis auf die Steuerbefreiung nach § 19 UStG. Rechnungsnummer und Leistungsdatum verlangt § 34a UStDV nicht; in einer XRechnung sind BT-1 (Rechnungsnummer) und weitere Felder technisch trotzdem Pflicht. Laut BMF-Schreiben vom 15.10.2025 (UStAE 14.5 Abs. 14) brauchen Rechnungen von Kleinunternehmern auch keine fortlaufende Nummer. Welche Angaben Ihre Rechnung im Einzelfall braucht, klärt Ihre Steuerberatung.
+
+Kurz gesagt: Auf Ihrer E-Rechnung steht keine Umsatzsteuer, der Satz ist 0 %, und es steht ein Hinweis wie "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet." darauf. Dazu kommt Ihre Steuernummer oder USt-IdNr. Wenn Ihr Rechnungsprogramm E-Rechnungen erstellt, setzt es diese Felder in der Regel selbst. Wie sie in der Datei aussehen, zeigen die folgenden Ausschnitte.
 
 In einer E-Rechnung landen diese Angaben in festen Feldern. Für Kleinunternehmer sind drei Stellen entscheidend:
 
@@ -66,11 +71,13 @@ In einer E-Rechnung landen diese Angaben in festen Feldern. Für Kleinunternehme
 | Befreiungsgrund | BT-120 | "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet." | BR-E-10 |
 | Steuernummer des Verkäufers | BT-32 | `214/5678/1234` | BR-DE-16, BR-E-02 |
 
-Zusätzlich steht der Hinweis im Beispiel als Bemerkung (BT-22); die Lesefassung zeigt ihn unter "Hinweise".
+Zusätzlich steht der Hinweis im Beispiel als Bemerkung (BT-22); die Ansicht zeigt ihn unter "Hinweise".
 
 ### Steuerkategorie E statt S
 
 Eine normale Rechnung nutzt die Steuerkategorie S mit 19 % oder 7 %. Ein Kleinunternehmer berechnet keine Umsatzsteuer. Im Beispiel 07 hat die Position deshalb die Kategorie `E` mit dem Satz `0`. In der UBL-Datei [`beispiele/07_kleinunternehmer/xrechnung_ubl.xml`](../../beispiele/07_kleinunternehmer/xrechnung_ubl.xml) sieht die Position so aus:
+
+<details><summary>XML ansehen</summary>
 
 ```xml
   <cac:InvoiceLine>
@@ -93,9 +100,13 @@ Eine normale Rechnung nutzt die Steuerkategorie S mit 19 % oder 7 %. Ein Kleinun
   </cac:InvoiceLine>
 ```
 
+</details>
+
 ### Befreiungsgrund mit Hinweis auf § 19 UStG
 
 Bei Kategorie E verlangt die EN 16931 einen Befreiungsgrund als Text (BT-120) oder Code (BT-121), sonst meldet die Prüfung BR-E-10. Im Beispiel steht der Grund in der Steueraufschlüsselung:
+
+<details><summary>XML ansehen</summary>
 
 ```xml
   <cac:TaxTotal>
@@ -115,7 +126,11 @@ Bei Kategorie E verlangt die EN 16931 einen Befreiungsgrund als Text (BT-120) od
   </cac:TaxTotal>
 ```
 
+</details>
+
 In der CII-Datei [`beispiele/07_kleinunternehmer/xrechnung_cii.xml`](../../beispiele/07_kleinunternehmer/xrechnung_cii.xml) heißt das Element `ExemptionReason`:
+
+<details><summary>XML ansehen</summary>
 
 ```xml
       <ram:ApplicableTradeTax>
@@ -128,9 +143,13 @@ In der CII-Datei [`beispiele/07_kleinunternehmer/xrechnung_cii.xml`](../../beisp
       </ram:ApplicableTradeTax>
 ```
 
+</details>
+
 ### Steuernummer statt USt-IdNr.
 
-§ 14 Abs. 4 UStG verlangt die Steuernummer oder die USt-IdNr. des Verkäufers. Im Beispiel 07 hat die Verkäuferin nur eine Steuernummer. Sie steht in BT-32 mit dem Schema `FC`, nicht mit `VAT` wie eine USt-IdNr.:
+§ 34a Satz 1 Nr. 2 UStDV verlangt die Steuernummer, die USt-IdNr. oder die Kleinunternehmer-Identifikationsnummer des Verkäufers. Im Beispiel 07 hat die Verkäuferin nur eine Steuernummer. Sie steht in BT-32 mit dem Schema `FC`, nicht mit `VAT` wie eine USt-IdNr.:
+
+<details><summary>XML ansehen</summary>
 
 ```xml
       <cac:PartyTaxScheme>
@@ -141,9 +160,11 @@ In der CII-Datei [`beispiele/07_kleinunternehmer/xrechnung_cii.xml`](../../beisp
       </cac:PartyTaxScheme>
 ```
 
+</details>
+
 In CII steht dieselbe Angabe als `<ram:ID schemeID="FC">214/5678/1234</ram:ID>` unter `SpecifiedTaxRegistration`. Fehlen beide Angaben, lehnt die KoSIT-Prüfung die Rechnung ab (Beispiel 5).
 
-## Beispiele
+## Kleinunternehmer-Rechnung als E-Rechnung: Beispiele
 
 Alle Befehle laufen im Ordner mit den Dateien aus [`beispiele/`](../../beispiele/README.md). Die Werte stammen aus dem Beispiel 07, einer Rechnung über 850,00 EUR für eine Logo-Entwicklung.
 
@@ -169,7 +190,7 @@ Das ist [`beispiele/07_kleinunternehmer/eingabe.json`](../../beispiele/07_kleinu
     "elektronische_adresse": "lena@grafik-beispiel.example",
     "kontakt": {
       "name": "Lena Beispiel",
-      "telefon": "+49 221 987654",
+      "telefon": "+49 221 4710123",
       "email": "lena@grafik-beispiel.example"
     },
     "kennung": "LIEF-0815"
@@ -226,7 +247,7 @@ erechnung erstellen bsp/07_kleinunternehmer.json --format zugferd -o ku.pdf --va
 
 ```text
 ku.pdf: zugferd, Rechnung 2026-017, Zahlbetrag 850,00 EUR
-  KoSIT: GÜLTIG (EN16931 (CII))
+  KoSIT-Regeln: GÜLTIG (EN16931 (CII))
 ```
 
 Das brauchen Sie, wenn Ihr Kunde ein PDF zum Ansehen und ein XML zum Buchen in einer Datei möchte. Die sichtbare Seite zeigt die Steuernummer und die Zeile "Steuerbefreit: Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."
@@ -260,7 +281,7 @@ Käufer:       Beispiel Handel AG, 80331 München
 Käuferref.:   BH-2026-0815
 Positionen:   1
      1         1 LS   Logo-Entwicklung inkl. drei Entwürfe                 850,00 EUR
-USt:          E (Steuerbefreit (z.B. § 4 UStG, Kleinun 0 %: 0,00 EUR auf 850,00 EUR
+USt:          E (Steuerbefreit, z. B. § 4 UStG oder Kleinunternehmer § 19 UStG) 0 %: 0,00 EUR auf 850,00 EUR
 Netto:        850,00 EUR
 Brutto:       850,00 EUR
 Zahlbetrag:   850,00 EUR, fällig 14.11.2026
@@ -279,6 +300,7 @@ erechnung erstellen ku_ohne_stnr.json -o ku_ohne_stnr.xml
 
 ```text
   FEHLER  VP-14-4-2: Weder USt-IdNr. (BT-31) noch Steuernummer (BT-32) des Verkäufers angegeben (§ 14 Abs. 4 Nr. 2 UStG).
+  Nicht mit den KoSIT-Regeln geprüft. Prüfen mit: erechnung validieren ku_ohne_stnr.xml
 ku_ohne_stnr.xml: xrechnung-ubl, Rechnung 2026-017, Zahlbetrag 850,00 EUR
 ```
 
@@ -290,7 +312,7 @@ erechnung validieren ku_ohne_stnr.xml
 
 ```text
 ku_ohne_stnr.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 2 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 2 Fehler, 0 Warnungen
   FEHLER  BR-E-02: [BR-E-02]-An Invoice that contains an Invoice line (BG-25) where the Invoiced item VAT category code (BT-151) is "Exempt from VAT" shall contain the Seller VAT Identifier (BT-31), the Seller tax registration identifier (BT-32) and/or the Seller tax representative VAT identifier (BT-63).
   FEHLER  BR-DE-16: [BR-DE-16] Wenn in einer Rechnung die Steuercodes S, Z, E, AE, K, G, L oder M verwendet werden, muss mindestens eines der Elemente "Seller VAT identifier" (BT-31), "Seller tax registration identifier" (BT-32) oder "SELLER TAX REPRESENTATIVE PARTY" (BG-11) übermittelt werden.
   Vorprüfung (Erklärungen, nicht maßgeblich):
@@ -309,7 +331,7 @@ erechnung validieren ku_ohne_grund.xml
 
 ```text
 ku_ohne_grund.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-E-10: [BR-E-10]-A VAT breakdown (BG-23) with VAT Category code (BT-118) "Exempt from VAT" shall have a VAT exemption reason code (BT-121) or a VAT exemption reason text (BT-120).
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-14-4-8: Steuerkategorie E ohne Befreiungsgrund (BT-120/121). Hinweis auf Steuerbefreiung oder Reverse Charge ist Pflicht (§ 14 Abs. 4 Nr. 8, § 14a UStG).
@@ -339,7 +361,7 @@ Ansicht geschrieben: ku_kosit.html
 
 Das brauchen Sie als Kleinunternehmer jedes Mal, wenn ein Lieferant eine XRechnung schickt, die Ihr PDF-Programm nicht öffnet.
 
-## Schritt für Schritt
+## Schritt für Schritt: als Kleinunternehmer eine E-Rechnung schreiben
 
 ### E-Rechnungen empfangen
 
@@ -349,17 +371,17 @@ Das brauchen Sie als Kleinunternehmer jedes Mal, wenn ein Lieferant eine XRechnu
    pipx install "e-rechnung[offiziell] @ git+https://github.com/pexon-consulting/e-rechnung@v0.1.0"
    ```
 3. **Rechnung lesen.** Speichern Sie den Anhang und rufen Sie `erechnung lesen rechnung.xml` auf. Die Zeile `E-Rechnung:` zeigt, ob es eine E-Rechnung ist.
-4. **Lesefassung erzeugen.** `erechnung anzeigen rechnung.xml -o rechnung.html` und die Datei im Browser öffnen.
+4. **Ansicht erzeugen.** `erechnung anzeigen rechnung.xml -o rechnung.html` und die Datei im Browser öffnen.
 5. **Inhalt prüfen.** Prüfen Sie wie bei jeder Rechnung, ob Leistung, Betrag und Ihre Anschrift stimmen. Formal prüft `erechnung validieren rechnung.xml`.
-6. **Original aufbewahren.** Legen Sie die empfangene XML- oder PDF-Datei unverändert ab, 8 Jahre lang (§ 14b Abs. 1 UStG). Die HTML-Ansicht ist nur eine Lesehilfe.
+6. **Original aufbewahren.** Legen Sie die empfangene XML- oder PDF-Datei unverändert ab, acht Jahre lang (§ 14b Abs. 1 UStG). Die HTML-Ansicht ist nur eine Lesehilfe.
 
 ### Freiwillig eine E-Rechnung schreiben
 
 1. **Vorlage holen.** `erechnung beispiele bsp` schreibt die Beispiel-Eingaben in den Ordner `bsp`. Kopieren Sie `bsp/07_kleinunternehmer.json`.
 2. **Eigene Daten eintragen.** Name, Anschrift, `steuernummer`, Kontakt, elektronische Adresse, IBAN, Kunde, Rechnungsnummer, Datum, Leistungszeitraum und Positionen. Jede Position bekommt `"kategorie": "E"` und `"satz": "0"`.
-3. **Befreiungsgrund stehen lassen.** Der Block `befreiungsgruende` mit dem Hinweis auf § 19 UStG muss bleiben.
+3. **Befreiungsgrund stehen lassen.** Der Block `befreiungsgruende` mit dem Hinweis auf § 19 UStG muss bleiben. Ob diese Regel für Ihr Unternehmen gilt, klärt Ihre Steuerberatung.
 4. **Format wählen.** Will der Kunde ein PDF mit XML, nehmen Sie `--format zugferd`. Will er eine XRechnung, lassen Sie `--format` weg.
-5. **Erstellen und prüfen.** `erechnung erstellen meine-rechnung.json --format zugferd -o rechnung.pdf --validieren`. Achten Sie auf `KoSIT: GÜLTIG`.
+5. **Erstellen und prüfen.** `erechnung erstellen meine-rechnung.json --format zugferd -o rechnung.pdf --validieren`. Achten Sie auf `KoSIT-Regeln: GÜLTIG`.
 6. **Verschicken.** Das Werkzeug versendet nicht. Schicken Sie die Datei per E-Mail oder laden Sie sie im Portal des Kunden hoch.
 
 ## Häufige Fehler
@@ -393,7 +415,7 @@ Die Steuerkategorie ist `E` (steuerbefreit) mit 0 %. Dazu gehört ein Befreiungs
 
 ### Welche Software brauche ich als Kleinunternehmer für E-Rechnungen?
 
-Zum Empfangen reicht ein E-Mail-Postfach und ein kostenloser Viewer. Dieses Repo bietet mit `erechnung anzeigen` und `erechnung lesen` einen solchen Viewer für die Kommandozeile. Daneben gibt es den Open-Source-Viewer [Quba](https://github.com/ZUGFeRD/quba-viewer) (Apache-2.0) für Windows, macOS und Linux, der offline arbeitet. Mehr in [E-Rechnung Software kostenlos](./e-rechnung-software-kostenlos.md).
+Zum Empfangen reichen ein E-Mail-Postfach und ein kostenloser Viewer. Dieses Repo bietet mit `erechnung anzeigen` und `erechnung lesen` einen solchen Viewer für die Kommandozeile. Daneben gibt es den Open-Source-Viewer [Quba](https://github.com/ZUGFeRD/quba-viewer) (Apache-2.0) für Windows, macOS und Linux, der offline arbeitet. Mehr in [E-Rechnung Software kostenlos](./e-rechnung-software-kostenlos.md).
 
 ### Brauche ich als Kleinunternehmer eine fortlaufende Rechnungsnummer?
 
@@ -403,7 +425,9 @@ Laut BMF-Schreiben vom 15.10.2025 (UStAE 14.5 Abs. 14) brauchen Rechnungen von K
 
 Dann gelten für Ihre Rechnungen an andere inländische Unternehmer die allgemeinen Fristen zur E-Rechnung aus § 27 Abs. 38 UStG. Ab dem 01.01.2028 ist die E-Rechnung im B2B für alle verpflichtend. Die Übergangsregeln stehen in [E-Rechnung Pflicht](./e-rechnung-pflicht.md); den Zeitpunkt klären Sie mit der Steuerberatung.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 
@@ -412,4 +436,5 @@ Dann gelten für Ihre Rechnungen an andere inländische Unternehmer die allgemei
 - [E-Rechnung empfangen und lesen](./e-rechnung-empfangen.md)
 - [E-Rechnung erstellen](./e-rechnung-erstellen.md)
 - [E-Rechnung archivieren](./e-rechnung-archivieren.md)
+- [Lexware, sevdesk, SAP: E-Rechnung aus dem eigenen Programm testen](./e-rechnung-buchhaltungssoftware.md)
 - Beispiel Kleinunternehmer: [Eingabe](../../beispiele/07_kleinunternehmer/eingabe.json), [UBL](../../beispiele/07_kleinunternehmer/xrechnung_ubl.xml), [CII](../../beispiele/07_kleinunternehmer/xrechnung_cii.xml), [Ansicht](../../beispiele/07_kleinunternehmer/ansicht.html), [ZUGFeRD-PDF](../../beispiele/07_kleinunternehmer/zugferd_en16931.pdf)

@@ -22,7 +22,7 @@ CBC = "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
 
 
 def zahl(wert: Decimal | int | str) -> str:
-    """Decimal ohne Exponent und ohne überflüssige Nullen, z.B. 19, 2.5, 0.125."""
+    """Decimal ohne Exponent und ohne überflüssige Nullen, z. B. 19, 2.5, 0.125."""
     d = Decimal(wert)
     text = format(d.normalize(), "f")
     return text if text != "-0" else "0"
@@ -148,7 +148,7 @@ def _position(b: _Bau, eltern, pos: Position, gutschrift: bool):
 
 
 def ubl(r: Rechnung) -> bytes:
-    """Rechnung als UBL-XML. Gutschrift-Arten (z.B. 381) werden zur CreditNote."""
+    """Rechnung als UBL-XML. Minderungen wie 381 werden zur CreditNote."""
     berechnen(r)
     gutschrift = r.art in GUTSCHRIFT_ARTEN
     ns = NS_CREDITNOTE if gutschrift else NS_INVOICE

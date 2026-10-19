@@ -2,7 +2,9 @@
 
 Ein PDF lässt sich nicht per Knopfdruck in ZUGFeRD umwandeln: Für eine ZUGFeRD-Rechnung müssen die Rechnungsdaten als strukturiertes XML vorliegen, das in das PDF eingebettet wird. Sie erfassen die Daten also einmal als JSON oder TOML und betten das daraus erzeugte XML kostenlos mit `erechnung erstellen ... --format zugferd --pdf rechnung.pdf` oder `erechnung zugferd rechnung.xml --pdf rechnung.pdf` in Ihr vorhandenes PDF ein. Mit `--pdfa` macht Ghostscript aus dem PDF vorher ein PDF/A-3.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Selbstständige, Buchhaltung und Entwickler, die Rechnungen aus einer Datei erzeugen wollen. Wer ein Rechnungsprogramm nutzt, erstellt E-Rechnungen meist direkt dort.
 
 ## Das Wichtigste in Kürze
 
@@ -10,7 +12,7 @@ Ein PDF lässt sich nicht per Knopfdruck in ZUGFeRD umwandeln: Für eine ZUGFeRD
 - "Umwandeln" heißt: Rechnungsdaten strukturiert erfassen, daraus CII-XML erzeugen und dieses XML in Ihr PDF einbetten.
 - Das Werkzeug liest kein PDF-Layout aus und erkennt keinen Text auf gescannten Rechnungen; die Daten kommen aus einer JSON- oder TOML-Datei.
 - Das Ergebnis ist ein PDF mit `factur-x.xml` (Profil EN 16931) oder `xrechnung.xml` (Profil XRECHNUNG), das Sie mit `erechnung validieren` prüfen.
-- Weichen PDF-Inhalt und XML voneinander ab, ist laut BMF-FAQ der strukturierte Teil maßgebend; das Werkzeug vergleicht beide nicht.
+- Weichen PDF-Inhalt und XML voneinander ab, ist laut BMF-Schreiben vom 15.10.2025 (UStAE 14.4 Abs. 3) der strukturierte Teil maßgebend; das Werkzeug vergleicht beide nicht.
 - Für eine reine XRechnung brauchen Sie kein PDF, sondern nur das XML aus `erechnung erstellen`.
 
 ## Kann man ein PDF in eine E-Rechnung umwandeln?
@@ -38,11 +40,11 @@ Das Werkzeug erwartet die Angaben der Rechnung in einer Eingabedatei. Summen und
   "faellig": "2026-11-14",
   "leitweg_id": "BH-2026-0815",
   "verkaeufer": {
-    "name": "Nordlicht Software GmbH",
+    "name": "Nordlicht Beispiel GmbH",
     "adresse": {"strasse": "Musterstraße 1", "plz": "20095", "ort": "Hamburg", "land": "DE"},
     "ust_id": "DE123456789",
     "elektronische_adresse": "rechnung@nordlicht.example",
-    "kontakt": {"name": "Erika Mustermann", "telefon": "+49 40 1234567", "email": "buchhaltung@nordlicht.example"}
+    "kontakt": {"name": "Erika Mustermann", "telefon": "+49 40 66969123", "email": "buchhaltung@nordlicht.example"}
   },
   "kaeufer": {
     "name": "Beispiel Handel AG",
@@ -81,14 +83,14 @@ erechnung erstellen rechnung.json --format zugferd --pdf rechnung.pdf --pdfa -o 
 
 ```text
 RE-2026-0001_pdfa.pdf: zugferd, Rechnung RE-2026-0001, Zahlbetrag 2.009,91 EUR
-  KoSIT: GÜLTIG (EN16931 (CII))
+  KoSIT-Regeln: GÜLTIG (EN16931 (CII))
 ```
 
 | Option | Wirkung |
 | --- | --- |
 | `--format zugferd` | Profil EN 16931, eingebettet als `factur-x.xml` |
 | `--format zugferd-xrechnung` | Profil XRECHNUNG, eingebettet als `xrechnung.xml` |
-| `--pdf rechnung.pdf` | Ihr PDF wird der Bildteil; ohne diese Option baut Ghostscript eine schlichte Lesefassung |
+| `--pdf rechnung.pdf` | Ihr PDF wird der Bildteil; ohne diese Option baut Ghostscript eine schlichte Ansicht |
 | `--pdfa` | Ghostscript wandelt die Vorlage vorher nach PDF/A-3b |
 | `--validieren` | Ergebnis sofort mit den KoSIT-Regeln prüfen |
 | `-o` | Name der Zieldatei |
@@ -150,7 +152,7 @@ RE-2026-0001_pdfa.pdf | OutputIntent: True | /YRLELF+Helvetica-Bold=ja, /ESVAAE+
 
 ## Was passiert, wenn PDF-Inhalt und XML abweichen?
 
-Dann gilt das XML. Laut BMF-FAQ ist bei Abweichungen zwischen strukturiertem Teil und Bildteil der strukturierte Teil maßgebend; das BMF empfiehlt, den XML-Teil selbst zu visualisieren.
+Dann gilt das XML. Laut BMF-Schreiben vom 15.10.2025 (UStAE 14.4 Abs. 3) ist bei Abweichungen zwischen strukturiertem Teil und Bildteil der strukturierte Teil maßgebend; das BMF empfiehlt, den XML-Teil selbst zu visualisieren.
 
 Das Werkzeug liest den Text Ihres PDFs nicht und vergleicht ihn nicht mit dem XML. Wenn im PDF 2.009,91 EUR stehen und in der JSON-Datei ein Tippfehler steckt, enthält die E-Rechnung den Tippfehler. Prüfen Sie deshalb vor dem Versand den strukturierten Teil:
 
@@ -173,7 +175,7 @@ Zahlung:      58 (SEPA-Überweisung) DE79000000001234567890
 
 Oder als HTML-Ansicht: `erechnung anzeigen rechnung_zugferd.pdf`. Vergleichen Sie Nummer, Datum, Beträge und Steuersätze mit dem PDF.
 
-## Beispiele
+## PDF in ZUGFeRD umwandeln: Beispiele
 
 ### Beispiel 1: Eigenes PDF zur ZUGFeRD-Rechnung machen (Profil EN 16931)
 
@@ -183,7 +185,7 @@ erechnung erstellen rechnung.json --format zugferd --pdf rechnung.pdf --pdfa -o 
 
 ```text
 RE-2026-0001_pdfa.pdf: zugferd, Rechnung RE-2026-0001, Zahlbetrag 2.009,91 EUR
-  KoSIT: GÜLTIG (EN16931 (CII))
+  KoSIT-Regeln: GÜLTIG (EN16931 (CII))
 ```
 
 Das ist der übliche Weg, wenn Sie Ihr Layout behalten und eine E-Rechnung an ein Unternehmen schicken wollen.
@@ -227,14 +229,14 @@ erechnung validieren RE-2026-0001_pdfa.pdf rechnung_zugferd.pdf --bericht prüfb
 
 ```text
 RE-2026-0001_pdfa.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
   Prüfbericht: prüfberichte/RE-2026-0001_pdfa.pdf.593ce775f06b.validierungsbericht.json
 rechnung_zugferd.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
   Prüfbericht: prüfberichte/rechnung_zugferd.pdf.a6c093f01a7b.validierungsbericht.json
 ```
 
-Der Bericht enthält Zeitpunkt, Regelversion und die SHA-256-Summe der Datei. Das BMF-Schreiben vom 15.10.2025 empfiehlt in Rn. 35a, den Validierungsbericht aufzubewahren.
+Der Bericht enthält Zeitpunkt, Regelversion und die SHA-256-Summe der Datei. Die Prüfsumme im Dateinamen des Berichts gehört zu der Datei aus diesem Beispiel; bei Ihrer eigenen Datei weicht der Wert ab. Laut BMF-Schreiben vom 15.10.2025, Rn. 35a, bietet es sich zum Nachweis an, den Validierungsbericht aufzubewahren.
 
 ### Beispiel 5: Versehentlich ein schon fertiges ZUGFeRD-PDF als Vorlage
 
@@ -292,7 +294,7 @@ Für echte Rechnungen nehmen Sie das PDF aus Ihrem Rechnungsprogramm, denn der B
    erechnung erstellen rechnung.json --format zugferd --pdf rechnung.pdf --pdfa -o RE-2026-0001.pdf --validieren
    ```
 
-5. Achten Sie auf die Zeile "KoSIT: GÜLTIG". Steht dort UNGÜLTIG, korrigieren Sie die Eingabedatei anhand der Meldungen und wiederholen Schritt 4. Erklärungen stehen in [E-Rechnung Fehlermeldungen](./e-rechnung-fehlermeldungen.md).
+5. Achten Sie auf die Zeile "KoSIT-Regeln: GÜLTIG". Steht dort UNGÜLTIG, korrigieren Sie die Eingabedatei anhand der Meldungen und wiederholen Schritt 4. Erklärungen stehen in [E-Rechnung Fehlermeldungen](./e-rechnung-fehlermeldungen.md).
 6. Vergleichen Sie den strukturierten Teil mit dem PDF: `erechnung lesen RE-2026-0001.pdf`. Beträge, Nummer und Datum müssen übereinstimmen.
 7. Bewahren Sie den Prüfbericht auf: `erechnung validieren RE-2026-0001.pdf --bericht prüfberichte`.
 8. Versenden Sie die Datei. Das Werkzeug versendet selbst nichts. Einen bestimmten Übermittlungsweg schreibt das Gesetz laut BMF-FAQ nicht vor; E-Mail ist einer der möglichen Wege.
@@ -333,14 +335,14 @@ erechnung erstellen rechnung.json -o rechnung_xrechnung.xml --validieren
 
 ```text
 rechnung_xrechnung.xml: xrechnung-ubl, Rechnung RE-2026-0001, Zahlbetrag 2.009,91 EUR
-  KoSIT: GÜLTIG (EN16931 XRechnung (UBL Invoice))
+  KoSIT-Regeln: GÜLTIG (EN16931 XRechnung (UBL Invoice))
 ```
 
 Mit `--format xrechnung-cii` bekommen Sie dieselbe Rechnung in CII. Mehr dazu in [XRechnung](./xrechnung.md).
 
 ### Was gilt, wenn im PDF etwas anderes steht als im XML?
 
-Das XML. Laut BMF-FAQ ist bei Abweichungen der strukturierte Teil maßgebend. Kontrollieren Sie deshalb vor dem Versand mit `erechnung lesen` oder `erechnung anzeigen`, was im XML steht.
+Das XML. Laut BMF-Schreiben vom 15.10.2025 (UStAE 14.4 Abs. 3) ist bei Abweichungen der strukturierte Teil maßgebend. Kontrollieren Sie deshalb vor dem Versand mit `erechnung lesen` oder `erechnung anzeigen`, was im XML steht.
 
 ### Kann ich eine eingescannte Papierrechnung in ZUGFeRD umwandeln?
 
@@ -350,7 +352,9 @@ Nicht automatisch. Das Werkzeug erkennt keinen Text auf Bildern. Sie können die
 
 Mit `--format zugferd` entsteht das Profil EN 16931, mit `--format zugferd-xrechnung` das Profil XRECHNUNG. Beide sind E-Rechnungen nach UStAE 14.1 Abs. 14. Eine Übersicht aller Profile steht in [ZUGFeRD](./zugferd.md).
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

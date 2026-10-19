@@ -46,15 +46,15 @@
     <ram:ApplicableHeaderTradeAgreement>
       <ram:BuyerReference>BH-2026-0815</ram:BuyerReference>
       <ram:SellerTradeParty>
-        <ram:Name>Nordlicht Software GmbH</ram:Name>
-        <ram:Description>Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann</ram:Description>
+        <ram:Name>Nordlicht Beispiel GmbH</ram:Name>
+        <ram:Description>Amtsgericht Hamburg HRB 000000, Geschäftsführung: Erika Mustermann</ram:Description>
         <ram:SpecifiedLegalOrganization>
-          <ram:ID>HRB 123456</ram:ID>
+          <ram:ID>HRB 000000</ram:ID>
         </ram:SpecifiedLegalOrganization>
         <ram:DefinedTradeContact>
           <ram:PersonName>Erika Mustermann</ram:PersonName>
           <ram:TelephoneUniversalCommunication>
-            <ram:CompleteNumber>+49 40 1234567</ram:CompleteNumber>
+            <ram:CompleteNumber>+49 40 66969123</ram:CompleteNumber>
           </ram:TelephoneUniversalCommunication>
           <ram:EmailURIUniversalCommunication>
             <ram:URIID>buchhaltung@nordlicht.example</ram:URIID>
@@ -74,7 +74,7 @@
         </ram:SpecifiedTaxRegistration>
       </ram:SellerTradeParty>
       <ram:BuyerTradeParty>
-        <ram:Name>Alpen Technik GmbH</ram:Name>
+        <ram:Name>Alpen Technik Beispiel GmbH</ram:Name>
         <ram:PostalTradeAddress>
           <ram:PostcodeCode>1010</ram:PostcodeCode>
           <ram:LineOne>Ringstraße 10</ram:LineOne>
@@ -91,7 +91,7 @@
     </ram:ApplicableHeaderTradeAgreement>
     <ram:ApplicableHeaderTradeDelivery>
       <ram:ShipToTradeParty>
-        <ram:Name>Alpen Technik GmbH</ram:Name>
+        <ram:Name>Alpen Technik Beispiel GmbH</ram:Name>
         <ram:PostalTradeAddress>
           <ram:PostcodeCode>1010</ram:PostcodeCode>
           <ram:LineOne>Ringstraße 10</ram:LineOne>
@@ -111,7 +111,7 @@
         <ram:TypeCode>58</ram:TypeCode>
         <ram:PayeePartyCreditorFinancialAccount>
           <ram:IBANID>DE79000000001234567890</ram:IBANID>
-          <ram:AccountName>Nordlicht Software GmbH</ram:AccountName>
+          <ram:AccountName>Nordlicht Beispiel GmbH</ram:AccountName>
         </ram:PayeePartyCreditorFinancialAccount>
       </ram:SpecifiedTradeSettlementPaymentMeans>
       <ram:ApplicableTradeTax>

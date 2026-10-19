@@ -1,15 +1,17 @@
 # E-Rechnung prüfen: XRechnung- und ZUGFeRD-Validator mit den offiziellen Regeln
 
-Ein XRechnung-Validator oder ZUGFeRD-Validator prüft eine E-Rechnung in zwei Stufen: erst gegen das XML-Schema der Syntax (UBL oder CII), dann gegen die Geschäftsregeln der EN 16931 und der XRechnung (Schematron, Codes wie BR-DE-15). Gültig ist eine Rechnung, wenn keine Schemafehler und keine Befunde der Stufe "error" übrig bleiben. Mit `erechnung validieren rechnung.xml` läuft diese Prüfung lokal mit den offiziellen KoSIT-Regeln, ohne Java und ohne Upload.
+Ob eine E-Rechnung gültig ist, prüfen Sie mit einem Validator, der die offiziellen Regeln der KoSIT anwendet: Er meldet jeden Verstoß mit einem Code wie BR-DE-15, und gültig ist die Datei, wenn keine Meldung der Stufe "Fehler" übrig bleibt. Kostenlos, lokal und ohne Upload geht das für XRechnung und ZUGFeRD mit `erechnung validieren rechnung.xml`. Technisch prüft der Validator zuerst den Aufbau der Datei (XML-Schema für UBL oder CII) und danach die Geschäftsregeln der EN 16931 und der XRechnung.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Buchhaltung, Steuerkanzleien und IT, die E-Rechnungen auf Gültigkeit prüfen.
 
 ## Das Wichtigste in Kürze
 
 - Eine Validierung prüft Wohlgeformtheit, XML-Schema und Schematron-Regeln, in dieser Reihenfolge; nach Schemafehlern laufen die Schematron-Regeln nicht mehr.
 - Welche Regeln gelten, entscheidet die Kennung in BT-24: XRechnung 3.0 bekommt EN 16931 plus BR-DE-Regeln, ZUGFeRD EN 16931 nur die EN-16931-Regeln.
 - Das offizielle Werkzeug ist der KoSIT-Validator (Java, Version 1.6.3) mit der Prüfkonfiguration XRechnung 3.0.2 vom 31.08.2026; `erechnung validieren` führt genau diese Regeldateien in Python aus.
-- Laut BMF-Schreiben vom 15.10.2025 (Rn. 35a) darf man sich bei Sorgfalt eines ordentlichen Kaufmanns auf eine geeignete Validierungsanwendung verlassen, und das BMF empfiehlt, den Validierungsbericht aufzubewahren.
+- Laut BMF-Schreiben vom 15.10.2025 (Rn. 35a) darf sich ein Unternehmen bei Beachtung der Sorgfalt eines ordentlichen Kaufmanns auf das technische Ergebnis einer Validierung hinsichtlich Format und Geschäftsregeln verlassen. Inhaltliche Fehler wie ein falscher Steuersatz erkennt eine Validierung nicht immer; die eigene Prüfpflicht bleibt. Zum Nachweis bietet es sich laut BMF an, den Validierungsbericht aufzubewahren. Ob `e-rechnung` in Ihrem Fall als geeignete Validierungsanwendung gilt, entscheidet nicht das Werkzeug, sondern Sie mit Ihrer Steuerberatung.
 - Die PDF/A-3-Konformität einer ZUGFeRD-Datei prüft `erechnung` nicht; dafür gibt es Mustang mit eingebautem veraPDF.
 
 ## Was prüft ein E-Rechnung-Validator?
@@ -23,7 +25,7 @@ Ein E-Rechnung-Validator ist ein Programm, das eine Rechnungsdatei gegen die tec
 | 3. XML-Schema | Stimmen Elementnamen, Reihenfolge und Datentypen (UBL 2.1 oder CII D16B)? | `XSD` |
 | 4. Schematron EN 16931 | Rechenregeln, Pflichtfelder, Codelisten der Norm | `BR-CO-16`, `BR-S-08`, `BR-CL-23` |
 | 5. Schematron XRechnung | Deutsche Zusatzregeln und übernommene Peppol-Regeln | `BR-DE-15`, `PEPPOL-EN16931-R010` |
-| 6. Umstufung | Das Szenario stuft einzelne Regeln hoch oder herunter (`customLevel`) | z.B. `BR-CL-23` nur Warnung |
+| 6. Umstufung | Das Szenario stuft einzelne Regeln hoch oder herunter (`customLevel`) | z. B. `BR-CL-23` nur Warnung |
 
 Wichtig für die Fehlersuche: Findet das XML-Schema einen Fehler, bricht die Prüfung dort ab. Die Schematron-Regeln laufen dann nicht, so wie beim KoSIT-Validator. Nach dem Beheben eines Schemafehlers können also neue Meldungen auftauchen.
 
@@ -41,7 +43,7 @@ Das BMF-Schreiben vom 15.10.2025 unterscheidet zwei Arten von Fehlern:
 
 | Art | Quelle | Beispiel | Folge laut BMF |
 | --- | --- | --- | --- |
-| Formatfehler | Rn. 6a | Datei entspricht nicht der Syntax, z.B. Schemafehler | keine E-Rechnung, sondern sonstige Rechnung |
+| Formatfehler | Rn. 6a | Datei entspricht nicht der Syntax, z. B. Schemafehler | keine E-Rechnung, sondern sonstige Rechnung |
 | Geschäftsregelfehler | Rn. 6b | fehlendes BT-10, Steuerbetrag passt nicht zum Steuersatz | hängt vom Inhalt ab (Rn. 35a) |
 
 Laut Rn. 35a sind Verstöße gegen Pflichtangaben nach §§ 14 Abs. 4, 14a UStG Inhaltsfehler, die Rechnung ist dann nicht ordnungsmäßig. Geschäftsregelfehler zu anderen Inhalten, zum Beispiel ein fehlendes BT-10, sind umsatzsteuerlich unbeachtlich. Die Validierung ersetzt die Prüfpflicht des Empfängers nicht. Wie eine einzelne Meldung einzuordnen ist, steht in der Anleitung [Fehlermeldungen](./e-rechnung-fehlermeldungen.md); im Einzelfall mit der Steuerberatung klären.
@@ -80,7 +82,7 @@ Der Befehl hat zwei Aliase: `erechnung check` und `erechnung prüfen` tun dassel
 
 | Option | Wirkung |
 | --- | --- |
-| `--json` | Ergebnis als JSON, bei mehreren Dateien als Liste |
+| `--json` | Ergebnis als JSON: bei einer Datei ein einzelnes Objekt, bei mehreren eine Liste |
 | `--ohne-offiziell` | nur Vorprüfung, ohne Download und ohne saxonche |
 | `--offline` | nichts herunterladen, nur Cache oder `ERECHNUNG_KOSIT_KONFIG` |
 | `--streng` | Warnungen zählen als Fehler (Exit-Code 1) |
@@ -91,19 +93,19 @@ Der Befehl hat zwei Aliase: `erechnung check` und `erechnung prüfen` tun dassel
 | --- | --- |
 | 0 | alle Dateien gültig |
 | 1 | mindestens eine Datei ungültig (mit `--streng` auch bei Warnungen) |
-| 2 | Prüfung nicht möglich, z.B. Regeln nicht im Cache, kein lesbares XML oder PDF ohne eingebettetes XML |
+| 2 | Prüfung nicht möglich, z. B. Regeln nicht im Cache, kein lesbares XML oder PDF ohne eingebettetes XML |
 
 Eine gültige XRechnung aus den Beispielen:
 
 ```console
 $ erechnung validieren beispiele/01_standard/xrechnung_ubl.xml
 beispiele/01_standard/xrechnung_ubl.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
 $ echo $?
 0
 ```
 
-Die erste Zeile nennt das erkannte Format. Die zweite das Urteil, die Regelversion und das Szenario. Darunter folgen die offiziellen Befunde und, getrennt, die Vorprüfung.
+Die erste Zeile nennt das erkannte Format, die zweite das Urteil, die Regelversion und das Szenario. Darunter folgen die offiziellen Befunde der KoSIT-Regeln. Danach kommt getrennt die Vorprüfung: eine zusätzliche Prüfung dieses Werkzeugs, die Fehler in einfachem Deutsch erklärt und an dem Kürzel VP- erkennbar ist. Ob eine Rechnung gültig ist, entscheiden allein die KoSIT-Regeln.
 
 ### Umstufungen: warum BR-CL-23 nur eine Warnung ist
 
@@ -120,7 +122,7 @@ $ erechnung validieren --json einheit_std.xml
     {
       "stufe": "error",
       "code": "VP-EINHEIT",
-      "text": "Position 1: Einheit 'Std' ist kein UN/ECE-Code (z.B. C62, HUR, DAY).",
+      "text": "Position 1: Einheit 'Std' ist kein UN/ECE-Code (z. B. C62, HUR, DAY).",
       "ort": "",
       "quelle": "Vorprüfung"
     }
@@ -168,7 +170,7 @@ Zusätzlich zur offiziellen Prüfung läuft eine eigene Vorprüfung. Sie erklär
 | `VP-14-4-8` | Befreiungsgrund (BT-120/121) bei E, AE, K, G, O | error |
 | `VP-USTID` | deutsche USt-IdNr. im Format DE plus 9 Ziffern | warning |
 | `VP-EINHEIT` | Einheit sieht wie ein UN/ECE-Code aus | error |
-| `VP-13B` | Reverse Charge (AE) mit USt-IdNr. des Käufers (BT-48) | error |
+| `VP-13B` | Reverse Charge (AE) mit USt-IdNr. (BT-48) oder Registernummer (BT-47) des Käufers | error |
 | `VP-IG` | Innergemeinschaftliche Lieferung (K) mit USt-IdNr. des Käufers | error |
 | `VP-BR-DE-15` | Käuferreferenz BT-10 (nur XRechnung) | error |
 | `VP-LEITWEG` | Format und Prüfziffer der Leitweg-ID (nur XRechnung) | warning |
@@ -186,7 +188,7 @@ Ein Fall, den nur die Vorprüfung findet: eine Leitweg-ID mit falscher Prüfziff
 ```console
 $ erechnung validieren leitweg_pruefziffer.xml
 leitweg_pruefziffer.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
   Vorprüfung (Erklärungen, nicht maßgeblich):
   WARNUNG VP-LEITWEG: Leitweg-ID 04011000-12345-04 hat ein falsches Format oder eine falsche Prüfziffer (Formatspezifikation 2.0.2). Die Behörde kann die Rechnung dann nicht zuordnen.
 ```
@@ -198,7 +200,7 @@ Ein ZUGFeRD-Validator muss zwei Dinge prüfen: das eingebettete XML und das PDF/
 ```console
 $ erechnung validieren beispiele/01_standard/zugferd_en16931.pdf
 beispiele/01_standard/zugferd_en16931.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
 ```
 
 Ein PDF ohne eingebettetes XML ist keine E-Rechnung:
@@ -232,14 +234,14 @@ Wer Rechnungen aus einem eigenen Programm erzeugt, kann jede Änderung automatis
 
 Der Schritt schlägt mit Exit-Code 1 fehl, sobald eine Datei einen Fehler oder (wegen `--streng`) eine Warnung hat. Damit die Regeln nicht bei jedem Lauf neu geladen werden, `ERECHNUNG_CACHE` auf einen Ordner setzen und ihn mit `actions/cache` sichern, so wie es die CI des Repos tut.
 
-## Beispiele
+## XRechnung validieren: Beispiele mit Ausgabe
 
 ### Beispiel 1: Eine ungültige XRechnung finden
 
 ```console
 $ erechnung validieren ohne_bt10.xml
 ohne_bt10.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-DE-15: [BR-DE-15] Das Element "Buyer reference" (BT-10) muss übermittelt werden.
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-BR-DE-15: Käuferreferenz (BT-10) fehlt. In XRechnung Pflicht, bei Behörden die Leitweg-ID.
@@ -254,11 +256,11 @@ Der Normalfall: Code nachschlagen in [Fehlermeldungen](./e-rechnung-fehlermeldun
 ```console
 $ erechnung validieren --bericht berichte eingang/*
 eingang/01_standard.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
-  Prüfbericht: berichte/01_standard.xml.1e0e5c550373.validierungsbericht.json
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  Prüfbericht: berichte/01_standard.xml.29ccd409852b.validierungsbericht.json
 ...
 eingang/zugferd_falsch.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 (CII), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 (CII), 1 Fehler, 0 Warnungen
   FEHLER  BR-CO-16: [BR-CO-16]-Amount due for payment (BT-115) = Invoice total amount with VAT (BT-112) -Paid amount (BT-113) +Rounding amount (BT-114).
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-ZAHLBETRAG: Zahlbetrag BT-115 2010.91 passt nicht zu Brutto - Vorauszahlung + Rundung.
@@ -272,7 +274,7 @@ Für den Rechnungseingang: XML und PDF gemischt, ein Bericht je Datei. Der Beric
   "validiert_am": "2026-10-15T22:23:58+00:00",
   "werkzeug": "e-rechnung 0.1.0",
   "regeln": "xrechnung-3.0.2-validator-configuration-2026-08-31",
-  "sha256": "1e0e5c55037348d908e6eff5e3bb3569adf2b1f76c5e97b6c88969a7d1735664",
+  "sha256": "29ccd409852be59511072ff301dced03d7d8c2c8988f3477a1df75997bbe65fb",
   "datei": "eingang/01_standard.xml",
   "gueltig": true,
   "vorpruefung_ok": true
@@ -284,10 +286,10 @@ Für den Rechnungseingang: XML und PDF gemischt, ein Bericht je Datei. Der Beric
 ```console
 $ erechnung validieren --streng einheit_std.xml
 einheit_std.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 1 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 1 Warnungen
   WARNUNG BR-CL-23: [BR-CL-23]-Unit code MUST be coded according to the UN/ECE Recommendation 20 with Rec 21 extension
   Vorprüfung (Erklärungen, nicht maßgeblich):
-  FEHLER  VP-EINHEIT: Position 1: Einheit 'Std' ist kein UN/ECE-Code (z.B. C62, HUR, DAY).
+  FEHLER  VP-EINHEIT: Position 1: Einheit 'Std' ist kein UN/ECE-Code (z. B. C62, HUR, DAY).
 $ echo $?
 1
 ```
@@ -299,7 +301,7 @@ Ohne `--streng` endet derselbe Aufruf mit 0. Für eigene Rechnungsausgänge `--s
 ```console
 $ erechnung validieren --alle ohne_leistungsdatum.xml
 ohne_leistungsdatum.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
   INFO    BR-DE-TMP-32: [BR-DE-TMP-32] Eine Rechnung sollte zur Angabe des Liefer-/Leistungsdatums entweder BT-72 "Actual delivery date", BG-14 "Invoicing period" oder in jeder Rechnungsposition BG-26 "Invoice line period" enthalten.
   Vorprüfung (Erklärungen, nicht maßgeblich):
   WARNUNG VP-14-4-6: Kein Liefer- oder Leistungsdatum (BT-72, BG-14 oder BG-26). Pflichtangabe nach § 14 Abs. 4 Nr. 6 UStG, außer es entspricht dem Rechnungsdatum und das ist vermerkt.
@@ -315,7 +317,7 @@ KoSIT-Prüfkonfiguration: xrechnung-3.0.2-validator-configuration-2026-08-31
 Ordner: /Users/.../.cache/erechnung/xrechnung-3.0.2-validator-configuration-2026-08-31
 $ erechnung validieren --offline ohne_bt10.xml
 ohne_bt10.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   ...
 ```
 
@@ -331,7 +333,7 @@ $ echo $?
 2
 ```
 
-Auf Rechnern ganz ohne Internet `ERECHNUNG_KOSIT_KONFIG=/pfad/zur/konfiguration.zip` setzen, mit der ZIP-Datei von der GitHub-Seite der KoSIT.
+Auf Rechnern ganz ohne Internet `ERECHNUNG_KOSIT_KONFIG=/pfad/zur/konfiguration.zip` setzen, mit der ZIP-Datei von der GitHub-Seite der KoSIT. Trägt die ZIP-Datei den Originalnamen der festen Version, prüft das Werkzeug ihre SHA-256-Summe und bricht bei einer Abweichung ab; eigene, bewusst geänderte Regeln erlauben Sie mit `ERECHNUNG_KOSIT_KONFIG_OHNE_HASH=1`. Jede ZIP wird in einen eigenen Cache-Ordner mit ihrer Prüfsumme im Namen entpackt.
 
 ### Beispiel 6: Ergebnisse auswerten mit `--json`
 
@@ -350,7 +352,7 @@ eingang/ohne_bt10.xml False BR-DE-15
 eingang/zugferd_falsch.pdf False BR-CO-16
 ```
 
-Für Tabellen, Tickets oder ein Dashboard im Rechnungseingang. `gueltig` ist `null`, wenn die offizielle Prüfung nicht laufen konnte.
+Für Tabellen, Tickets oder ein Dashboard im Rechnungseingang. `gueltig` ist `null`, wenn die offizielle Prüfung nicht laufen konnte. Bei genau einer Datei ist die Ausgabe ein einzelnes Objekt statt einer Liste; ein Skript, das beides verarbeiten soll, prüft das vorher (in Python etwa mit `isinstance(daten, dict)`).
 
 ### Beispiel 7: Aus Python prüfen
 
@@ -404,7 +406,7 @@ Nein. Warnungen (Stufe warning) machen eine Rechnung nicht ungültig, das Urteil
 
 ### Muss ich eingehende E-Rechnungen validieren?
 
-Das BMF-Schreiben vom 15.10.2025 schreibt keine Validierung vor. Laut Rn. 35a darf man sich aber auf eine geeignete Validierungsanwendung verlassen, und die Validierung ersetzt die eigene Prüfpflicht nicht. Das BMF empfiehlt, den Validierungsbericht aufzubewahren.
+Das BMF-Schreiben vom 15.10.2025 schreibt keine Validierung vor. Laut Rn. 35a darf sich ein Unternehmen bei Beachtung der Sorgfalt eines ordentlichen Kaufmanns auf das technische Ergebnis einer Validierung hinsichtlich Format und Geschäftsregeln verlassen. Inhaltliche Fehler wie ein falscher Steuersatz erkennt eine Validierung nicht immer; die eigene Prüfpflicht bleibt. Zum Nachweis bietet es sich laut BMF an, den Validierungsbericht aufzubewahren. Ob `e-rechnung` in Ihrem Fall als geeignete Validierungsanwendung gilt, entscheidet nicht das Werkzeug, sondern Sie mit Ihrer Steuerberatung.
 
 ### Warum findet `erechnung` andere Fehler als ein Online-Validator?
 
@@ -414,7 +416,9 @@ Meist wurde ein anderes Szenario oder eine andere Regelversion verwendet. `erech
 
 Die KoSIT-Regeln prüfen nur, dass BT-10 vorhanden ist. Format und Prüfziffer der Leitweg-ID prüft die Vorprüfung (`VP-LEITWEG`) und der Befehl `erechnung leitweg-id`.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 
@@ -424,3 +428,8 @@ Die KoSIT-Regeln prüfen nur, dass BT-10 vorhanden ist. Format und Prüfziffer d
 - [E-Rechnung empfangen](./e-rechnung-empfangen.md): öffnen und anzeigen
 - [E-Rechnung archivieren](./e-rechnung-archivieren.md): Prüfbericht aufbewahren
 - [Leitweg-ID](./leitweg-id.md) und die [Beispiele](../../beispiele/README.md) mit ihren Prüfergebnissen
+- [E-Rechnung Pflicht: ab wann, für wen und welche Übergangsfristen gelten](./e-rechnung-pflicht.md)
+- [BMF-Schreiben zur E-Rechnung: was Formatfehler und Geschäftsregelfehler bedeuten](./bmf-schreiben-e-rechnung.md)
+- [E-Rechnung Beispiel: XRechnung und ZUGFeRD Beispieldateien zum Herunterladen](./e-rechnung-beispiel.md)
+- [Lexware, sevdesk, SAP: E-Rechnung aus dem eigenen Programm testen](./e-rechnung-buchhaltungssoftware.md)
+- [E-Rechnung mit KI prüfen: MCP-Server für Claude, Cursor und Co.](./e-rechnung-ki-mcp.md)

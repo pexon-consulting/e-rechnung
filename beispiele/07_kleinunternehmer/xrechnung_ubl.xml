@@ -39,7 +39,7 @@
       </cac:PartyLegalEntity>
       <cac:Contact>
         <cbc:Name>Lena Beispiel</cbc:Name>
-        <cbc:Telephone>+49 221 987654</cbc:Telephone>
+        <cbc:Telephone>+49 221 4710123</cbc:Telephone>
         <cbc:ElectronicMail>lena@grafik-beispiel.example</cbc:ElectronicMail>
       </cac:Contact>
     </cac:Party>

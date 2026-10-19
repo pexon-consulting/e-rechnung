@@ -100,15 +100,15 @@
     <ram:ApplicableHeaderTradeAgreement>
       <ram:BuyerReference>BH-2026-0815</ram:BuyerReference>
       <ram:SellerTradeParty>
-        <ram:Name>Buchhandlung am Markt GmbH</ram:Name>
-        <ram:Description>Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann</ram:Description>
+        <ram:Name>Muster Buchhandlung GmbH</ram:Name>
+        <ram:Description>Amtsgericht Hamburg HRB 000000, Geschäftsführung: Erika Mustermann</ram:Description>
         <ram:SpecifiedLegalOrganization>
-          <ram:ID>HRB 123456</ram:ID>
+          <ram:ID>HRB 000000</ram:ID>
         </ram:SpecifiedLegalOrganization>
         <ram:DefinedTradeContact>
           <ram:PersonName>Erika Mustermann</ram:PersonName>
           <ram:TelephoneUniversalCommunication>
-            <ram:CompleteNumber>+49 40 1234567</ram:CompleteNumber>
+            <ram:CompleteNumber>+49 40 66969123</ram:CompleteNumber>
           </ram:TelephoneUniversalCommunication>
           <ram:EmailURIUniversalCommunication>
             <ram:URIID>buchhaltung@nordlicht.example</ram:URIID>
@@ -154,7 +154,7 @@
         <ram:TypeCode>58</ram:TypeCode>
         <ram:PayeePartyCreditorFinancialAccount>
           <ram:IBANID>DE79000000001234567890</ram:IBANID>
-          <ram:AccountName>Nordlicht Software GmbH</ram:AccountName>
+          <ram:AccountName>Nordlicht Beispiel GmbH</ram:AccountName>
         </ram:PayeePartyCreditorFinancialAccount>
       </ram:SpecifiedTradeSettlementPaymentMeans>
       <ram:ApplicableTradeTax>

@@ -48,15 +48,15 @@
     <ram:ApplicableHeaderTradeAgreement>
       <ram:BuyerReference>BH-2026-0815</ram:BuyerReference>
       <ram:SellerTradeParty>
-        <ram:Name>Elektro Schmidt GmbH</ram:Name>
-        <ram:Description>Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann</ram:Description>
+        <ram:Name>Muster Elektro GmbH</ram:Name>
+        <ram:Description>Amtsgericht Hamburg HRB 000000, Geschäftsführung: Erika Mustermann</ram:Description>
         <ram:SpecifiedLegalOrganization>
-          <ram:ID>HRB 123456</ram:ID>
+          <ram:ID>HRB 000000</ram:ID>
         </ram:SpecifiedLegalOrganization>
         <ram:DefinedTradeContact>
           <ram:PersonName>Erika Mustermann</ram:PersonName>
           <ram:TelephoneUniversalCommunication>
-            <ram:CompleteNumber>+49 40 1234567</ram:CompleteNumber>
+            <ram:CompleteNumber>+49 40 66969123</ram:CompleteNumber>
           </ram:TelephoneUniversalCommunication>
           <ram:EmailURIUniversalCommunication>
             <ram:URIID>buchhaltung@nordlicht.example</ram:URIID>
@@ -69,7 +69,7 @@
           <ram:CountryID>DE</ram:CountryID>
         </ram:PostalTradeAddress>
         <ram:URIUniversalCommunication>
-          <ram:URIID schemeID="EM">rechnung@elektro-schmidt.example</ram:URIID>
+          <ram:URIID schemeID="EM">rechnung@muster-elektro.example</ram:URIID>
         </ram:URIUniversalCommunication>
         <ram:SpecifiedTaxRegistration>
           <ram:ID schemeID="VA">DE123456789</ram:ID>
@@ -77,7 +77,7 @@
       </ram:SellerTradeParty>
       <ram:BuyerTradeParty>
         <ram:ID>K-10023</ram:ID>
-        <ram:Name>Bauträger Süd GmbH</ram:Name>
+        <ram:Name>Muster Bauträger GmbH</ram:Name>
         <ram:PostalTradeAddress>
           <ram:PostcodeCode>80331</ram:PostcodeCode>
           <ram:LineOne>Hauptstraße 5</ram:LineOne>
@@ -105,7 +105,7 @@
         <ram:TypeCode>58</ram:TypeCode>
         <ram:PayeePartyCreditorFinancialAccount>
           <ram:IBANID>DE79000000001234567890</ram:IBANID>
-          <ram:AccountName>Nordlicht Software GmbH</ram:AccountName>
+          <ram:AccountName>Nordlicht Beispiel GmbH</ram:AccountName>
         </ram:PayeePartyCreditorFinancialAccount>
       </ram:SpecifiedTradeSettlementPaymentMeans>
       <ram:ApplicableTradeTax>

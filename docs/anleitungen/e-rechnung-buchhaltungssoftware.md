@@ -1,16 +1,18 @@
-# E-Rechnung aus Lexware, sevdesk, SAP und anderen Programmen prüfen
+# Lexware, sevdesk, SAP: E-Rechnung aus der Buchhaltungssoftware testen
 
 Ob Lexware, sevdesk, SAP, DATEV oder ein anderes Programm wirklich gültige E-Rechnungen erzeugt, prüfen Sie mit einer Testrechnung: exportieren Sie sie als XML oder ZUGFeRD-PDF, lassen Sie mit `erechnung lesen` Format und Profil erkennen und prüfen Sie sie mit `erechnung validieren` gegen die offiziellen KoSIT-Regeln. Zeigt die Prüfung "GÜLTIG" und ist das Format eine XRechnung oder ein ZUGFeRD-Profil ab BASIC, erzeugt das Programm für diesen Fall eine E-Rechnung. Wiederholen Sie den Test für jede Rechnungsart, die Sie wirklich verschicken.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Buchhaltung und Geschäftsführung, die ihr Rechnungsprogramm testen wollen.
 
 ## Das Wichtigste in Kürze
 
-- Eine E-Rechnung ist eine Rechnung in einem strukturierten elektronischen Format, das eine elektronische Verarbeitung ermöglicht (§ 14 Abs. 1 Satz 3 UStG). Ein PDF ohne eingebettetes XML ist keine E-Rechnung.
+- Eine E-Rechnung ist eine XRechnung oder ein ZUGFeRD-PDF ab Profil BASIC ([Was ist eine E-Rechnung?](./was-ist-eine-e-rechnung.md)). Ein PDF ohne eingebettetes XML ist keine E-Rechnung.
 - Ein Hinweis "E-Rechnung" im Programm sagt nicht, welches Format und Profil herauskommt. Das sehen Sie erst an der exportierten Datei.
 - `erechnung lesen` zeigt Format, Profil und Inhalt, `erechnung validieren` prüft mit den offiziellen KoSIT-Regeln. Beides läuft lokal, die Rechnungsdaten verlassen den Rechner nicht.
 - ZUGFeRD MINIMUM und BASIC WL sind laut BMF keine E-Rechnungen. BASIC, EN 16931, EXTENDED und XRECHNUNG sind es.
-- Laut BMF-Schreiben vom 15.10.2025, Rn. 35a, dürfen Sie sich bei der Sorgfalt eines ordentlichen Kaufmanns auf eine geeignete Validierungsanwendung verlassen. Das BMF empfiehlt, den Validierungsbericht aufzubewahren, `--bericht` legt ihn ab.
+- Laut BMF-Schreiben vom 15.10.2025 (Rn. 35a) darf sich ein Unternehmen bei Beachtung der Sorgfalt eines ordentlichen Kaufmanns auf das technische Ergebnis einer Validierung hinsichtlich Format und Geschäftsregeln verlassen. Inhaltliche Fehler wie ein falscher Steuersatz erkennt eine Validierung nicht immer; die eigene Prüfpflicht bleibt. Zum Nachweis bietet es sich laut BMF an, den Validierungsbericht aufzubewahren. `--bericht` legt ihn ab. Ob `e-rechnung` in Ihrem Fall als geeignete Validierungsanwendung gilt, entscheidet nicht das Werkzeug, sondern Sie mit Ihrer Steuerberatung.
 - Die Angaben der Hersteller unten sind Zusammenfassungen ihrer Hilfeseiten, keine Bewertung. Sie ersetzen den Test mit einer eigenen Testrechnung nicht.
 
 ## Woran erkenne ich, ob mein Programm eine echte E-Rechnung erzeugt?
@@ -80,7 +82,7 @@ So lesen Sie die Zeile "Format":
 | `CII Profil MINIMUM`, dazu `E-Rechnung: nein` | Profil ohne vollständige Pflichtangaben |
 | "Das PDF enthält kein eingebettetes Rechnungs-XML." | reines PDF, keine E-Rechnung |
 
-Vergleichen Sie danach die übrigen Zeilen mit der Rechnung im Programm: Nummer, Datum, Käufer, Steuersätze, Summen und IBAN. Bei Abweichungen zwischen PDF-Bild und XML ist laut BMF-FAQ der strukturierte Teil maßgebend.
+Vergleichen Sie danach die übrigen Zeilen mit der Rechnung im Programm: Nummer, Datum, Käufer, Steuersätze, Summen und IBAN. Bei Abweichungen zwischen PDF-Bild und XML ist laut BMF-Schreiben vom 15.10.2025 (UStAE 14.4 Abs. 3) der strukturierte Teil maßgebend.
 
 ## Gültigkeit prüfen mit `erechnung validieren`
 
@@ -136,7 +138,7 @@ ELSTER ist das Portal der Steuerverwaltung. In den offiziellen Quellen, auf die 
 
 Für Warenwirtschaft, Branchensoftware, Rechnungs-Apps und eigene Exporte gilt dieselbe Methode: Testrechnung exportieren, `erechnung lesen`, `erechnung validieren`. Eine Herstellerangabe ersetzt diesen Test nicht.
 
-## Beispiele
+## Testrechnung aus Lexware, sevdesk oder SAP prüfen: Beispiele
 
 Die Dateien unten liegen in einem Ordner `export/`. RE-2026-0001 und RE-2026-0002 stammen aus den Beispielen des Repos, die übrigen sind daraus abgeleitet und absichtlich fehlerhaft, so wie man es bei Exporten antrifft.
 
@@ -176,7 +178,7 @@ erechnung validieren export/RE-2026-0004.xml
 
 ```text
 export/RE-2026-0004.xml: CII Profil MINIMUM
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario kein Szenario, 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario kein Szenario, 1 Fehler, 0 Warnungen
   FEHLER  SZENARIO: Kein passendes Prüfszenario. Erwartet wird UBL Invoice/CreditNote oder CII mit einer Spezifikationskennung (BT-24) für XRechnung 3.0 oder EN 16931.
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-FORMAT: CII Profil MINIMUM: Dieses ZUGFeRD-Profil enthält nicht alle Pflichtangaben und gilt nicht als E-Rechnung nach § 14 UStG. Mindestens Profil BASIC, besser EN 16931 verwenden.
@@ -192,7 +194,7 @@ erechnung validieren export/RE-2026-0005.xml
 
 ```text
 export/RE-2026-0005.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-DE-2: [BR-DE-2] Die Gruppe "SELLER CONTACT" (BG-6) muss übermittelt werden.
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-BR-DE-2: Kontakt des Verkäufers unvollständig: XRechnung verlangt Name, Telefon und E-Mail (BT-41, BT-42, BT-43).
@@ -208,7 +210,7 @@ erechnung validieren export/RE-2026-0006.xml
 
 ```text
 export/RE-2026-0006.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-CO-15: [BR-CO-15]-Invoice total amount with VAT (BT-112) = Invoice total amount without VAT (BT-109) + Invoice total VAT amount (BT-110).
 ```
 
@@ -222,22 +224,22 @@ erechnung validieren export/* --bericht prüfberichte
 
 ```text
 export/RE-2026-0001.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
   Prüfbericht: prüfberichte/RE-2026-0001.pdf.fff3d8c9aba4.validierungsbericht.json
 export/RE-2026-0002.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
-  Prüfbericht: prüfberichte/RE-2026-0002.xml.1e0e5c550373.validierungsbericht.json
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  Prüfbericht: prüfberichte/RE-2026-0002.xml.29ccd409852b.validierungsbericht.json
 export/RE-2026-0003.pdf: unbekannt
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-LESEN: Das PDF enthält kein eingebettetes Rechnungs-XML. Ein reines PDF ist nach § 14 UStG eine sonstige Rechnung, keine E-Rechnung.
   Prüfbericht: prüfberichte/RE-2026-0003.pdf.b3e44df802e4.validierungsbericht.json
 ...
 export/RE-2026-0007.pdf: ZUGFeRD-Profil XRECHNUNG, XRechnung 3.0 (CII)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
   Prüfbericht: prüfberichte/RE-2026-0007.pdf.cd43a857fe0f.validierungsbericht.json
 ```
 
-Exit-Code 2, weil RE-2026-0003 sich nicht prüfen ließ. Jeder Prüfbericht enthält Zeitpunkt, Regelversion und SHA-256 der Datei. Ein Ausschnitt:
+Exit-Code 2, weil RE-2026-0003 sich nicht prüfen ließ. Jeder Prüfbericht enthält Zeitpunkt, Regelversion und SHA-256 der Datei. Bei Ihren eigenen Dateien weichen die Prüfsummen im Dateinamen der Berichte ab. Ein Ausschnitt:
 
 ```json
 {
@@ -346,7 +348,9 @@ Ein PDF ohne XML ist keine E-Rechnung. Sie können aus den Rechnungsdaten mit `e
 
 Ein Test je Rechnungsart zeigt, ob das Programm grundsätzlich richtig exportiert. Weil Fehler oft an einzelnen Stammdaten hängen, lohnt sich eine Stichprobe nach Updates und bei neuen Kunden. Mit `erechnung validieren export/*` prüfen Sie viele Dateien in einem Lauf.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

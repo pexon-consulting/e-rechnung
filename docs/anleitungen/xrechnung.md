@@ -1,8 +1,10 @@
 # XRechnung: Format, Aufbau und Pflichtfelder einfach erklärt
 
-Die XRechnung ist das deutsche XML-Format für E-Rechnungen: eine von der KoSIT herausgegebene Spezialisierung (CIUS) der europäischen Norm EN 16931, aktuell in Version 3.0.2. Eine XRechnung ist eine reine XML-Datei ohne Bildteil, wahlweise in der Syntax UBL 2.1 oder UN/CEFACT CII D16B, und enthält jede Rechnungsangabe als nummeriertes Feld (Business Term, kurz BT) mit festen Pflichtregeln wie BR-DE-15 für die Käuferreferenz BT-10.
+Die XRechnung ist das deutsche XML-Format für E-Rechnungen: eine von der KoSIT herausgegebene Spezialisierung (CIUS) der europäischen Norm EN 16931, aktuell in Version 3.0.2. Eine XRechnung ist eine reine XML-Datei ohne Bildteil, wahlweise in der Syntax UBL 2.1 oder UN/CEFACT CII D16B. Jede Rechnungsangabe steht darin in einem festen, nummerierten Feld (zum Beispiel BT-1 für die Rechnungsnummer), deshalb kann ein Buchhaltungsprogramm sie ohne Abtippen übernehmen. Lesbar wird die Datei erst mit einem Viewer.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Buchhaltung, Geschäftsführung und Entwickler, die das Format verstehen wollen. Die XML-Ausschnitte sind zum Nachschlagen.
 
 ## Das Wichtigste in Kürze
 
@@ -53,9 +55,9 @@ Beide Syntaxen tragen denselben Inhalt und sind gleichwertig. Die KoSIT-Prüfkon
 | Wurzelelement | `Invoice` oder `CreditNote` | `rsm:CrossIndustryInvoice` |
 | Präfixe | `cbc:` für Werte, `cac:` für Gruppen | `ram:`, `rsm:`, `udt:`, `qdt:` |
 | Datumsformat | `2026-10-15` | `<udt:DateTimeString format="102">20261015</udt:DateTimeString>` |
-| Gutschrift (381) | eigenes Dokument `CreditNote` | dasselbe Wurzelelement, `ram:TypeCode` 381 |
+| Minderung (381) | eigenes Dokument `CreditNote` | dasselbe Wurzelelement, `ram:TypeCode` 381 |
 | Reihenfolge | Kopf, Parteien, Zahlung, Summen, Positionen | Kopf, Positionen, dann Vereinbarung, Lieferung, Abrechnung |
-| Beispiel 01 im Repo | 5.643 Byte, 139 Zeilen | 8.065 Byte, 165 Zeilen |
+| Beispiel 01 im Repo | 5.644 Byte, 139 Zeilen | 8.066 Byte, 165 Zeilen |
 | Grundlage auch für | - | ZUGFeRD und Factur-X |
 
 Welche Syntax Sie nehmen, hängt meist an der Software beim Empfänger. Wer zusätzlich ZUGFeRD erzeugt, hat mit CII in beiden Fällen dieselbe XML-Struktur, weil ZUGFeRD ein CII-XML in ein PDF einbettet.
@@ -74,14 +76,14 @@ Die Tabelle zeigt die Felder der [Standardrechnung](../../beispiele/01_standard/
 | BT-10 | Käuferreferenz (Buyer reference) | `cbc:BuyerReference` | `ram:ApplicableHeaderTradeAgreement/ram:BuyerReference` | BH-2026-0815 |
 | BT-13 | Bestellnummer | `cac:OrderReference/cbc:ID` | `ram:BuyerOrderReferencedDocument/ram:IssuerAssignedID` | PO-4711 |
 | BT-20 | Zahlungsbedingungen | `cac:PaymentTerms/cbc:Note` | `ram:SpecifiedTradePaymentTerms/ram:Description` | #SKONTO#... |
-| BT-27 | Name des Verkäufers | `cac:PartyLegalEntity/cbc:RegistrationName` | `ram:SellerTradeParty/ram:Name` | Nordlicht Software GmbH |
+| BT-27 | Name des Verkäufers | `cac:PartyLegalEntity/cbc:RegistrationName` | `ram:SellerTradeParty/ram:Name` | Nordlicht Beispiel GmbH |
 | BT-31 | USt-IdNr. des Verkäufers | `cac:PartyTaxScheme/cbc:CompanyID` (TaxScheme `VAT`) | `ram:SpecifiedTaxRegistration/ram:ID schemeID="VA"` | DE123456789 |
 | BT-32 | Steuernummer des Verkäufers | `cac:PartyTaxScheme/cbc:CompanyID` (TaxScheme `FC`) | `ram:SpecifiedTaxRegistration/ram:ID schemeID="FC"` | nur in Beispiel 07 |
 | BT-34 | Elektronische Adresse Verkäufer | `cbc:EndpointID schemeID="EM"` | `ram:URIUniversalCommunication/ram:URIID schemeID="EM"` | rechnung@nordlicht.example |
 | BT-37 | Ort | `cbc:CityName` | `ram:CityName` | Hamburg |
 | BT-38 | Postleitzahl | `cbc:PostalZone` | `ram:PostcodeCode` | 20095 |
 | BT-41 | Kontaktname Verkäufer | `cac:Contact/cbc:Name` | `ram:DefinedTradeContact/ram:PersonName` | Erika Mustermann |
-| BT-42 | Telefon Verkäufer | `cac:Contact/cbc:Telephone` | `ram:TelephoneUniversalCommunication/ram:CompleteNumber` | +49 40 1234567 |
+| BT-42 | Telefon Verkäufer | `cac:Contact/cbc:Telephone` | `ram:TelephoneUniversalCommunication/ram:CompleteNumber` | +49 40 66969123 |
 | BT-43 | E-Mail Verkäufer | `cac:Contact/cbc:ElectronicMail` | `ram:EmailURIUniversalCommunication/ram:URIID` | buchhaltung@nordlicht.example |
 | BT-44 | Name des Käufers | `cac:PartyLegalEntity/cbc:RegistrationName` | `ram:BuyerTradeParty/ram:Name` | Beispiel Handel AG |
 | BT-49 | Elektronische Adresse Käufer | `cbc:EndpointID schemeID="EM"` | `ram:URIUniversalCommunication/ram:URIID schemeID="EM"` | eingangsrechnung@... |
@@ -161,7 +163,7 @@ Geplante Neuerungen laut KoSIT:
 
 Bis dahin bleibt XRechnung 3.0 in Kraft, laut KoSIT mindestens bis 31.07.2027. Für die alte und die neue Normfassung ist ein Parallelbetrieb bis 2029 vorgesehen. Das Werkzeug `erechnung` prüft und erzeugt derzeit XRechnung 3.0.2, nicht 4.0.
 
-## Beispiele
+## XRechnung Beispiel: Aufbau an echten Dateien
 
 Alle Ausschnitte stammen aus den Dateien in [`beispiele/`](../../beispiele/README.md). Sie sind mit den offiziellen KoSIT-Regeln geprüft.
 
@@ -207,7 +209,7 @@ Hier stecken BT-34 und die Pflichtgruppe BG-6 (BR-DE-2). Das brauchen Sie, wenn 
 ...
 <cac:Contact>
   <cbc:Name>Erika Mustermann</cbc:Name>
-  <cbc:Telephone>+49 40 1234567</cbc:Telephone>
+  <cbc:Telephone>+49 40 66969123</cbc:Telephone>
   <cbc:ElectronicMail>buchhaltung@nordlicht.example</cbc:ElectronicMail>
 </cac:Contact>
 ```
@@ -218,7 +220,7 @@ CII:
 <ram:DefinedTradeContact>
   <ram:PersonName>Erika Mustermann</ram:PersonName>
   <ram:TelephoneUniversalCommunication>
-    <ram:CompleteNumber>+49 40 1234567</ram:CompleteNumber>
+    <ram:CompleteNumber>+49 40 66969123</ram:CompleteNumber>
   </ram:TelephoneUniversalCommunication>
   <ram:EmailURIUniversalCommunication>
     <ram:URIID>buchhaltung@nordlicht.example</ram:URIID>
@@ -265,7 +267,7 @@ Zahlungsart 58 (BT-81), IBAN (BT-84) und Skonto in der Syntax nach BR-DE-18. UBL
   <cbc:PaymentID>RE-2026-0001</cbc:PaymentID>
   <cac:PayeeFinancialAccount>
     <cbc:ID>DE79000000001234567890</cbc:ID>
-    <cbc:Name>Nordlicht Software GmbH</cbc:Name>
+    <cbc:Name>Nordlicht Beispiel GmbH</cbc:Name>
   </cac:PayeeFinancialAccount>
 </cac:PaymentMeans>
 <cac:PaymentTerms>
@@ -281,14 +283,14 @@ CII:
   <ram:TypeCode>58</ram:TypeCode>
   <ram:PayeePartyCreditorFinancialAccount>
     <ram:IBANID>DE79000000001234567890</ram:IBANID>
-    <ram:AccountName>Nordlicht Software GmbH</ram:AccountName>
+    <ram:AccountName>Nordlicht Beispiel GmbH</ram:AccountName>
   </ram:PayeePartyCreditorFinancialAccount>
 </ram:SpecifiedTradeSettlementPaymentMeans>
 ```
 
-### Beispiel 5: Gutschrift 381 als UBL-CreditNote
+### Beispiel 5: Minderung 381 als UBL-CreditNote
 
-In UBL ist eine Gutschrift ein eigenes Dokument mit eigenem Wurzelelement, in CII nur ein anderer TypeCode. Das brauchen Sie, wenn Ihre Software Gutschriften falsch als `Invoice` schreibt. Aus `03_gutschrift/xrechnung_ubl.xml`:
+In UBL ist eine Minderung (381, kaufmännische Gutschrift) ein eigenes Dokument mit eigenem Wurzelelement, in CII nur ein anderer TypeCode. Das brauchen Sie, wenn Ihre Software Gutschriften falsch als `Invoice` schreibt. Aus `03_gutschrift/xrechnung_ubl.xml`:
 
 ```xml
 <CreditNote xmlns="urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2" ...>
@@ -332,7 +334,7 @@ erechnung validieren ohne_bt10.xml
 
 ```text
 ohne_bt10.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-DE-15: [BR-DE-15] Das Element "Buyer reference" (BT-10) muss übermittelt werden.
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-BR-DE-15: Käuferreferenz (BT-10) fehlt. In XRechnung Pflicht, bei Behörden die Leitweg-ID.
@@ -384,14 +386,14 @@ So erzeugen Sie aus einer JSON-Datei eine XRechnung in beiden Syntaxen und prüf
 
    ```text
    rechnung_ubl.xml: XRechnung 3.0 (UBL)
-     KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+     KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
    rechnung_cii.xml: XRechnung 3.0 (CII)
-     KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
+     KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
    ```
 
 5. Kontrollieren Sie den Inhalt: `erechnung lesen rechnung_cii.xml` zeigt Parteien, Positionen und Beträge als Text, `erechnung anzeigen rechnung_ubl.xml -o rechnung_ubl.html` schreibt eine HTML-Ansicht zum Öffnen im Browser.
 
-6. Heben Sie zusammen mit der Rechnung einen Prüfbericht auf, wie es das BMF-Schreiben vom 15.10.2025, Rn. 35a, empfiehlt: `erechnung validieren --bericht berichte rechnung_ubl.xml`.
+6. Heben Sie zusammen mit der Rechnung einen Prüfbericht auf, wie es das BMF-Schreiben vom 15.10.2025, Rn. 35a, zum Nachweis nahelegt: `erechnung validieren --bericht berichte rechnung_ubl.xml`.
 
 Versenden müssen Sie die Datei selbst, zum Beispiel per E-Mail oder über das Portal des Empfängers. Das Werkzeug hat keinen Versand und keinen Peppol-Zugangspunkt.
 
@@ -438,7 +440,9 @@ Es ist dieselbe Rechnung in zwei XML-Sprachen. UBL nutzt Elemente wie `cbc:Issue
 
 Mit einem Viewer, der das XML lesbar darstellt. Mit diesem Werkzeug geht das über `erechnung anzeigen rechnung.xml`, mit `--offiziell` über die KoSIT-Visualisierung. Mehr dazu in [E-Rechnung empfangen und lesen](./e-rechnung-empfangen.md).
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 
@@ -447,4 +451,7 @@ Mit einem Viewer, der das XML lesbar darstellt. Mit diesem Werkzeug geht das üb
 - [E-Rechnung prüfen mit dem Validator](./e-rechnung-validator.md)
 - [E-Rechnung Fehlermeldungen beheben](./e-rechnung-fehlermeldungen.md)
 - [Leitweg-ID und E-Rechnung an Behörden](./leitweg-id.md)
+- [Was ist eine E-Rechnung? Definition, Formate und wie sie aussieht](./was-ist-eine-e-rechnung.md)
+- [E-Rechnung Pflicht: ab wann, für wen und welche Übergangsfristen gelten](./e-rechnung-pflicht.md)
+- [E-Rechnung Beispiel: XRechnung und ZUGFeRD Beispieldateien zum Herunterladen](./e-rechnung-beispiel.md)
 - Beispieldateien: [Übersicht](../../beispiele/README.md), [Standardrechnung UBL](../../beispiele/01_standard/xrechnung_ubl.xml), [Standardrechnung CII](../../beispiele/01_standard/xrechnung_cii.xml)

@@ -9,7 +9,7 @@ Ablauf wie beim KoSIT-Validator:
 1. Szenario über ``<match>`` aus ``scenarios.xml`` wählen
 2. XML-Schema prüfen
 3. Alle Schematron-Stufen des Szenarios ausführen
-4. ``customLevel`` des Szenarios anwenden (z.B. BR-CL-21 nur Warnung)
+4. ``customLevel`` des Szenarios anwenden (z. B. BR-CL-21 nur Warnung)
 5. Annehmen, wenn es weder Schemafehler noch Befunde der Stufe ``error`` gibt
 
 Die Konfiguration wird beim ersten Aufruf von GitHub geladen, per SHA-256
@@ -22,6 +22,7 @@ from __future__ import annotations
 import hashlib
 import io
 import os
+import shutil
 import sys
 import urllib.request
 import gc
@@ -63,7 +64,7 @@ class NichtVerfuegbar(RuntimeError):
 @dataclass
 class Befund:
     stufe: str  # error, warning, information
-    code: str  # z.B. BR-DE-15, XSD
+    code: str  # z. B. BR-DE-15, XSD
     text: str
     ort: str = ""
     quelle: str = ""
@@ -122,7 +123,10 @@ def cache_ordner() -> Path:
 
 
 def _entpacken(quelle: bytes, ziel: Path) -> None:
-    tmp = ziel.with_suffix(".tmp")
+    tmp = ziel.with_name(ziel.name + ".tmp")
+    if tmp.exists():
+        shutil.rmtree(tmp)
+    tmp.mkdir(parents=True)
     with zipfile.ZipFile(io.BytesIO(quelle)) as z:
         for name in z.namelist():
             if name.startswith("/") or ".." in Path(name).parts:
@@ -137,10 +141,17 @@ def bereitstellen(url: str, sha256: str, name: str, umgebung: str, offline: bool
     if eigen:
         pfad = Path(eigen)
         if pfad.is_file():
-            ziel = cache_ordner() / (pfad.stem + "-lokal")
+            daten = pfad.read_bytes()
+            pruefsumme = hashlib.sha256(daten).hexdigest()
+            if pfad.stem == name and pruefsumme != sha256 and os.environ.get(f"{umgebung}_OHNE_HASH") != "1":
+                raise NichtVerfuegbar(
+                    f"Prüfsumme von {pfad} stimmt nicht mit der Originaldatei {name} überein. "
+                    f"Eigene Regeln bewusst nutzen: {umgebung}_OHNE_HASH=1 setzen."
+                )
+            ziel = cache_ordner() / f"{pfad.stem}-lokal-{pruefsumme[:12]}"
             if not ziel.exists():
                 ziel.parent.mkdir(parents=True, exist_ok=True)
-                _entpacken(pfad.read_bytes(), ziel)
+                _entpacken(daten, ziel)
             return ziel
         return pfad
     ziel = cache_ordner() / name
@@ -171,7 +182,7 @@ def visualisierung(offline: bool = False) -> Path:
 
 # saxonche läuft in einem GraalVM-Isolate, das an den erzeugenden Thread gebunden ist.
 # Alle Saxon-Aufrufe laufen deshalb auf genau einem Thread, auch wenn der Aufrufer
-# (z.B. ein MCP-Server) Worker-Threads benutzt. Beim Beenden gibt derselbe Thread
+# (z. B. ein MCP-Server) Worker-Threads benutzt. Beim Beenden gibt derselbe Thread
 # die Saxon-Objekte frei, sonst bricht das Isolate beim Herunterfahren ab.
 class _SaxonThread:
     def __init__(self):
@@ -286,7 +297,7 @@ def _ersatzszenario(alle: list[Szenario], wurzel: etree._Element) -> tuple[Szena
     for sz in alle:
         if sz.name == name:
             return sz, (f"Für die Spezifikation {gid.strip()} hat die KoSIT kein eigenes Szenario. "
-                        f"Geprüft wurde der Kern nach EN 16931. Profilregeln von ZUGFeRD prüft z.B. Mustang.")
+                        f"Geprüft wurde der Kern nach EN 16931. Profilregeln von ZUGFeRD prüft z. B. Mustang.")
     return None, ""
 
 

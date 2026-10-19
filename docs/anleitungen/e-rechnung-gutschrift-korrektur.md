@@ -1,8 +1,10 @@
 # Gutschrift, Rechnungskorrektur und Reverse Charge als E-Rechnung
 
-Eine Gutschrift als E-Rechnung, eine Rechnungskorrektur oder ein Reverse-Charge-Fall unterscheidet sich von einer normalen E-Rechnung in wenigen Feldern: der Rechnungsart BT-3, dem Bezug auf die Vorgängerrechnung BG-3 und der Steuerkategorie BT-118/BT-151 mit Befreiungsgrund BT-120. XRechnung erlaubt laut Geschäftsregel BR-DE-17 nur acht Rechnungsarten (326, 380, 381, 384, 389, 875, 876, 877); Reverse Charge nach § 13b UStG läuft über die Steuerkategorie AE, die innergemeinschaftliche Lieferung über K. Diese Anleitung zeigt jeden Fall mit echtem XML und den Befehlen `erechnung erstellen` und `erechnung validieren`.
+Eine Gutschrift als E-Rechnung (Rechnungsart 389, Abrechnung durch den Leistungsempfänger), eine Minderung (381), eine Rechnungskorrektur oder ein Reverse-Charge-Fall unterscheidet sich von einer normalen E-Rechnung in wenigen Feldern: der Rechnungsart BT-3, dem Bezug auf die Vorgängerrechnung BG-3 und der Steuerkategorie BT-118/BT-151 mit Befreiungsgrund BT-120. XRechnung erlaubt laut Geschäftsregel BR-DE-17 nur acht Rechnungsarten (326, 380, 381, 384, 389, 875, 876, 877); Reverse Charge nach § 13b UStG läuft über die Steuerkategorie AE, die innergemeinschaftliche Lieferung über K. Diese Anleitung zeigt jeden Fall mit echtem XML und den Befehlen `erechnung erstellen` und `erechnung validieren`.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Buchhaltung und Steuerkanzleien. Technische Beispiele stehen weiter unten und sind optional.
 
 ## Das Wichtigste in Kürze
 
@@ -10,7 +12,7 @@ Eine Gutschrift als E-Rechnung, eine Rechnungskorrektur oder ein Reverse-Charge-
 - "Gutschrift" meint zwei verschiedene Dinge: die Abrechnung durch den Leistungsempfänger (389, Gutschrift im Sinne des UStG) und die Minderung einer Rechnung durch den Leistenden (381, Credit Note).
 - Eine Rechnungskorrektur (384) soll laut BR-DE-26 auf die ursprüngliche Rechnung verweisen (BG-3 mit BT-25 und BT-26).
 - In UBL wird die Rechnungsart 381 als eigenes Dokument `CreditNote` geschrieben, in CII bleibt es eine `CrossIndustryInvoice` mit `TypeCode` 381.
-- Reverse Charge (Kategorie AE) und innergemeinschaftliche Lieferung (Kategorie K) brauchen Steuersatz 0, einen Befreiungsgrund und die USt-IdNr. des Käufers (BT-48).
+- Reverse Charge (Kategorie AE) braucht Steuersatz 0, einen Befreiungsgrund und beim Käufer die USt-IdNr. (BT-48) oder eine Registernummer (BT-47), so verlangt es Regel BR-AE-02. Die innergemeinschaftliche Lieferung (Kategorie K) braucht die USt-IdNr. des Käufers (BT-48, BR-IC-02).
 - Welche Rechnungsart und welche Steuerkategorie im Einzelfall richtig ist, ist eine steuerliche Frage; klären Sie das mit der Steuerberatung.
 
 ## Welche Rechnungsarten erlaubt die XRechnung?
@@ -56,7 +58,7 @@ Eine Gutschrift im Sinne des UStG ist eine Rechnung, die der Leistungsempfänger
 
 Auch Gutschriften fallen unter die E-Rechnungspflicht, wenn beide Unternehmer im Inland ansässig sind (laut [BMF-FAQ](https://www.bundesfinanzministerium.de/Content/DE/FAQ/e-rechnung.html) und BMF-Schreiben vom 15.10.2025).
 
-## Gutschrift als E-Rechnung (381): Beispiel 03
+## Rechnungskorrektur mit Minderung (381, kaufmännische Gutschrift): Beispiel 03
 
 Beispiel [`03_gutschrift`](../../beispiele/03_gutschrift/eingabe.json) mindert Rechnung RE-2026-0001 um zwei doppelt berechnete Stunden. Die wichtigen Felder der Eingabe:
 
@@ -105,7 +107,7 @@ erechnung validieren gutschrift.xml
 ```text
 gutschrift.xml: xrechnung-ubl, Rechnung GS-2026-0001, Zahlbetrag 285,60 EUR
 gutschrift.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL CreditNote), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL CreditNote), 0 Fehler, 0 Warnungen
 ```
 
 ## Rechnungskorrektur als E-Rechnung (384) mit Bezug BG-3
@@ -132,7 +134,7 @@ erechnung validieren korrektur_ohne_bezug.xml
 
 ```text
 korrektur_ohne_bezug.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 1 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 1 Warnungen
   WARNUNG BR-DE-26: [BR-DE-26] Wenn im Element "Invoice type code" (BT-3) der Code 384 (Corrected invoice) übergeben wird, soll PRECEDING INVOICE REFERENCE BG-3 mind. einmal vorhanden sein.
 ```
 
@@ -140,7 +142,7 @@ Laut BMF-Schreiben vom 15.10.2025, Rn. 51a und 51b, braucht eine Minderung der B
 
 ## Storno einer E-Rechnung
 
-Für einen Storno gibt es in der Liste der XRechnung keinen eigenen Code. Technisch lässt sich eine fehlerhafte Rechnung auf zwei Arten aufheben: mit einer Gutschrift 381 über den vollen Betrag und BG-3 auf die ursprüngliche Rechnung (danach bei Bedarf eine neue Rechnung 380) oder mit einer korrigierten Rechnung 384, die die ursprüngliche ersetzt.
+Für einen Storno gibt es in der Liste der XRechnung keinen eigenen Code. Technisch lässt sich eine fehlerhafte Rechnung auf zwei Arten aufheben: mit einer Minderung 381 über den vollen Betrag und BG-3 auf die ursprüngliche Rechnung (danach bei Bedarf eine neue Rechnung 380) oder mit einer korrigierten Rechnung 384, die die ursprüngliche ersetzt.
 
 Welcher Weg steuerlich passt, entscheidet nicht das Format; stimmen Sie das mit der Steuerberatung und dem Empfänger ab. Wichtig für den Empfänger: Er muss erkennen können, welche Rechnung aufgehoben ist. Deshalb gehört die Nummer der ursprünglichen Rechnung immer in BG-3 und gern zusätzlich in eine Notiz (BT-22).
 
@@ -148,7 +150,7 @@ Welcher Weg steuerlich passt, entscheidet nicht das Format; stimmen Sie das mit 
 
 Für Teil- und Abschlagsrechnungen sieht die Codeliste 326 (Teilrechnung) vor, für Bauleistungen 875 (Teilrechnung Bau), 876 (Teilschlussrechnung Bau) und 877 (Schlussrechnung Bau). Welche Art Ihr Auftraggeber erwartet, stimmen Sie mit ihm ab.
 
-In einer Schlussrechnung stehen alle Leistungen, bereits gezahlte Abschläge zieht man als Vorauszahlung (BT-113, Feld `vorauszahlung`) ab. Der Bezug auf die Teilrechnung kommt in BG-3. Beispiel: Schlussrechnung über 18.500,00 EUR mit 10.000,00 EUR Abschlag, als Bauleistung mit Reverse Charge:
+In einer Schlussrechnung stehen alle Leistungen, bereits gezahlte Abschläge zieht man als Vorauszahlung (BT-113, Feld `vorauszahlung`) ab. Umsatzsteuerlich müssen in der Schlussrechnung die vereinnahmten Teilentgelte und die darauf entfallenden Steuerbeträge abgesetzt werden (§ 14 Abs. 5 Satz 2 UStG). BT-113 allein zeigt nur den Bruttobetrag; nennen Sie Abschläge und deren Steuer zusätzlich, etwa in BG-3 und einer Rechnungsnotiz (BT-22), wenn die Rechnung nicht unter § 13b UStG fällt. Der Bezug auf die Teilrechnung kommt in BG-3. Beispiel: Schlussrechnung über 18.500,00 EUR mit 10.000,00 EUR Abschlag, als Bauleistung mit Reverse Charge:
 
 ```json
 {
@@ -166,7 +168,7 @@ erechnung erstellen schlussrechnung.json -o schlussrechnung.xml --validieren
 
 ```text
 schlussrechnung.xml: xrechnung-ubl, Rechnung SR-2026-0001, Zahlbetrag 8.500,00 EUR
-  KoSIT: GÜLTIG (EN16931 XRechnung (UBL Invoice))
+  KoSIT-Regeln: GÜLTIG (EN16931 XRechnung (UBL Invoice))
 ```
 
 Im XML stehen `<cbc:InvoiceTypeCode>877</cbc:InvoiceTypeCode>`, Vorauszahlung und Zahlbetrag:
@@ -222,7 +224,7 @@ erechnung validieren reverse_charge.xml
 ```text
 reverse_charge.xml: xrechnung-ubl, Rechnung RE-2026-0004, Zahlbetrag 18.500,00 EUR
 reverse_charge.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
 ```
 
 Ob eine Leistung unter § 13b UStG fällt, prüft das Werkzeug nicht. Das ist eine steuerliche Einordnung für die Steuerberatung.
@@ -261,7 +263,7 @@ erechnung validieren eu_lieferung.xml
 ```text
 eu_lieferung.xml: xrechnung-ubl, Rechnung RE-2026-0005, Zahlbetrag 3.560,00 EUR
 eu_lieferung.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
 ```
 
 ## Steuerkategorien im Überblick
@@ -282,7 +284,7 @@ Die Steuerkategorie (BT-118 in der Aufschlüsselung, BT-151 an der Position) kom
 
 Die letzte Spalte zeigt, wo die Vorprüfung des Werkzeugs einen Befreiungsgrund (BT-120 oder BT-121) verlangt; sie stützt sich auf die Regeln BR-E-10, BR-AE-10, BR-IC-10, BR-G-10 und BR-O-10. Fehlt der Grund bei AE, K, G oder O, setzt `erechnung erstellen` einen Standardtext ein.
 
-## Beispiele
+## Gutschrift, Korrektur und Reverse Charge: Beispiele
 
 ### Beispiel 1: Gutschrift in CII statt UBL
 
@@ -294,7 +296,7 @@ erechnung validieren gutschrift_cii.xml
 ```text
 gutschrift_cii.xml: xrechnung-cii, Rechnung GS-2026-0001, Zahlbetrag 285,60 EUR
 gutschrift_cii.xml: XRechnung 3.0 (CII)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
 ```
 
 Wenn der Empfänger CII verlangt; die Rechnungsart 381 steht dann in `ram:TypeCode`.
@@ -329,7 +331,7 @@ erechnung validieren gutschrift_389.xml
 ```text
 gutschrift_389.xml: xrechnung-ubl, Rechnung GS-2026-0100, Zahlbetrag 2.009,91 EUR
 gutschrift_389.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
 ```
 
 Der Code 389 bleibt ein UBL-Invoice. Das braucht man, wenn der Leistungsempfänger vereinbarungsgemäß selbst abrechnet.
@@ -342,13 +344,14 @@ erechnung validieren rc.xml
 ```
 
 ```text
-  FEHLER  VP-13B: Reverse Charge (AE) ohne USt-IdNr. des Käufers (BT-48).
+  FEHLER  VP-13B: Reverse Charge (AE) ohne USt-IdNr. (BT-48) oder Registernummer (BT-47) des Käufers.
+  Nicht mit den KoSIT-Regeln geprüft. Prüfen mit: erechnung validieren rc.xml
 rc.xml: xrechnung-ubl, Rechnung RE-2026-0004, Zahlbetrag 18.500,00 EUR
 rc.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-AE-02: [BR-AE-02]-An Invoice that contains an Invoice line (BG-25) where the Invoiced item VAT category code (BT-151) is "Reverse charge" shall contain the Seller VAT Identifier (BT-31), the Seller Tax registration identifier (BT-32) and/or the Seller tax representative VAT identifier (BT-63) and the Buyer VAT identifier (BT-48) and/or the Buyer legal registration identifier (BT-47).
   Vorprüfung (Erklärungen, nicht maßgeblich):
-  FEHLER  VP-13B: Reverse Charge (AE) ohne USt-IdNr. des Käufers (BT-48).
+  FEHLER  VP-13B: Reverse Charge (AE) ohne USt-IdNr. (BT-48) oder Registernummer (BT-47) des Käufers.
 ```
 
 `erechnung erstellen` meldet den Fehler der Vorprüfung, schreibt die Datei aber trotzdem. Erst `erechnung validieren` liefert Exit-Code 1. Prüfen Sie deshalb jede erzeugte Datei.
@@ -361,7 +364,7 @@ erechnung validieren eu_ohne_ustid.xml
 
 ```text
 eu_ohne_ustid.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-IC-02: [BR-IC-02]-An Invoice that contains an Invoice line (BG-25) where the Invoiced item VAT category code (BT-151) is "Intra-community supply" shall contain the Seller VAT Identifier (BT-31) or the Seller tax representative VAT identifier (BT-63) and the Buyer VAT identifier (BT-48).
   ...
 ```
@@ -376,12 +379,12 @@ erechnung erstellen teilrechnung.json -o teilrechnung.xml --validieren
 
 ```text
 teilrechnung.xml: xrechnung-ubl, Rechnung TR-2026-0001, Zahlbetrag 2.009,91 EUR
-  KoSIT: GÜLTIG (EN16931 XRechnung (UBL Invoice))
+  KoSIT-Regeln: GÜLTIG (EN16931 XRechnung (UBL Invoice))
 ```
 
 Die Eingabe ist Beispiel 01 mit `"art": "326"`. Für Abschläge bei längeren Projekten.
 
-## Schritt für Schritt
+## Schritt für Schritt: Gutschrift oder Korrektur als E-Rechnung ausstellen
 
 1. Klären Sie mit der Steuerberatung, welcher Fall vorliegt: Minderung (381), Ersatz einer fehlerhaften Rechnung (384), Abrechnung durch den Leistungsempfänger (389), Teil- oder Schlussrechnung (326, 875-877), Reverse Charge (AE) oder innergemeinschaftliche Lieferung (K).
 2. Holen Sie sich die Beispiele als Vorlage:
@@ -405,7 +408,7 @@ Die Eingabe ist Beispiel 01 mit `"art": "326"`. Für Abschläge bei längeren Pr
 | Rechnungsart außerhalb von BR-DE-17 | `Rechnungsart 383 ist in XRechnung nicht erlaubt (BR-DE-17).` | Einen der acht erlaubten Codes nehmen |
 | Korrektur ohne Bezug | Warnung BR-DE-26 bei Code 384 | `vorgaenger_nummer` und `vorgaenger_datum` setzen |
 | 389 und 381 verwechselt | Empfänger bucht Abrechnung und Minderung falsch | Tabelle oben prüfen: Wer stellt aus? |
-| Reverse Charge ohne USt-IdNr. des Käufers | `BR-AE-02` und `VP-13B` | `kaeufer.ust_id` eintragen |
+| Reverse Charge ohne USt-IdNr. oder Registernummer des Käufers | `BR-AE-02` und `VP-13B` | `kaeufer.ust_id` oder `kaeufer.register` eintragen |
 | Innergemeinschaftliche Lieferung ohne USt-IdNr. des Käufers | `BR-IC-02` und `VP-IG` | USt-IdNr. des Kunden eintragen |
 | Steuersatz größer 0 bei AE oder K | `erechnung erstellen` rechnet Steuer aus, die Prüfung meldet `BR-AE-05` und `BR-AE-09` bzw. `BR-IC-05` und `BR-IC-09` | `"satz": "0"` an der Position setzen |
 | Datei trotz Vorprüfungsfehler verschickt | `erechnung erstellen` endet mit Exit-Code 0 | Immer mit `--validieren` erstellen oder danach `erechnung validieren` aufrufen |
@@ -414,7 +417,7 @@ Die Eingabe ist Beispiel 01 mit `"art": "326"`. Für Abschläge bei längeren Pr
 
 ### Wie erstelle ich eine Gutschrift als E-Rechnung?
 
-Setzen Sie die Rechnungsart 381, tragen Sie die Beträge positiv ein und verweisen Sie in BG-3 auf die ursprüngliche Rechnung. `erechnung erstellen` schreibt daraus in UBL ein `CreditNote`-Dokument, das die KoSIT-Prüfung im Szenario "UBL CreditNote" bestätigt.
+Das hängt davon ab, was gemeint ist. Rechnet der Leistungsempfänger selbst ab (Gutschrift nach § 14 Abs. 2 Satz 5 UStG), nehmen Sie Rechnungsart 389; die Angabe "Gutschrift" steckt dann in der Rechnungsart. Mindert der Lieferant eine frühere Rechnung (umgangssprachlich auch "Gutschrift"), nehmen Sie Rechnungsart 381 mit positiven Beträgen und verweisen in BG-3 auf die ursprüngliche Rechnung; `erechnung erstellen` schreibt daraus in UBL ein `CreditNote`-Dokument, das die KoSIT-Prüfung im Szenario "UBL CreditNote" bestätigt. Welcher Fall vorliegt, klärt Ihre Steuerberatung.
 
 ### Was ist der Unterschied zwischen 381 und 389?
 
@@ -426,11 +429,11 @@ Laut XRechnung-Regel BR-DE-26 soll eine Rechnung mit Code 384 mindestens einen V
 
 ### Wie storniere ich eine E-Rechnung?
 
-Einen eigenen Storno-Code kennt die XRechnung nicht. Technisch möglich sind eine Gutschrift 381 über den vollen Betrag mit Bezug BG-3 oder eine korrigierte Rechnung 384; den passenden Weg stimmen Sie mit der Steuerberatung ab.
+Einen eigenen Storno-Code kennt die XRechnung nicht. Technisch möglich sind eine Minderung 381 über den vollen Betrag mit Bezug BG-3 oder eine korrigierte Rechnung 384; den passenden Weg stimmen Sie mit der Steuerberatung ab.
 
 ### Wie sieht Reverse Charge in der XRechnung aus?
 
-Position und Steueraufschlüsselung tragen Steuerkategorie AE mit Steuersatz 0, dazu kommen ein Befreiungsgrund (BT-120) und die USt-IdNr. des Käufers (BT-48); Beispiel 05 im Repo ist eine gültige Datei.
+Position und Steueraufschlüsselung tragen Steuerkategorie AE mit Steuersatz 0, dazu kommen ein Befreiungsgrund (BT-120) und die USt-IdNr. des Käufers (BT-48) oder seine Registernummer (BT-47); Beispiel 05 im Repo ist eine gültige Datei.
 
 ### Brauche ich für eine innergemeinschaftliche Lieferung eine E-Rechnung?
 
@@ -438,9 +441,11 @@ Die deutsche E-Rechnungspflicht gilt nach § 14 Abs. 2 Satz 2 Nr. 1 UStG nur, we
 
 ### Welche Rechnungsart nehme ich für eine Abschlagsrechnung?
 
-Die XRechnung kennt 326 (Teilrechnung) und für Bauleistungen 875, 876 und 877. Abschläge in der Schlussrechnung ziehen Sie über die Vorauszahlung BT-113 ab.
+Die XRechnung kennt 326 (Teilrechnung) und für Bauleistungen 875, 876 und 877. Abschläge in der Schlussrechnung ziehen Sie über die Vorauszahlung BT-113 ab. Umsatzsteuerlich verlangt § 14 Abs. 5 Satz 2 UStG zusätzlich, die vereinnahmten Teilentgelte und die darauf entfallende Steuer abzusetzen; nennen Sie beides etwa in einer Rechnungsnotiz (BT-22).
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

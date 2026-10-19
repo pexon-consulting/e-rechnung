@@ -29,13 +29,13 @@
         </cac:TaxScheme>
       </cac:PartyTaxScheme>
       <cac:PartyLegalEntity>
-        <cbc:RegistrationName>Nordlicht Software GmbH</cbc:RegistrationName>
-        <cbc:CompanyID>HRB 123456</cbc:CompanyID>
-        <cbc:CompanyLegalForm>Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann</cbc:CompanyLegalForm>
+        <cbc:RegistrationName>Nordlicht Beispiel GmbH</cbc:RegistrationName>
+        <cbc:CompanyID>HRB 000000</cbc:CompanyID>
+        <cbc:CompanyLegalForm>Amtsgericht Hamburg HRB 000000, Geschäftsführung: Erika Mustermann</cbc:CompanyLegalForm>
       </cac:PartyLegalEntity>
       <cac:Contact>
         <cbc:Name>Erika Mustermann</cbc:Name>
-        <cbc:Telephone>+49 40 1234567</cbc:Telephone>
+        <cbc:Telephone>+49 40 66969123</cbc:Telephone>
         <cbc:ElectronicMail>buchhaltung@nordlicht.example</cbc:ElectronicMail>
       </cac:Contact>
     </cac:Party>

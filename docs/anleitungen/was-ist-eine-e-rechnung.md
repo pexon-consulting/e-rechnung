@@ -2,7 +2,9 @@
 
 Eine E-Rechnung ist nach § 14 Abs. 1 UStG eine Rechnung, die in einem strukturierten elektronischen Format ausgestellt, übermittelt und empfangen wird und eine elektronische Verarbeitung ermöglicht. In Deutschland heißt das praktisch: eine XML-Datei nach der europäischen Norm EN 16931, also eine XRechnung (UBL oder CII) oder eine ZUGFeRD/Factur-X-Rechnung ab Profil BASIC. Ein PDF ohne eingebettete Daten ist keine E-Rechnung, sondern eine "sonstige Rechnung".
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Geschäftsführung, Buchhaltung und Steuerkanzleien. Technische Beispiele stehen weiter unten und sind optional.
 
 ## Das Wichtigste in Kürze
 
@@ -141,14 +143,14 @@ Das erste `TaxAmount` ist die Steuersumme der Rechnung (BT-110). In `TaxSubtotal
 
 Dieselbe Rechnung gibt es im Beispielordner noch zweimal:
 
-- **Lesefassung als HTML:** [`beispiele/01_standard/ansicht.html`](../../beispiele/01_standard/ansicht.html) zeigt die Daten als Tabellen mit Verkäufer, Käufer, Positionen, Umsatzsteuer und Zahlung. Am Ende steht: "Rechtlich maßgeblich ist der XML-Inhalt der E-Rechnung."
+- **Ansicht als HTML:** [`beispiele/01_standard/ansicht.html`](../../beispiele/01_standard/ansicht.html) zeigt die Daten als Tabellen mit Verkäufer, Käufer, Positionen, Umsatzsteuer und Zahlung. Am Ende steht: "Rechtlich maßgeblich ist der XML-Inhalt der E-Rechnung."
 - **ZUGFeRD-PDF:** [`beispiele/01_standard/zugferd_en16931.pdf`](../../beispiele/01_standard/zugferd_en16931.pdf) sieht aus wie eine normale PDF-Rechnung. Darin steckt als Anhang die Datei `factur-x.xml` mit denselben Daten in CII-Syntax. Der Fußtext im PDF sagt: "Diese PDF-Datei enthält die Rechnungsdaten zusätzlich als strukturiertes XML (ZUGFeRD)."
 
 ### Was gilt, wenn PDF und XML nicht übereinstimmen?
 
-Bei einer ZUGFeRD-Rechnung ist das XML maßgebend. Laut BMF-FAQ hat bei Abweichungen zwischen XML und Bildteil der strukturierte Teil Vorrang; früher war es umgekehrt. Das BMF empfiehlt, den XML-Teil selbst zu visualisieren, statt sich auf das mitgelieferte PDF zu verlassen. Genau das macht `erechnung anzeigen`: Es baut die Ansicht aus dem XML, nicht aus dem PDF.
+Bei einer ZUGFeRD-Rechnung ist das XML maßgebend. Laut BMF-Schreiben vom 15.10.2025 (UStAE 14.4 Abs. 3) hat bei Abweichungen zwischen XML und Bildteil der strukturierte Teil Vorrang; früher war es umgekehrt. Das BMF empfiehlt, den XML-Teil selbst zu visualisieren, statt sich auf das mitgelieferte PDF zu verlassen. Genau das macht `erechnung anzeigen`: Es baut die Ansicht aus dem XML, nicht aus dem PDF.
 
-## Beispiele
+## E-Rechnung erkennen: Beispiele mit echten Dateien
 
 Alle Befehle laufen im Ordner mit den Dateien aus [`beispiele/`](../../beispiele/README.md). Die Installation steht im [README](../../README.md) und unten in Schritt 2.
 
@@ -164,7 +166,7 @@ Format:       XRechnung 3.0 (UBL)
 E-Rechnung:   ja, strukturiert nach EN 16931
 Art:          380 (Rechnung)
 Nummer:       RE-2026-0001 vom 15.10.2026
-Verkäufer:    Nordlicht Software GmbH, 20095 Hamburg, USt-IdNr. DE123456789
+Verkäufer:    Nordlicht Beispiel GmbH, 20095 Hamburg, USt-IdNr. DE123456789
 Käufer:       Beispiel Handel AG, 80331 München
 Käuferref.:   BH-2026-0815
 Positionen:   2
@@ -248,7 +250,7 @@ Der Anfang der Datei zeigt das Profil EN 16931 in BT-24 (`GuidelineSpecifiedDocu
 
 Das brauchen Sie, wenn ein Programm nur XML annimmt oder wenn Sie den strukturierten Teil getrennt ansehen wollen.
 
-### Beispiel 5: Lesefassung aus dem XML erzeugen
+### Beispiel 5: Ansicht aus dem XML erzeugen
 
 ```bash
 erechnung anzeigen beispiele/01_standard/xrechnung_ubl.xml -o ansicht.html
@@ -281,7 +283,7 @@ erechnung validieren minimum.xml
 
 ```text
 minimum.xml: CII Profil MINIMUM
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario kein Szenario, 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario kein Szenario, 1 Fehler, 0 Warnungen
   FEHLER  SZENARIO: Kein passendes Prüfszenario. Erwartet wird UBL Invoice/CreditNote oder CII mit einer Spezifikationskennung (BT-24) für XRechnung 3.0 oder EN 16931.
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-FORMAT: CII Profil MINIMUM: Dieses ZUGFeRD-Profil enthält nicht alle Pflichtangaben und gilt nicht als E-Rechnung nach § 14 UStG. Mindestens Profil BASIC, besser EN 16931 verwenden.
@@ -297,8 +299,8 @@ erechnung validieren beispiele/01_standard/xrechnung_ubl.xml --bericht berichte/
 
 ```text
 beispiele/01_standard/xrechnung_ubl.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
-  Prüfbericht: berichte/xrechnung_ubl.xml.1e0e5c550373.validierungsbericht.json
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  Prüfbericht: berichte/xrechnung_ubl.xml.29ccd409852b.validierungsbericht.json
 ```
 
 Lesen zeigt den Inhalt, Validieren prüft die offiziellen KoSIT-Regeln. Der Prüfbericht enthält Zeitpunkt, Regelversion und SHA-256 der Datei. Mehr dazu in [E-Rechnung prüfen](./e-rechnung-validator.md).
@@ -313,8 +315,8 @@ Lesen zeigt den Inhalt, Validieren prüft die offiziellen KoSIT-Regeln. Der Prü
 3. **Datei lesen.** `erechnung lesen rechnung.pdf` oder `erechnung lesen rechnung.xml`. Die Zeile `E-Rechnung:` sagt "ja" oder "nein", die Zeile `Format:` nennt Format und Profil.
 4. **Bei "nein" nachsehen, warum.** Ein PDF ohne XML ist eine sonstige Rechnung. Ein ZUGFeRD-Profil MINIMUM oder BASIC WL reicht nicht. Bitten Sie den Lieferanten um eine XRechnung oder ein ZUGFeRD-PDF ab Profil BASIC.
 5. **Bei "ja" prüfen.** `erechnung validieren rechnung.xml` prüft mit den offiziellen KoSIT-Regeln. Die Rechnungsdaten verlassen dabei Ihren Rechner nicht.
-6. **Inhalt ansehen.** `erechnung anzeigen rechnung.xml -o ansicht.html` erzeugt eine Lesefassung aus dem XML.
-7. **Original aufbewahren.** Bewahren Sie die empfangene Datei im Ursprungsformat auf, nicht nur die Lesefassung (BMF-Schreiben vom 15.10.2025, Rn. 60). Mehr dazu in [E-Rechnung archivieren](./e-rechnung-archivieren.md).
+6. **Inhalt ansehen.** `erechnung anzeigen rechnung.xml -o ansicht.html` erzeugt eine Ansicht aus dem XML.
+7. **Original aufbewahren.** Bewahren Sie die empfangene Datei im Ursprungsformat auf, nicht nur die Ansicht (BMF-Schreiben vom 15.10.2025, Rn. 60). Mehr dazu in [E-Rechnung archivieren](./e-rechnung-archivieren.md).
 
 ## Häufige Fehler
 
@@ -322,7 +324,7 @@ Lesen zeigt den Inhalt, Validieren prüft die offiziellen KoSIT-Regeln. Der Prü
 | --- | --- | --- |
 | PDF aus Word oder Buchhaltung gilt als E-Rechnung | `erechnung lesen` meldet: "Das PDF enthält kein eingebettetes Rechnungs-XML." | XRechnung oder ZUGFeRD-PDF erzeugen, siehe [E-Rechnung erstellen](./e-rechnung-erstellen.md) |
 | ZUGFeRD im Profil MINIMUM oder BASIC WL | `E-Rechnung:   nein`, Hinweis `VP-FORMAT` | Profil BASIC oder besser EN 16931 verwenden |
-| Nur die Lesefassung (HTML oder PDF) wird gebucht oder archiviert | Beträge im PDF weichen vom XML ab, niemand merkt es | Das XML ist maßgeblich; Ansicht immer aus dem XML erzeugen und das Original aufbewahren |
+| Nur die Ansicht (HTML oder PDF) wird gebucht oder archiviert | Beträge im PDF weichen vom XML ab, niemand merkt es | Das XML ist maßgeblich; Ansicht immer aus dem XML erzeugen und das Original aufbewahren |
 | Pflichtangabe steht nur im angehängten PDF | Validierung meldet fehlende BT-Felder | Alle Pflichtangaben gehören in den strukturierten Teil (BMF-Schreiben vom 15.10.2025, Rn. 35) |
 | Link auf ein Kundenportal statt Anhang | Ergänzende Unterlagen fehlen in der Datei | Unterlagen einbetten; ein Link auf ein externes Ziel genügt nicht (Rn. 35) |
 | XML-Datei im Texteditor von Hand geändert | Validierung meldet Schema- oder Rechenfehler | Datei neu aus der Quelle erzeugen, nicht von Hand ändern |
@@ -331,7 +333,7 @@ Lesen zeigt den Inhalt, Validieren prüft die offiziellen KoSIT-Regeln. Der Prü
 
 ### Ist ein PDF eine E-Rechnung?
 
-Nein, ein PDF ohne eingebettetes XML ist eine sonstige Rechnung nach § 14 Abs. 1 Satz 4 UStG. Nur ein PDF mit eingebettetem XML nach ZUGFeRD oder Factur-X ab Profil BASIC ist eine E-Rechnung. Ob ein PDF ein XML enthält, zeigt `erechnung lesen rechnung.pdf`.
+Nein, ein PDF ohne eingebettetes XML ist eine sonstige Rechnung nach § 14 Abs. 1 Satz 4 UStG. Nur ein PDF mit eingebettetem XML nach ZUGFeRD ab Version 2.0.1 bzw. Factur-X in einem Profil ab BASIC ist eine E-Rechnung. Ob ein PDF ein XML enthält, zeigt `erechnung lesen rechnung.pdf`.
 
 ### Was ist der Unterschied zwischen XRechnung und ZUGFeRD?
 
@@ -343,7 +345,7 @@ UBL und CII sind zwei XML-Syntaxen für dieselben Rechnungsdaten: UBL 2.1 und UN
 
 ### Wie öffne ich eine E-Rechnung?
 
-Eine E-Rechnung öffnen Sie mit einem Viewer, der das XML in eine Lesefassung umwandelt. Mit dem Werkzeug geht das über `erechnung anzeigen rechnung.xml -o ansicht.html`; die HTML-Datei öffnet jeder Browser. Ein ZUGFeRD-PDF können Sie zusätzlich mit jedem PDF-Programm öffnen, maßgeblich bleibt aber das XML. Mehr in [E-Rechnung empfangen](./e-rechnung-empfangen.md).
+Eine E-Rechnung öffnen Sie mit einem Viewer, der das XML als lesbare Ansicht darstellt. Mit dem Werkzeug geht das über `erechnung anzeigen rechnung.xml -o ansicht.html`; die HTML-Datei öffnet jeder Browser. Ein ZUGFeRD-PDF können Sie zusätzlich mit jedem PDF-Programm öffnen, maßgeblich bleibt aber das XML. Mehr in [E-Rechnung empfangen](./e-rechnung-empfangen.md).
 
 ### Ist eine XRechnung mit einem Fehler trotzdem eine E-Rechnung?
 
@@ -355,9 +357,11 @@ Ja, wenn Aussteller und Empfänger das Format vereinbart haben und es die richti
 
 ### Muss ich jede E-Rechnung prüfen?
 
-Sie müssen eingehende Rechnungen weiterhin selbst prüfen; eine Validierung ersetzt diese Prüfpflicht nicht (BMF-Schreiben vom 15.10.2025, Rn. 35a). Sie dürfen sich aber bei Sorgfalt eines ordentlichen Kaufmanns auf das Ergebnis einer geeigneten Validierungsanwendung verlassen. Das BMF empfiehlt, den Validierungsbericht aufzubewahren, zum Beispiel mit `erechnung validieren rechnung.xml --bericht berichte/`.
+Sie müssen eingehende Rechnungen weiterhin selbst prüfen; eine Validierung ersetzt diese Prüfpflicht nicht (BMF-Schreiben vom 15.10.2025, Rn. 35a). Sie dürfen sich aber bei Beachtung der Sorgfalt eines ordentlichen Kaufmanns auf das technische Ergebnis einer Validierung hinsichtlich Format und Geschäftsregeln verlassen; inhaltliche Fehler wie ein falscher Steuersatz erkennt sie nicht immer. Zum Nachweis bietet es sich laut BMF an, den Validierungsbericht aufzubewahren, zum Beispiel mit `erechnung validieren rechnung.xml --bericht berichte/`.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

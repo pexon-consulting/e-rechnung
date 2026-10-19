@@ -7,6 +7,7 @@ nur das XML ein (``erechnung zugferd --pdf``).
 
 from __future__ import annotations
 
+import re
 import tempfile
 from decimal import Decimal
 from pathlib import Path
@@ -128,7 +129,8 @@ def postscript(r: Rechnung) -> str:
     y -= 30
     for st in r.steuern:
         if st.befreiungsgrund:
-            s.text(50, y, f"{STEUERKATEGORIEN.get(st.kategorie, st.kategorie).split(' (')[0]}: {st.befreiungsgrund}", 8)
+            kurz = re.split(r" \(|, ", STEUERKATEGORIEN.get(st.kategorie, st.kategorie))[0]
+            s.text(50, y, f"{kurz}: {st.befreiungsgrund}", 8)
             y -= 11
     for notiz in r.notizen:
         s.text(50, y, notiz[:110], 8)

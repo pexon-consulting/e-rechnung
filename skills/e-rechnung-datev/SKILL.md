@@ -10,11 +10,12 @@ Werkzeug: `erechnung` aus https://github.com/pexon-consulting/e-rechnung.
 ## Ablauf
 
 1. Alle Rechnungen zuerst validieren. Nur gültige Dateien übernehmen:
-   `erechnung validieren eingang/*.xml eingang/*.pdf`
+   `erechnung validieren eingang/*`
 2. Buchungsstapel erzeugen:
    ```bash
-   erechnung datev eingang/*.xml eingang/*.pdf -o EXTF_Buchungsstapel.csv --skr 03 --kreditor 70000
+   erechnung datev eingang/* -o EXTF_Buchungsstapel.csv --skr 03 --kreditor 70000
    ```
+   `eingang/*` statt `eingang/*.xml eingang/*.pdf`: In zsh bricht ein Muster ohne Treffer den Befehl ab. Andere Dateien überspringt das Werkzeug mit Hinweis.
    Für SKR04 `--skr 04`. Berater- und Mandantennummer mit `--berater` und `--mandant`, sie müssen zum Mandanten in DATEV passen.
 3. Datei in DATEV Rechnungswesen über "Stapelverarbeitung" importieren oder der Steuerberatung schicken. Die Original-XML gehört zum Beleg und muss mit archiviert werden.
 
@@ -32,3 +33,7 @@ Werkzeug: `erechnung` aus https://github.com/pexon-consulting/e-rechnung.
 - Kein Upload in DATEV Unternehmen online und keine Belegbilder.
 - Reverse Charge (`AE`) und innergemeinschaftlicher Erwerb (`K`): Das Werkzeug setzt die USt-IdNr. des Lieferanten und gibt einen Hinweis aus, den BU-Schlüssel legt die Buchhaltung fest.
 - Die Hinweise am Ende der Ausgabe immer weitergeben, nicht verschlucken.
+
+## Hinweis an den Nutzer
+
+Schließe jede Antwort, die umsatzsteuerliche Folgen, Fristen, Aufbewahrung oder Buchungen betrifft, mit diesem Satz ab: "Hinweis: Das ist eine technische Auswertung, keine Steuer- oder Rechtsberatung. Klären Sie die Folgen mit Ihrer Steuerberatung."

@@ -1,15 +1,17 @@
 # XRechnung oder ZUGFeRD: Unterschied und welches Format Sie brauchen
 
-XRechnung oder ZUGFeRD: An Behörden schicken Sie eine XRechnung mit Leitweg-ID, im B2B sind beide Formate zulässig, ZUGFeRD ab Version 2.0.1 in jedem Profil außer MINIMUM und BASIC WL. Der Unterschied liegt im Aufbau: Eine XRechnung ist eine reine XML-Datei, eine ZUGFeRD-Rechnung ist ein PDF/A-3, in das ein XML eingebettet ist, so dass Menschen sie ohne Zusatzprogramm lesen können.
+XRechnung oder ZUGFeRD: An Behörden schicken Sie grundsätzlich eine XRechnung mit Leitweg-ID (beim Bund nach der ERechV, Direktaufträge bis 1.000 EUR ausgenommen), im B2B sind beide Formate zulässig, ZUGFeRD ab Version 2.0.1 in jedem Profil außer MINIMUM und BASIC WL. Der Unterschied liegt im Aufbau: Eine XRechnung ist eine reine XML-Datei, eine ZUGFeRD-Rechnung ist ein PDF/A-3, in das ein XML eingebettet ist, so dass Menschen sie ohne Zusatzprogramm lesen können.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Geschäftsführung, Buchhaltung und Steuerkanzleien. Technische Beispiele stehen weiter unten und sind optional.
 
 ## Das Wichtigste in Kürze
 
 - Eine XRechnung ist eine XML-Datei nach dem deutschen Standard der KoSIT, in UBL 2.1 oder CII D16B.
 - Eine ZUGFeRD-Rechnung ist eine Hybridrechnung: strukturierter XML-Teil und lesbarer PDF-Teil in einer Datei (UStAE 14.1 Abs. 14).
 - Laut UStAE 14.1 Abs. 14 ist ZUGFeRD ab Version 2.0.1 eine zulässige E-Rechnung, ausgenommen die Profile MINIMUM und BASIC WL.
-- Bei einer ZUGFeRD-Rechnung ist der XML-Teil maßgebend, nicht das PDF (BMF-FAQ).
+- Bei einer ZUGFeRD-Rechnung ist der XML-Teil maßgebend, nicht das PDF (BMF-Schreiben vom 15.10.2025, UStAE 14.4 Abs. 3).
 - Das ZUGFeRD-Profil XRECHNUNG verbindet beides: ein PDF, in dem eine vollständige XRechnung als `xrechnung.xml` steckt.
 - Mit `erechnung erstellen` entstehen XRechnung UBL, XRechnung CII, ZUGFeRD und ZUGFeRD-XRECHNUNG aus derselben Eingabedatei.
 
@@ -28,9 +30,9 @@ Eine XRechnung ist eine Rechnung als XML-Datei nach dem Standard XRechnung, eine
 | Profile | CIUS, dazu Extension und CVD | MINIMUM, BASIC WL, BASIC, EN 16931, EXTENDED, XRECHNUNG |
 | Kennung in BT-24 | `urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0` | je Profil, zum Beispiel `urn:cen.eu:en16931:2017` für EN 16931 |
 | Käuferreferenz BT-10 | Pflicht (BR-DE-15) | im Profil EN 16931 nicht Pflicht |
-| B2G (Behörden) | Standard, Leitweg-ID in BT-10 | Annahme mit der Rechnungseingangsplattform klären |
+| B2G (Behörden) | Standard, Leitweg-ID in BT-10 | beim Bund nur das XML im Profil XRECHNUNG, nicht das PDF; Länder und Kommunen vorher fragen |
 | B2B | zulässig | zulässig ab 2.0.1, außer MINIMUM und BASIC WL |
-| Dateigröße (Beispiel 01) | 5.643 Byte (UBL), 8.065 Byte (CII) | 28.164 Byte (PDF mit Lesefassung) |
+| Dateigröße (Beispiel 01) | 5.644 Byte (UBL), 8.066 Byte (CII) | 27.904 Byte (PDF mit Ansicht) |
 | Name des XML im PDF | - | `factur-x.xml`, beim Profil XRECHNUNG `xrechnung.xml` |
 | Offizielle Prüfung | KoSIT-Validator (Java), `erechnung validieren` | XML wie bei XRechnung, PDF/A-3 zum Beispiel mit Mustang (veraPDF) |
 
@@ -82,13 +84,13 @@ factur-x.xml aus rechnung_zugferd.pdf gespeichert als aus_zf.xml
 >       <ram:ID>urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0</ram:ID>
 ```
 
-Das Profil XRECHNUNG passt, wenn ein Empfänger eine XRechnung verlangt, Sie aber auch eine lesbare Fassung in derselben Datei mitschicken wollen. Ob eine bestimmte Behörde oder Plattform dieses Profil annimmt, klären Sie vorher mit der Rechnungsempfangsstelle.
+Das Profil XRECHNUNG passt, wenn ein Empfänger eine XRechnung verlangt, Sie aber auch eine lesbare Fassung in derselben Datei mitschicken wollen. Beim Bund nimmt die OZG-RE laut [FAQ](https://www.e-rechnung-bund.de/faq/) das Profil XRECHNUNG als rein strukturierte XML-Datei an; das ZUGFeRD-PDF selbst ist dort nicht vorgesehen. Bei Ländern und Kommunen klären Sie das Format vorher mit der Rechnungsempfangsstelle.
 
 ## XRechnung oder ZUGFeRD: Entscheidungshilfe
 
 | Ihre Situation | Empfehlung | Grund |
 | --- | --- | --- |
-| Rechnung an eine Behörde des Bundes | XRechnung mit Leitweg-ID in BT-10 | E-Rechnungsverordnung des Bundes (ERechV), Leitweg-ID ist im B2G Pflicht |
+| Rechnung an eine Behörde des Bundes | grundsätzlich XRechnung mit Leitweg-ID in BT-10 | E-Rechnungsverordnung des Bundes (ERechV); zulässig ist auch ein anderer Standard, der EN 16931, ERechV und den Nutzungsbedingungen entspricht; Direktaufträge bis 1.000 EUR ausgenommen |
 | Rechnung an eine Landes- oder Kommunalbehörde | XRechnung mit Leitweg-ID, Vorgaben der Stelle prüfen | Die Länder setzen die Richtlinie 2014/55/EU mit eigenen Regeln um |
 | Rechnung an ein Unternehmen, das nichts vorgibt | ZUGFeRD (Profil EN 16931) oder XRechnung | Beide sind zulässig; ZUGFeRD ist auch ohne Software lesbar |
 | Kunde verlangt ausdrücklich XRechnung | XRechnung oder ZUGFeRD-Profil XRECHNUNG | Das Profil XRECHNUNG enthält eine vollständige XRechnung |
@@ -109,7 +111,7 @@ Daraus folgt für die Praxis:
 - Ein bestimmtes Format, zum Beispiel XRechnung statt ZUGFeRD, kann der Kunde über den Vertrag vereinbaren. Ob eine solche Vorgabe in Ihrem Fall bindet, klären Sie mit der Steuerberatung oder rechtlich.
 - Auftragnehmer des Bundes müssen seit 27.11.2020 nach der ERechV elektronisch abrechnen, über die OZG-RE und mit Leitweg-ID. Direktaufträge bis 1.000 EUR sind laut [e-rechnung-bund.de](https://www.e-rechnung-bund.de/faq/) ausgenommen.
 
-## Beispiele
+## XRechnung und ZUGFeRD aus derselben Eingabe: Beispiele
 
 Alle Befehle laufen mit der Eingabe aus [`beispiele/01_standard/eingabe.json`](../../beispiele/01_standard/eingabe.json), kopiert als `rechnung.json`.
 
@@ -129,7 +131,7 @@ rechnung_cii.xml: xrechnung-cii, Rechnung RE-2026-0001, Zahlbetrag 2.009,91 EUR
 
 ### Beispiel 2: ZUGFeRD-PDF im Profil EN 16931
 
-Das ist die übliche Wahl im B2B, wenn der Kunde nichts vorgibt. Ohne `--pdf` erzeugt das Werkzeug über Ghostscript eine einfache PDF/A-3-Lesefassung.
+Das ist die übliche Wahl im B2B, wenn der Kunde nichts vorgibt. Ohne `--pdf` erzeugt das Werkzeug über Ghostscript eine einfache PDF/A-3-Ansicht.
 
 ```bash
 erechnung erstellen rechnung.json --format zugferd -o rechnung_zugferd.pdf
@@ -163,13 +165,13 @@ erechnung validieren rechnung_ubl.xml rechnung_cii.xml rechnung_zugferd.pdf rech
 
 ```text
 rechnung_ubl.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
 rechnung_cii.xml: XRechnung 3.0 (CII)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
 rechnung_zugferd.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
 rechnung_zugferd_xr.pdf: ZUGFeRD-Profil XRECHNUNG, XRechnung 3.0 (CII)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
 ```
 
 Der Exit-Code ist 0, wenn alle Dateien gültig sind. Die PDF/A-3-Konformität des PDF-Teils prüft `erechnung` nicht, nur das eingebettete XML.
@@ -226,12 +228,12 @@ erechnung validieren ohne_bt10_zf.pdf
 
 ```text
 ohne_bt10.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-DE-15: [BR-DE-15] Das Element "Buyer reference" (BT-10) muss übermittelt werden.
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-BR-DE-15: Käuferreferenz (BT-10) fehlt. In XRechnung Pflicht, bei Behörden die Leitweg-ID.
 ohne_bt10_zf.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
 ```
 
 Ein fehlendes BT-10 ist laut BMF-Schreiben vom 15.10.2025, Rn. 35a, umsatzsteuerlich unbeachtlich. Eine Behörde braucht die Leitweg-ID aber, um die Rechnung zuzuordnen.
@@ -248,7 +250,7 @@ Ein fehlendes BT-10 ist laut BMF-Schreiben vom 15.10.2025, Rn. 35a, umsatzsteuer
 3. Legen Sie die Rechnungsdaten als JSON an. Vorlage ist [`beispiele/01_standard/eingabe.json`](../../beispiele/01_standard/eingabe.json). Tragen Sie die Leitweg-ID oder die Referenz des Kunden in `leitweg_id` ein, dann passt dieselbe Datei für XRechnung und ZUGFeRD.
 4. Erzeugen Sie das gewünschte Format, zum Beispiel `--format xrechnung-ubl` für eine Behörde oder `--format zugferd` für ein Unternehmen. Mit `--validieren` prüft das Werkzeug das Ergebnis gleich mit.
 5. Prüfen Sie die Datei mit `erechnung validieren DATEI`. Gültig ist sie, wenn `GÜLTIG` und Exit-Code 0 erscheinen.
-6. Bewahren Sie Rechnung und Prüfbericht auf (`erechnung validieren --bericht berichte DATEI`), wie es das BMF-Schreiben vom 15.10.2025, Rn. 35a, empfiehlt.
+6. Bewahren Sie Rechnung und Prüfbericht auf (`erechnung validieren --bericht berichte DATEI`), wie es das BMF-Schreiben vom 15.10.2025, Rn. 35a, zum Nachweis nahelegt.
 7. Versenden Sie die Datei über den vereinbarten Weg, etwa per E-Mail oder über das Portal des Empfängers. Einen Versand oder Peppol-Zugang bietet das Werkzeug nicht.
 
 ## Häufige Fehler
@@ -256,7 +258,7 @@ Ein fehlendes BT-10 ist laut BMF-Schreiben vom 15.10.2025, Rn. 35a, umsatzsteuer
 | Fehler | Symptom | Lösung |
 | --- | --- | --- |
 | ZUGFeRD MINIMUM oder BASIC WL als E-Rechnung verschickt | Vorprüfung meldet `VP-FORMAT`, die Datei gilt nicht als E-Rechnung | Profil BASIC, EN 16931 oder XRECHNUNG verwenden |
-| ZUGFeRD EN 16931 an eine Behörde, die XRechnung verlangt | Ablehnung, häufig mit `[BR-DE-15]` bei Prüfung als XRechnung | XRechnung oder ZUGFeRD-Profil XRECHNUNG mit Leitweg-ID schicken |
+| ZUGFeRD EN 16931 an eine Behörde, die XRechnung verlangt | Ablehnung, häufig mit `[BR-DE-15]` bei Prüfung als XRechnung | XRechnung mit Leitweg-ID schicken; beim Bund ZUGFeRD XRECHNUNG nur als reine XML-Datei |
 | Profil XRECHNUNG ohne BT-10 oder Verkäuferkontakt | `UNGÜLTIG` mit BR-DE-15 oder BR-DE-2 | Dieselben Pflichtfelder wie bei einer XRechnung füllen |
 | PDF und XML zeigen unterschiedliche Beträge | Der Empfänger sieht im PDF etwas anderes, als seine Software einliest | XML und PDF aus denselben Daten erzeugen; maßgebend ist das XML |
 | Normales PDF ohne XML verschickt | `erechnung lesen` meldet: "Das PDF enthält kein eingebettetes Rechnungs-XML." | XML erzeugen und mit `erechnung zugferd XML --pdf RECHNUNG.pdf` einbetten |
@@ -274,7 +276,7 @@ Ja, ZUGFeRD ab Version 2.0.1 ist eine E-Rechnung, außer in den Profilen MINIMUM
 
 ### Muss ich an Behörden eine XRechnung schicken?
 
-Für Behörden ist die XRechnung mit Leitweg-ID in BT-10 der Standard. Auftragnehmer des Bundes rechnen nach der ERechV über die OZG-RE ab. Länder und Kommunen haben eigene Regeln; fragen Sie im Zweifel bei der Rechnungsempfangsstelle nach.
+Für Behörden ist die XRechnung mit Leitweg-ID in BT-10 der Standard. Auftragnehmer des Bundes rechnen nach der ERechV über die OZG-RE ab; Direktaufträge bis 1.000 EUR sind ausgenommen, und ZUGFeRD im Profil XRECHNUNG nimmt der Bund nur als reine XML-Datei an. Länder und Kommunen haben eigene Regeln; fragen Sie im Zweifel bei der Rechnungsempfangsstelle nach.
 
 ### Kann ich im B2B statt ZUGFeRD auch XRechnung schicken?
 
@@ -286,13 +288,15 @@ ZUGFeRD XRechnung ist das ZUGFeRD-Profil XRECHNUNG: ein PDF/A-3, in dem eine vol
 
 ### Welches Format ist kleiner, XRechnung oder ZUGFeRD?
 
-Die XRechnung ist kleiner. In Beispiel 01 hat die XRechnung UBL 5.643 Byte, die XRechnung CII 8.065 Byte und das ZUGFeRD-PDF 28.164 Byte. Für die Grenzen der OZG-RE (10 MB per E-Mail) spielt das keine Rolle.
+Die XRechnung ist kleiner. In Beispiel 01 hat die XRechnung UBL 5.644 Byte, die XRechnung CII 8.066 Byte und das ZUGFeRD-PDF 27.904 Byte. Für die Grenzen der OZG-RE (10 MB per E-Mail) spielt das keine Rolle.
 
 ### Kann ich eine XRechnung in ZUGFeRD umwandeln?
 
 Ja, eine XRechnung in CII können Sie mit `erechnung zugferd rechnung_cii.xml --pdf RECHNUNG.pdf` in ein vorhandenes PDF einbetten. Das Werkzeug erkennt die XRechnung-Kennung und bettet die Datei als `xrechnung.xml` im Profil XRECHNUNG ein. Eine XRechnung in UBL lässt sich so nicht einbetten, weil ZUGFeRD auf CII beruht. Einfacher ist es, beide Formate wie oben aus derselben JSON-Eingabe zu erzeugen. Details stehen in [PDF in ZUGFeRD umwandeln](./pdf-in-zugferd-umwandeln.md).
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

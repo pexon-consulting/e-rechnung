@@ -4,7 +4,7 @@
   "faellig": "2026-11-14",
   "leitweg_id": "BH-2026-0815",
   "verkaeufer": {
-    "name": "Nordlicht Software GmbH",
+    "name": "Nordlicht Beispiel GmbH",
     "adresse": {
       "strasse": "Musterstraße 1",
       "plz": "20095",
@@ -12,17 +12,17 @@
       "land": "DE"
     },
     "ust_id": "DE123456789",
-    "register": "HRB 123456",
-    "rechtliches": "Amtsgericht Hamburg HRB 123456, Geschäftsführung: Erika Mustermann",
+    "register": "HRB 000000",
+    "rechtliches": "Amtsgericht Hamburg HRB 000000, Geschäftsführung: Erika Mustermann",
     "elektronische_adresse": "rechnung@nordlicht.example",
     "kontakt": {
       "name": "Erika Mustermann",
-      "telefon": "+49 40 1234567",
+      "telefon": "+49 40 66969123",
       "email": "buchhaltung@nordlicht.example"
     }
   },
   "kaeufer": {
-    "name": "Alpen Technik GmbH",
+    "name": "Alpen Technik Beispiel GmbH",
     "adresse": {
       "strasse": "Ringstraße 10",
       "plz": "1010",
@@ -36,11 +36,11 @@
     "art": "58",
     "iban": "DE79000000001234567890",
     "bic": "",
-    "kontoinhaber": "Nordlicht Software GmbH"
+    "kontoinhaber": "Nordlicht Beispiel GmbH"
   },
   "lieferung": {
     "datum": "2026-10-12",
-    "name": "Alpen Technik GmbH",
+    "name": "Alpen Technik Beispiel GmbH",
     "adresse": {
       "strasse": "Ringstraße 10",
       "plz": "1010",

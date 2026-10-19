@@ -2,7 +2,9 @@
 
 Die Fehlermeldung BR-DE-15 bedeutet, dass in einer XRechnung die Käuferreferenz BT-10 fehlt; behoben wird sie mit einem Element `cbc:BuyerReference` (UBL) bzw. `ram:BuyerReference` (CII). Jede Validierungsmeldung besteht aus einem Regel-Code (BR-DE-... für deutsche XRechnung-Regeln, BR-CO-... für Rechenregeln der EN 16931, PEPPOL-... für übernommene Peppol-Regeln), einer Stufe und einem Text, der das betroffene BT-Feld nennt. Diese Referenz zeigt die häufigen Meldungen wörtlich, mit Ursache, Lösung als XML vorher und nachher und einer vorsichtigen umsatzsteuerlichen Einordnung.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Buchhaltung, Steuerkanzleien und IT, die eine Fehlermeldung der Validierung verstehen und beheben wollen.
 
 ## Das Wichtigste in Kürze
 
@@ -79,7 +81,7 @@ Ursache: Der Kontakt des Verkäufers fehlt ganz (BR-DE-2) oder ihm fehlt Telefon
 <!-- nachher: in cac:AccountingSupplierParty/cac:Party, nach cac:PartyLegalEntity -->
 <cac:Contact>
   <cbc:Name>Erika Mustermann</cbc:Name>
-  <cbc:Telephone>+49 40 1234567</cbc:Telephone>
+  <cbc:Telephone>+49 40 66969123</cbc:Telephone>
   <cbc:ElectronicMail>buchhaltung@nordlicht.example</cbc:ElectronicMail>
 </cac:Contact>
 ```
@@ -89,7 +91,7 @@ Ursache: Der Kontakt des Verkäufers fehlt ganz (BR-DE-2) oder ihm fehlt Telefon
 `[BR-DE-27] In BT-42 sollen mindestens drei Ziffern enthalten sein.`
 `[BR-DE-28] In BT-43 soll genau ein @-Zeichen enthalten sein, welches nicht von einem Leerzeichen, einem Punkt, aber mindestens zwei Zeichen auf beiden Seiten flankiert werden soll. Ein Punkt sollte nicht am Anfang oder am Ende stehen.`
 
-Ursache: Telefon wie `-` oder E-Mail wie `buchhaltung(at)nordlicht.example`. Nur Warnungen, die Rechnung bleibt gültig. Lösung: `<cbc:Telephone>+49 40 1234567</cbc:Telephone>` und `<cbc:ElectronicMail>buchhaltung@nordlicht.example</cbc:ElectronicMail>`. Umsatzsteuer: unbeachtlich (keine Pflichtangabe).
+Ursache: Telefon wie `-` oder E-Mail wie `buchhaltung(at)nordlicht.example`. Nur Warnungen, die Rechnung bleibt gültig. Lösung: `<cbc:Telephone>+49 40 66969123</cbc:Telephone>` und `<cbc:ElectronicMail>buchhaltung@nordlicht.example</cbc:ElectronicMail>`. Umsatzsteuer: unbeachtlich (keine Pflichtangabe).
 
 ### BR-DE-4
 
@@ -146,7 +148,7 @@ Ursache: `cac:PaymentMeans` fehlt ganz, also auch die Zahlungsart BT-81. Vorprü
   <cbc:PaymentID>RE-2026-0001</cbc:PaymentID>
   <cac:PayeeFinancialAccount>
     <cbc:ID>DE79000000001234567890</cbc:ID>
-    <cbc:Name>Nordlicht Software GmbH</cbc:Name>
+    <cbc:Name>Nordlicht Beispiel GmbH</cbc:Name>
   </cac:PayeeFinancialAccount>
 </cac:PaymentMeans>
 ```
@@ -162,7 +164,7 @@ Ursache: Zahlungsart 58 (SEPA-Überweisung), aber `cac:PayeeFinancialAccount` mi
 
 `[BR-DE-19] "Payment account identifier" (BT-84) soll eine korrekte IBAN enthalten, wenn in "Payment means type code" (BT-81) mit dem Code 58 SEPA als Zahlungsmittel gefordert wird.`
 
-Ursache: IBAN mit falscher Prüfziffer, z.B. `DE79000000001234567891`. Nur Warnung. Vorprüfung: `VP-IBAN: IBAN DE79000000001234567891 hat eine falsche Prüfziffer.` Lösung: IBAN korrigieren. Bei Lastschrift (59) heißt die entsprechende Warnung BR-DE-20 und betrifft BT-91. Umsatzsteuer: unbeachtlich, aber der Kunde kann nicht zahlen.
+Ursache: IBAN mit falscher Prüfziffer, z. B. `DE79000000001234567891`. Nur Warnung. Vorprüfung: `VP-IBAN: IBAN DE79000000001234567891 hat eine falsche Prüfziffer.` Lösung: IBAN korrigieren. Bei Lastschrift (59) heißt die entsprechende Warnung BR-DE-20 und betrifft BT-91. Umsatzsteuer: unbeachtlich, aber der Kunde kann nicht zahlen.
 
 ### BR-DE-30 und BR-DE-31
 
@@ -189,7 +191,7 @@ Ursache: SEPA-Lastschrift (Code 59) ohne Gläubiger-ID bzw. ohne IBAN des Zahler
 
 `[BR-DE-18] Skonto Zeilen in Invoice müssen diesem regulärem Ausdruck entsprechen: (^|\r?\n)#(SKONTO)#TAGE=([0-9]+#PROZENT=[0-9]+\.[0-9]{2})(#BASISBETRAG=-?[0-9]+\.[0-9]{2})?#$. Die Informationen zur Gewährung von Skonto müssen wie folgt im Element "Payment terms" (BT-20) übermittelt werden: ...` (gekürzt)
 
-Ursache: Skonto als freier Text in der Skonto-Syntax, z.B. `#SKONTO#10 Tage 2 %#`. Umsatzsteuer: keine Pflichtangabe, voraussichtlich unbeachtlich.
+Ursache: Skonto als freier Text in der Skonto-Syntax, z. B. `#SKONTO#10 Tage 2 %#`. Umsatzsteuer: keine Pflichtangabe, voraussichtlich unbeachtlich.
 
 ```xml
 <!-- vorher -->
@@ -259,7 +261,7 @@ Ursache: Steuerkategorie AE (§ 13b UStG) ohne Hinweistext. Vorprüfung: `VP-14-
 `[BR-DE-17] Mit dem Element "Invoice type code" (BT-3) sollen ausschließlich folgende Codes aus der Codeliste UNTDID 1001 übermittelt werden: 326 (Partial invoice), 380 (Commercial invoice), 384 (Corrected invoice), 389 (Self-billed invoice) und 381 (Credit note),875 (Partial construction invoice), 876 (Partial final construction invoice), 877 (Final construction invoice).`
 `[BR-CL-01]-The document type code MUST be coded by the invoice and credit note related code lists of UNTDID 1001.`
 
-Ursache: Ein Code, den XRechnung nicht vorsieht (z.B. 382), ergibt nur BR-DE-17 als Warnung; die Rechnung bleibt gültig. Ein Code, den es in UNTDID 1001 nicht gibt (z.B. 999), ergibt zusätzlich BR-CL-01 als Fehler. `erechnung erstellen` lehnt solche Codes schon beim Erzeugen ab (siehe Beispiel 4). Lösung: `<cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>`. Umsatzsteuer: keine Pflichtangabe, voraussichtlich unbeachtlich.
+Ursache: Ein Code, den XRechnung nicht vorsieht (z. B. 382), ergibt nur BR-DE-17 als Warnung; die Rechnung bleibt gültig. Ein Code, den es in UNTDID 1001 nicht gibt (z. B. 999), ergibt zusätzlich BR-CL-01 als Fehler. `erechnung erstellen` lehnt solche Codes schon beim Erzeugen ab (siehe Beispiel 4). Lösung: `<cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>`. Umsatzsteuer: keine Pflichtangabe, voraussichtlich unbeachtlich.
 
 ### BR-DE-26
 
@@ -325,7 +327,7 @@ Ursache: In CII steht ein Datum mit Bindestrichen. Das ist kein Schemafehler, so
 `VP-LESEN: Kein wohlgeformtes XML: Opening and ending tag mismatch: Note line 9 and Notiz, line 9, column 55 (<string>, line 9)`
 `VP-LESEN: Das PDF enthält kein eingebettetes Rechnungs-XML. Ein reines PDF ist nach § 14 UStG eine sonstige Rechnung, keine E-Rechnung.`
 
-Ursache: `SZENARIO` kommt bei einer Kennung ohne Prüfszenario, z.B. ZUGFeRD MINIMUM (`urn:factur-x.eu:1p0:minimum`, dazu `VP-FORMAT`). `VP-LESEN` kommt bei kaputtem XML oder einem PDF ohne XML; der Exit-Code ist dann 2. Umsatzsteuer: MINIMUM und BASIC WL sind laut UStAE 14.1 Abs. 14 keine E-Rechnung, ein reines PDF ist eine sonstige Rechnung, kaputtes XML ein Formatfehler (Rn. 6a).
+Ursache: `SZENARIO` kommt bei einer Kennung ohne Prüfszenario, z. B. ZUGFeRD MINIMUM (`urn:factur-x.eu:1p0:minimum`, dazu `VP-FORMAT`). `VP-LESEN` kommt bei kaputtem XML oder einem PDF ohne XML; der Exit-Code ist dann 2. Umsatzsteuer: MINIMUM und BASIC WL sind laut UStAE 14.1 Abs. 14 keine E-Rechnung, ein reines PDF ist eine sonstige Rechnung, kaputtes XML ein Formatfehler (Rn. 6a).
 
 ### BR-DE-TMP-32
 
@@ -340,7 +342,7 @@ Ursache: kein Liefer- oder Leistungsdatum. Nur Information, sichtbar mit `--alle
 </cac:InvoicePeriod>
 ```
 
-## Beispiele
+## Fehlermeldungen beheben: Beispiele vorher und nachher
 
 ### Beispiel 1: Nur die Fehlercodes einer Datei ausgeben
 
@@ -357,7 +359,7 @@ Nützlich, um viele Dateien nach Fehlerart zu sortieren.
 ```console
 $ erechnung validieren zwei_fehler.xml
 zwei_fehler.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  XSD: Element '{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}DueDate': This element is not expected. Expected is one of ( ... ).
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-BR-DE-15: Käuferreferenz (BT-10) fehlt. In XRechnung Pflicht, bei Behörden die Leitweg-ID.
@@ -391,7 +393,7 @@ $ echo $?
 ```console
 $ erechnung validieren nur_steuernummer.xml
 nur_steuernummer.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-CO-26: [BR-CO-26]-In order for the buyer to automatically identify a supplier, the Seller identifier (BT-29), the Seller legal registration identifier (BT-30) and/or the Seller VAT identifier (BT-31) shall be present.
 ```
 
@@ -401,7 +403,7 @@ Hier schweigt die Vorprüfung, weil die Steuernummer für § 14 Abs. 4 UStG gen�
 
 1. Datei prüfen: `erechnung validieren rechnung.xml` (oder das ZUGFeRD-PDF).
 2. Zuerst Zeilen mit `XSD` oder `VP-LESEN` beheben, dann neu prüfen.
-3. Den Code in der Übersicht oben suchen (Strg+F, z.B. "BR-DE-15").
+3. Den Code in der Übersicht oben suchen (Strg+F, z. B. "BR-DE-15").
 4. Das genannte BT-Feld in der Datei suchen oder ergänzen; die Ausschnitte oben zeigen Element und Position.
 5. Kommt die Rechnung aus einem Programm, den Fehler dort beheben, nicht nur in der Datei, sonst kommt er bei der nächsten Rechnung wieder.
 6. Neu prüfen, bis `GÜLTIG` dasteht. Warnungen mit `--streng` sichtbar machen.
@@ -410,7 +412,7 @@ Hier schweigt die Vorprüfung, weil die Steuernummer für § 14 Abs. 4 UStG gen�
 
 | Fehler | Symptom | Lösung |
 | --- | --- | --- |
-| Element an falscher Stelle eingefügt | Neuer `XSD`-Fehler "This element is not expected" | Reihenfolge wie im Beispiel einhalten, z.B. `cbc:BuyerReference` nach `cbc:DocumentCurrencyCode` |
+| Element an falscher Stelle eingefügt | Neuer `XSD`-Fehler "This element is not expected" | Reihenfolge wie im Beispiel einhalten, z. B. `cbc:BuyerReference` nach `cbc:DocumentCurrencyCode` |
 | Nur die Summe korrigiert | BR-CO-16 bleibt | Brutto und Zahlbetrag zusammen anpassen |
 | Steuersatz nur im Kopf geändert | BR-S-08 bleibt | Satz in Positionen (`ClassifiedTaxCategory`) und Aufschlüsselung (`TaxCategory`) gleich setzen |
 | Platzhalter-Telefon `-` | Warnung BR-DE-27 | echte Nummer mit mindestens drei Ziffern |
@@ -438,7 +440,9 @@ Ja, Warnungen machen eine Rechnung technisch nicht ungültig. Ob die Angabe inha
 
 BR-DE-17 bedeutet, dass die Rechnungsart BT-3 nicht in der Liste der XRechnung steht (326, 380, 381, 384, 389, 875, 876, 877). Es ist nur eine Warnung, die Rechnung bleibt gültig.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 
@@ -447,3 +451,5 @@ BR-DE-17 bedeutet, dass die Rechnungsart BT-3 nicht in der Liste der XRechnung s
 - [ZUGFeRD](./zugferd.md): Profile MINIMUM bis EXTENDED
 - [Gutschrift, Korrektur und Reverse Charge](./e-rechnung-gutschrift-korrektur.md)
 - [Leitweg-ID](./leitweg-id.md) und die gültigen [Beispiele](../../beispiele/README.md) zum Vergleichen
+- [BMF-Schreiben zur E-Rechnung: was Formatfehler und Geschäftsregelfehler bedeuten](./bmf-schreiben-e-rechnung.md)
+- [Lexware, sevdesk, SAP: E-Rechnung aus dem eigenen Programm testen](./e-rechnung-buchhaltungssoftware.md)

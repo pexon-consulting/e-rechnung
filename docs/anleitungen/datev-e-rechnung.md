@@ -2,7 +2,9 @@
 
 Für DATEV und E-Rechnung gibt es zwei Wege: Die E-Rechnung kommt als Beleg in DATEV Unternehmen online bzw. Belege online (dort wird sie geprüft, visualisiert und abgelegt), oder ein Fremdprogramm liest die XML-Daten und übergibt sie als Buchungsstapel im DATEV-Format (EXTF). Den zweiten Weg erledigt `erechnung datev`: Er macht aus XRechnung- und ZUGFeRD-Dateien eine EXTF-Datei mit einer Buchungszeile je Steuersatz, die die Buchhaltung prüft und importiert.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Buchhaltung und Steuerkanzleien, die mit DATEV arbeiten.
 
 ## Das Wichtigste in Kürze
 
@@ -15,7 +17,7 @@ Für DATEV und E-Rechnung gibt es zwei Wege: Die E-Rechnung kommt als Beleg in D
 
 ## Wie kommen E-Rechnungen in DATEV?
 
-Eine E-Rechnung ist laut § 14 Abs. 1 Satz 3 UStG eine Rechnung in einem strukturierten elektronischen Format, das eine elektronische Verarbeitung ermöglicht. Für DATEV heißt das: Entscheidend sind die XML-Daten, das PDF ist nur eine Lesefassung.
+Eine E-Rechnung ist laut § 14 Abs. 1 Satz 3 UStG eine Rechnung in einem strukturierten elektronischen Format, das eine elektronische Verarbeitung ermöglicht. Für DATEV heißt das: Entscheidend sind die XML-Daten, das PDF ist nur eine Ansicht.
 
 | Weg | Was passiert | Quelle |
 | --- | --- | --- |
@@ -25,7 +27,7 @@ Eine E-Rechnung ist laut § 14 Abs. 1 Satz 3 UStG eine Rechnung in einem struktu
 
 Welchen Weg Ihre Kanzlei nutzt, hängt von deren DATEV-Ausstattung ab. Der Buchungsstapel ist sinnvoll, wenn die E-Rechnungen schon bei Ihnen liegen (Postfach, Ordner, eigenes Programm) und die Buchungsvorschläge ohne Abtippen in DATEV ankommen sollen.
 
-Prüfen Sie Eingangsrechnungen vor dem Export: `erechnung validieren eingang/*.xml` prüft mit den offiziellen KoSIT-Regeln. Das BMF-Schreiben vom 15.10.2025, Rn. 35a, empfiehlt, den Validierungsbericht aufzubewahren; dafür gibt es `--bericht`.
+Prüfen Sie Eingangsrechnungen vor dem Export: `erechnung validieren eingang/*.xml` prüft mit den offiziellen KoSIT-Regeln. Laut BMF-Schreiben vom 15.10.2025, Rn. 35a, bietet es sich zum Nachweis an, den Validierungsbericht aufzubewahren; dafür gibt es `--bericht`.
 
 ## Was ist ein DATEV-Buchungsstapel (EXTF)?
 
@@ -115,14 +117,14 @@ Diese Spalten füllt `erechnung datev`, alle anderen bleiben leer:
 | Nr. | Spalte | Inhalt aus der E-Rechnung | Beispiel |
 | --- | --- | --- | --- |
 | 1 | Umsatz (ohne Soll/Haben-Kz) | Bruttobetrag je Steuersatz (BT-116 plus BT-117), Komma als Dezimalzeichen | `2009,91` |
-| 2 | Soll/Haben-Kennzeichen | `H` bei Rechnungen, `S` bei Gutschriften (bezogen auf das Konto, also den Kreditor) | `"H"` |
+| 2 | Soll/Haben-Kennzeichen | `H` bei Rechnungen, `S` bei Minderungen mit Rechnungsart 381 (bezogen auf das Konto, also den Kreditor) | `"H"` |
 | 3 | WKZ Umsatz | immer EUR | `"EUR"` |
 | 7 | Konto | Kreditor: Sammelkreditor oder Treffer aus `--kreditoren` | `70000` |
 | 8 | Gegenkonto (ohne BU-Schlüssel) | Aufwandskonto 4980 (SKR03), 6850 (SKR04) oder `--konto` | `6850` |
 | 9 | BU-Schlüssel | 9 bei 19 %, 8 bei 7 %, sonst leer | `"9"` |
 | 10 | Belegdatum | Rechnungsdatum BT-2 als TTMM | `1510` |
 | 11 | Belegfeld 1 | Rechnungsnummer BT-1, höchstens 36 Zeichen, nur Buchstaben, Ziffern und `$ & % * + - /` | `"RE-2026-0001"` |
-| 14 | Buchungstext | Name des Verkäufers (BT-27) und Rechnungsnummer, höchstens 60 Zeichen | `"Nordlicht Software GmbH RE-2026-0001"` |
+| 14 | Buchungstext | Name des Verkäufers (BT-27) und Rechnungsnummer, höchstens 60 Zeichen | `"Nordlicht Beispiel GmbH RE-2026-0001"` |
 | 20 | Beleglink | bleibt leer | |
 | 21 und 22 | Beleginfo Art 1 und Inhalt 1 | `E-Rechnung` und das erkannte Format | `"XRechnung 3.0 (UBL)"` |
 | 40 | EU-Land u. USt-IdNr. | USt-IdNr. des Verkäufers (BT-31), nur bei Kategorie AE und K | `"DE123456789"` |
@@ -134,7 +136,7 @@ Diese Spalten füllt `erechnung datev`, alle anderen bleiben leer:
 Die erste Datenzeile der Beispieldatei, Felder 1 bis 22:
 
 ```text
-2009,91;"H";"EUR";;;;70000;6850;"9";1510;"RE-2026-0001";;;"Nordlicht Software GmbH RE-2026-0001";;;;;;;"E-Rechnung";"XRechnung 3.0 (UBL)"
+2009,91;"H";"EUR";;;;70000;6850;"9";1510;"RE-2026-0001";;;"Nordlicht Beispiel GmbH RE-2026-0001";;;;;;;"E-Rechnung";"XRechnung 3.0 (UBL)"
 ```
 
 In Worten: 2.009,91 EUR brutto, Kreditor 70000 im Haben, Aufwandskonto 6850 im Soll, BU-Schlüssel 9 zieht 19 % Vorsteuer heraus, Belegdatum 15.10., Belegfeld 1 ist die Rechnungsnummer.
@@ -144,8 +146,8 @@ In Worten: 2.009,91 EUR brutto, Kreditor 70000 im Haben, Aufwandskonto 6850 im S
 Enthält eine Rechnung mehrere Steuersätze, schreibt der Export je Zeile der Umsatzsteuer-Aufschlüsselung (BG-23) eine Buchung. Beispiel 02 hat 7 % und 19 %:
 
 ```text
-160,18;"H";"EUR";;;;70000;6850;"8";1510;"RE-2026-0002";;;"Buchhandlung am Markt GmbH RE-2026-0002"
-47,46;"H";"EUR";;;;70000;6850;"9";1510;"RE-2026-0002";;;"Buchhandlung am Markt GmbH RE-2026-0002"
+160,18;"H";"EUR";;;;70000;6850;"8";1510;"RE-2026-0002";;;"Muster Buchhandlung GmbH RE-2026-0002"
+47,46;"H";"EUR";;;;70000;6850;"9";1510;"RE-2026-0002";;;"Muster Buchhandlung GmbH RE-2026-0002"
 ```
 
 Beide Zeilen tragen dieselbe Rechnungsnummer in Belegfeld 1, damit der offene Posten zusammenpasst. Ein Betrag von 0,00 EUR je Steuersatz wird übersprungen.
@@ -156,9 +158,9 @@ Ohne weitere Angabe bucht der Export alle Rechnungen auf den Sammelkreditor 7000
 
 ```json
 {
-  "Nordlicht Software GmbH": 70010,
-  "Buchhandlung am Markt GmbH": 70020,
-  "Elektro Schmidt GmbH": 70030
+  "Nordlicht Beispiel GmbH": 70010,
+  "Muster Buchhandlung GmbH": 70020,
+  "Muster Elektro GmbH": 70030
 }
 ```
 
@@ -201,18 +203,18 @@ erechnung datev beispiele/01_standard/xrechnung_ubl.xml --konto 4900 -o EXTF_Buc
 EXTF_Buchungsstapel.csv: 1 Rechnungen, 1 Buchungszeilen (EXTF 700, SKR 03)
 ```
 
-## Gutschriften, Reverse Charge und innergemeinschaftliche Fälle
+## Minderungen (381), Reverse Charge und innergemeinschaftliche Fälle
 
-Gutschriften mit Rechnungsart 381 bucht der Export mit Soll-Kennzeichen auf dem Kreditor, also umgekehrt zur Rechnung:
+Minderungen mit Rechnungsart 381 bucht der Export mit Soll-Kennzeichen auf dem Kreditor, also umgekehrt zur Rechnung:
 
 ```text
-285,60;"S";"EUR";;;;70000;6850;"9";1510;"GS-2026-0001";;;"Nordlicht Software GmbH GS-2026-0001"
+285,60;"S";"EUR";;;;70000;6850;"9";1510;"GS-2026-0001";;;"Nordlicht Beispiel GmbH GS-2026-0001"
 ```
 
 Bei Reverse Charge nach § 13b UStG (Steuerkategorie AE) und innergemeinschaftlichen Fällen (Kategorie K) weist die Rechnung keine Steuer aus. Der Export setzt deshalb keinen BU-Schlüssel, trägt die USt-IdNr. des Verkäufers in Spalte 40 ein und gibt einen Hinweis aus:
 
 ```text
-18500,00;"H";"EUR";;;;70000;6850;;1510;"RE-2026-0004";;;"Elektro Schmidt GmbH RE-2026-0004"
+18500,00;"H";"EUR";;;;70000;6850;;1510;"RE-2026-0004";;;"Muster Elektro GmbH RE-2026-0004"
 ```
 
 Welcher BU-Schlüssel in diesen Fällen richtig ist, klären Sie mit der Steuerberatung. Rechnungen von Kleinunternehmern (Kategorie E) bekommen ebenfalls keinen BU-Schlüssel, weil sie keine Umsatzsteuer ausweisen.
@@ -253,7 +255,7 @@ Die EXTF-Datei wird in DATEV-Rechnungswesen als Buchungsstapel im DATEV-Format i
 - Nur Euro und nur ein Wirtschaftsjahr je Stapel.
 - Kein Versand und keine Archivierung. Die E-Rechnung selbst bewahren Sie im Ursprungsformat auf, laut BMF-Schreiben vom 15.10.2025, Rn. 60, acht Jahre.
 
-## Beispiele
+## DATEV-Buchungsstapel aus E-Rechnungen: Beispiele
 
 ### Beispiel 1: Einen Ordner mit Eingangsrechnungen exportieren
 
@@ -324,7 +326,7 @@ print(daten.decode("cp1252").splitlines()[0])
 
 Für Firmen, deren Wirtschaftsjahr nicht am 1.1. beginnt: Rechnungen vom Oktober 2026 und Januar 2027 liegen dann im selben Stapel (Wirtschaftsjahr ab 1.7.2026).
 
-## Schritt für Schritt
+## Schritt für Schritt: E-Rechnungen an DATEV übergeben
 
 1. Sammeln Sie die Eingangsrechnungen eines Zeitraums als Dateien (XRechnung als `.xml`, ZUGFeRD als `.pdf`) in einem Ordner. Dateien, die keine E-Rechnung enthalten, werden mit Hinweis übersprungen.
 2. Installieren Sie das Werkzeug (Python 3.10 oder neuer, kein Java):
@@ -340,7 +342,7 @@ Für Firmen, deren Wirtschaftsjahr nicht am 1.1. beginnt: Rechnungen vom Oktober
    ```bash
    erechnung datev eingang/* --berater 1001 --mandant 1 --skr 04 --kreditoren kreditoren.json -o EXTF_Buchungsstapel.csv
    ```
-6. Lesen Sie die Hinweise in der Ausgabe. Rechnungen mit Reverse Charge oder innergemeinschaftlichem Bezug und Lieferanten auf dem Sammelkreditor gehören vor dem Import geklärt.
+6. Lesen Sie die Hinweise in der Ausgabe. Rechnungen mit Reverse Charge oder innergemeinschaftlichem Bezug und Lieferanten auf dem Sammelkreditor gehören vor dem Import geklärt. Konten und BU-Schlüssel sind Vorschläge; ob sie für Ihr Unternehmen passen, klärt Ihre Steuerberatung.
 7. Übergeben Sie die CSV-Datei an die Buchhaltung bzw. importieren Sie sie in DATEV-Rechnungswesen. Kontrollieren Sie Konten und BU-Schlüssel, bevor der Stapel festgeschrieben wird.
 8. Bewahren Sie die E-Rechnungen im Ursprungsformat und die Prüfberichte auf.
 
@@ -388,7 +390,9 @@ Je Steuersatz einer Rechnung entsteht eine eigene Zeile. Eine Rechnung mit 7 % u
 
 Der Export übernimmt den Nettobetrag ohne BU-Schlüssel und gibt einen Hinweis aus. Den passenden Schlüssel für die Steuerschuldnerschaft des Leistungsempfängers legen Sie mit der Steuerberatung fest.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

@@ -46,6 +46,23 @@ def test_vorpruefung_kleinunternehmer_ohne_grund():
     assert "VP-14-4-8" in _codes(validieren(xml, offiziell_pruefen=False).vorpruefung)
 
 
+def test_vorpruefung_reverse_charge_mit_registernummer_statt_ust_id():
+    r = beispiel("05_reverse_charge_13b")
+    r.kaeufer.ust_id = ""
+    r.kaeufer.register = "HRB 000000"
+    assert "VP-13B" not in _codes(validieren(ubl(r), offiziell_pruefen=False).vorpruefung)
+    r.kaeufer.register = ""
+    assert "VP-13B" in _codes(validieren(ubl(r), offiziell_pruefen=False).vorpruefung)
+
+
+@braucht_saxon
+def test_offiziell_reverse_charge_mit_registernummer_statt_ust_id():
+    r = beispiel("05_reverse_charge_13b")
+    r.kaeufer.ust_id = ""
+    r.kaeufer.register = "HRB 000000"
+    assert "BR-AE-02" not in _codes(offiziell.validieren(ubl(r)).befunde)
+
+
 def test_kaputte_datei_ergibt_befund():
     e = validieren(b"<kaputt", offiziell_pruefen=False)
     assert not e.vorpruefung_ok

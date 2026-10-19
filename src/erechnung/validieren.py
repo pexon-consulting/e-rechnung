@@ -48,7 +48,7 @@ def leitweg_pruefziffer(grob: str, fein: str = "") -> str:
 
 
 def leitweg_id_gueltig(leitweg_id: str) -> bool:
-    """Format und Prüfziffer einer Leitweg-ID prüfen, z.B. 04011000-1234512345-06."""
+    """Format und Prüfziffer einer Leitweg-ID prüfen, z. B. 04011000-1234512345-06."""
     m = LEITWEG_MUSTER.fullmatch((leitweg_id or "").strip())
     return bool(m) and leitweg_pruefziffer(m.group(1), m.group(2) or "") == m.group(3)
 
@@ -93,13 +93,13 @@ def vorpruefung(r: Rechnung, fmt: Format) -> list[Befund]:
         if not p.name:
             _f(b, "error", "VP-14-4-5", f"Position {p.id}: Bezeichnung fehlt (BT-153).")
         if p.einheit and p.einheit not in EINHEITEN and not re.fullmatch(r"[A-Z0-9]{2,3}", p.einheit):
-            _f(b, "error", "VP-EINHEIT", f"Position {p.id}: Einheit {p.einheit!r} ist kein UN/ECE-Code (z.B. C62, HUR, DAY).")
+            _f(b, "error", "VP-EINHEIT", f"Position {p.id}: Einheit {p.einheit!r} ist kein UN/ECE-Code (z. B. C62, HUR, DAY).")
     for st in r.steuern:
         if st.kategorie in BEFREIUNGSGRUND_PFLICHT and not (st.befreiungsgrund or st.befreiungsgrund_code):
             _f(b, "error", "VP-14-4-8", f"Steuerkategorie {st.kategorie} ohne Befreiungsgrund (BT-120/121). "
                "Hinweis auf Steuerbefreiung oder Reverse Charge ist Pflicht (§ 14 Abs. 4 Nr. 8, § 14a UStG).")
-        if st.kategorie == "AE" and not r.kaeufer.ust_id:
-            _f(b, "error", "VP-13B", "Reverse Charge (AE) ohne USt-IdNr. des Käufers (BT-48).")
+        if st.kategorie == "AE" and not (r.kaeufer.ust_id or r.kaeufer.register):
+            _f(b, "error", "VP-13B", "Reverse Charge (AE) ohne USt-IdNr. (BT-48) oder Registernummer (BT-47) des Käufers.")
         if st.kategorie == "K" and not r.kaeufer.ust_id:
             _f(b, "error", "VP-IG", "Innergemeinschaftliche Lieferung (K) ohne USt-IdNr. des Käufers (BT-48).")
 
@@ -184,7 +184,7 @@ class Ergebnis:
 def bericht_speichern(e: Ergebnis, quelle: bytes, ordner: str | Path) -> Path:
     """Prüfbericht als JSON ablegen, mit Zeitpunkt, Regelversion und SHA-256 der geprüften Datei.
 
-    Das BMF-Schreiben vom 15.10.2025 (Rn. 35a) empfiehlt, das Ergebnis der Validierung aufzubewahren.
+    Laut BMF-Schreiben vom 15.10.2025 (Rn. 35a) bietet es sich zum Nachweis an, den Validierungsbericht aufzubewahren.
     """
     import hashlib
     import json
@@ -200,6 +200,7 @@ def bericht_speichern(e: Ergebnis, quelle: bytes, ordner: str | Path) -> Path:
         "werkzeug": f"e-rechnung {__version__}",
         "regeln": offiziell.KONFIG_VERSION,
         "sha256": pruefsumme,
+        "hinweis": "Erstellt mit e-rechnung auf Basis der KoSIT-Prüfregeln. Kein Prüfbericht der KoSIT.",
         **e.als_dict(),
     }
     datei = ziel / f"{Path(e.datei).name}.{pruefsumme[:12]}.validierungsbericht.json"

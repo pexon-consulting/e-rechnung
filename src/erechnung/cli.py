@@ -77,7 +77,7 @@ def befehl_lesen(a) -> int:
             _ausgabe(f"  ... {len(r.positionen) - a.positionen} weitere")
         for st in r.steuern:
             satz = f"{st.satz.normalize()} %" if st.satz is not None else ""
-            _ausgabe(f"USt:          {text(STEUERKATEGORIEN, st.kategorie)[:40]} {satz}: {_geld(st.betrag, r.waehrung)} auf {_geld(st.basis, r.waehrung)}")
+            _ausgabe(f"USt:          {text(STEUERKATEGORIEN, st.kategorie)} {satz}: {_geld(st.betrag, r.waehrung)} auf {_geld(st.basis, r.waehrung)}")
         _ausgabe(f"Netto:        {_geld(r.summen.netto, r.waehrung)}")
         _ausgabe(f"Brutto:       {_geld(r.summen.brutto, r.waehrung)}")
         _ausgabe(f"Zahlbetrag:   {_geld(r.summen.zahlbetrag, r.waehrung)}" + (f", fällig {r.faellig:%d.%m.%Y}" if r.faellig else ""))
@@ -122,7 +122,7 @@ def befehl_validieren(a) -> int:
         if e.offiziell is not None:
             o = e.offiziell
             urteil = "GÜLTIG" if o.akzeptiert else "UNGÜLTIG"
-            _ausgabe(f"  KoSIT ({o.konfiguration}): {urteil}, Szenario {o.szenario}, "
+            _ausgabe(f"  KoSIT-Regeln ({o.konfiguration}): {urteil}, Szenario {o.szenario}, "
                      f"{len(o.fehler)} Fehler, {len(o.warnungen)} Warnungen")
             if o.hinweis:
                 _ausgabe(f"  Hinweis: {o.hinweis}")
@@ -166,9 +166,13 @@ def befehl_anzeigen(a) -> int:
 
 
 def _erzeugen(r, fmt: str, vorlage: str | None, pdfa: bool) -> tuple[bytes, str]:
+    from .codelisten import XRECHNUNG_ARTEN
     from .schreiben_cii import cii
     from .schreiben_ubl import ubl
 
+    if fmt.startswith(("xrechnung", "zugferd-xrechnung")) and r.art not in XRECHNUNG_ARTEN:
+        raise ValueError(f"Rechnungsart {r.art} ist in XRechnung nicht erlaubt (BR-DE-17). Erlaubt: "
+                         f"{', '.join(sorted(XRECHNUNG_ARTEN))}.")
     syntax, spezifikation = FORMATE[fmt]
     r.spezifikation = spezifikation
     if syntax == "ubl":
@@ -195,15 +199,13 @@ def befehl_erstellen(a) -> int:
     except (Eingabefehler, ValueError, OSError) as e:
         _ausgabe(f"Eingabe fehlerhaft: {e}", sys.stderr)
         return 1
-    from .codelisten import XRECHNUNG_ARTEN
     from .validieren import validieren
 
-    if a.format.startswith(("xrechnung", "zugferd-xrechnung")) and r.art not in XRECHNUNG_ARTEN:
-        _ausgabe(f"Rechnungsart {r.art} ist in XRechnung nicht erlaubt (BR-DE-17). Erlaubt: "
-                 f"{', '.join(sorted(XRECHNUNG_ARTEN))}.", sys.stderr)
-        return 1
     try:
         daten, endung = _erzeugen(r, a.format, a.pdf, a.pdfa)
+    except ValueError as e:
+        _ausgabe(str(e), sys.stderr)
+        return 1
     except RuntimeError as e:
         _ausgabe(str(e), sys.stderr)
         return 2
@@ -211,13 +213,15 @@ def befehl_erstellen(a) -> int:
     ziel.write_bytes(daten)
     _ausgabe(f"{ziel}: {a.format}, Rechnung {r.nummer}, Zahlbetrag {_geld(r.summen.zahlbetrag, r.waehrung)}")
     if not a.validieren:
-        for b in validieren(daten, offiziell_pruefen=False).vorpruefung:
-            if b.stufe != "information":
-                _ausgabe(_befund_zeile(b), sys.stderr)
+        hinweise = [b for b in validieren(daten, offiziell_pruefen=False).vorpruefung if b.stufe != "information"]
+        for b in hinweise:
+            _ausgabe(_befund_zeile(b), sys.stderr)
+        if any(b.stufe == "error" for b in hinweise):
+            _ausgabe("  Nicht mit den KoSIT-Regeln geprüft. Prüfen mit: erechnung validieren " + str(ziel), sys.stderr)
     if a.validieren:
         e = validieren(ziel, offline=a.offline)
         if e.offiziell:
-            _ausgabe(f"  KoSIT: {'GÜLTIG' if e.offiziell.akzeptiert else 'UNGÜLTIG'} ({e.offiziell.szenario})")
+            _ausgabe(f"  KoSIT-Regeln: {'GÜLTIG' if e.offiziell.akzeptiert else 'UNGÜLTIG'} ({e.offiziell.szenario})")
             for b in e.offiziell.befunde:
                 if b.stufe != "information":
                     _ausgabe(_befund_zeile(b))
@@ -391,7 +395,7 @@ def parser() -> argparse.ArgumentParser:
     s.set_defaults(f=befehl_datev)
 
     s = u.add_parser("leitweg-id", help="Leitweg-ID prüfen oder die Prüfziffer berechnen")
-    s.add_argument("leitweg_id", nargs="+", help="z.B. 04011000-1234512345-06 oder ohne Prüfziffer 04011000-1234512345")
+    s.add_argument("leitweg_id", nargs="+", help="z. B. 04011000-1234512345-06 oder ohne Prüfziffer 04011000-1234512345")
     s.set_defaults(f=befehl_leitweg_id)
 
     s = u.add_parser("beispiele", help="Beispielrechnungen (JSON, XRechnung UBL und CII) in einen Ordner schreiben")

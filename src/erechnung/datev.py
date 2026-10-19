@@ -68,8 +68,23 @@ class Einstellungen:
     exportiert_von: str = "e-rechnung"
 
 
+FORMELZEICHEN = ("=", "+", "-", "@")
+UMBRUECHE = "\r\n\t\v\f\x85\u2028\u2029"
+
+
 def _text(wert: str, laenge: int) -> str:
-    wert = (wert or "").replace('"', '""')[:laenge]
+    """Textfeld in Anführungszeichen, einzeilig und ohne Formelanfang.
+
+    Werte wie der Lieferantenname stammen aus fremden Rechnungen. Beginnt ein
+    Wert mit = + - @, würde Excel ihn beim Öffnen der CSV als Formel auswerten;
+    ein vorangestelltes Hochkomma macht daraus Text.
+    """
+    wert = wert or ""
+    if any(z in wert for z in UMBRUECHE):
+        wert = " ".join(wert.split())
+    if wert.startswith(FORMELZEICHEN):
+        wert = "'" + wert
+    wert = wert[:laenge].replace('"', '""')
     return f'"{wert}"' if wert else ""
 
 

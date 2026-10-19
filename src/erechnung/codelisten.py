@@ -25,8 +25,8 @@ GUTSCHRIFT_ARTEN = {"381", "261", "262", "296", "308", "396", "420", "458", "532
 STEUERKATEGORIEN = {
     "S": "Regelsteuersatz oder ermäßigter Satz",
     "Z": "Nullsatz (Umsatzsteuer 0 %)",
-    "E": "Steuerbefreit (z.B. § 4 UStG, Kleinunternehmer § 19 UStG)",
-    "AE": "Steuerschuldnerschaft des Leistungsempfängers (Reverse Charge, § 13b UStG)",
+    "E": "Steuerbefreit, z. B. § 4 UStG oder Kleinunternehmer § 19 UStG",
+    "AE": "Steuerschuldnerschaft des Leistungsempfängers, Reverse Charge § 13b UStG",
     "K": "Innergemeinschaftliche Lieferung oder Leistung",
     "G": "Ausfuhrlieferung außerhalb der EU",
     "O": "Nicht steuerbar",
@@ -115,7 +115,7 @@ KEINE_E_RECHNUNG = {"MINIMUM", "BASIC WL"}
 
 
 def text(liste: dict[str, str], code: str) -> str:
-    """Code mit deutschem Text, z.B. ``58 (SEPA-Überweisung)``."""
+    """Code mit deutschem Text, z. B. ``58 (SEPA-Überweisung)``."""
     if not code:
         return ""
     beschreibung = liste.get(code)

@@ -41,7 +41,7 @@ class Partei:
     kennung: str = ""  # BT-29 / BT-46
     ust_id: str = ""  # BT-31 / BT-48
     steuernummer: str = ""  # BT-32
-    register: str = ""  # BT-30 / BT-47, z.B. HRB 12345
+    register: str = ""  # BT-30 / BT-47, z. B. HRB 12345
     rechtliches: str = ""  # BT-33
     elektronische_adresse: str = ""  # BT-34 / BT-49
     elektronische_adresse_schema: str = "EM"  # EAS-Code, EM = E-Mail, 0204 = Leitweg-ID
@@ -89,7 +89,7 @@ class Position:
     id: str  # BT-126
     name: str  # BT-153
     menge: Decimal  # BT-129
-    einheit: str  # BT-130, UNECE Rec 20, z.B. C62 Stück, HUR Stunde
+    einheit: str  # BT-130, UNECE Rec 20, z. B. C62 Stück, HUR Stunde
     preis: Decimal  # BT-146, Nettopreis
     kategorie: str = "S"  # BT-151, UNTDID 5305
     satz: Decimal | None = Decimal("19")  # BT-152

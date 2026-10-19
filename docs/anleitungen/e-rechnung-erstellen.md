@@ -2,22 +2,24 @@
 
 Eine E-Rechnung erstellen Sie, indem Sie die Rechnungsdaten in einem strukturierten Format nach EN 16931 ausgeben, also als XRechnung (UBL oder CII) oder als ZUGFeRD-PDF mit eingebettetem XML, und das Ergebnis mit den offiziellen KoSIT-Regeln prüfen. Kostenlos geht das mit dem Open-Source-Werkzeug `erechnung`: Sie schreiben die Rechnungsdaten in eine JSON- oder TOML-Datei, `erechnung erstellen rechnung.json --validieren` rechnet Summen und Steuern selbst aus, schreibt die Datei und prüft sie sofort.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Selbstständige, Buchhaltung und Entwickler, die Rechnungen aus einer Datei erzeugen wollen. Wer ein Rechnungsprogramm nutzt, erstellt E-Rechnungen meist direkt dort.
 
 ## Das Wichtigste in Kürze
 
-- Eine E-Rechnung ist nach § 14 Abs. 1 Satz 3 UStG eine Rechnung in einem strukturierten elektronischen Format, das eine elektronische Verarbeitung ermöglicht; ein reines PDF gehört nicht dazu.
+- Eine E-Rechnung muss als XRechnung oder als ZUGFeRD ab Version 2.0.1 im Profil BASIC oder höher vorliegen, ein reines PDF reicht nicht (Details: [Was ist eine E-Rechnung?](./was-ist-eine-e-rechnung.md)).
 - Es gibt drei Wege: das eigene Buchhaltungsprogramm, ein Portal wie die Weberfassung der OZG-RE für Rechnungen an den Bund, oder ein Open-Source-Werkzeug.
 - Mit `erechnung erstellen` erzeugen Sie aus einer JSON- oder TOML-Datei sechs Formate: XRechnung UBL, XRechnung CII, EN 16931 UBL und CII sowie ZUGFeRD-PDF in den Profilen EN 16931 und XRECHNUNG.
 - Summen, Steuerbeträge und die Umsatzsteuer-Aufschlüsselung rechnet das Werkzeug selbst, kaufmännisch gerundet je Steuersatz, so wie die KoSIT-Regeln nachrechnen.
 - Mit `--validieren` prüft das Werkzeug das Ergebnis sofort mit den offiziellen KoSIT-Regeln (XRechnung 3.0.2); ohne die Option zeigt es zumindest die Hinweise der Vorprüfung.
-- Das BMF-Schreiben vom 15.10.2025, Rn. 35a, empfiehlt, den Validierungsbericht aufzubewahren; dafür gibt es `erechnung validieren --bericht`.
+- Laut BMF-Schreiben vom 15.10.2025, Rn. 35a, bietet es sich zum Nachweis an, den Validierungsbericht aufzubewahren; dafür gibt es `erechnung validieren --bericht`.
 
 ## Was bedeutet es, eine E-Rechnung zu erstellen?
 
-Eine E-Rechnung ist eine Rechnung, die in einem strukturierten elektronischen Format ausgestellt, übermittelt und empfangen wird (§ 14 Abs. 1 Satz 3 UStG). Das Format muss der EN 16931 entsprechen oder zwischen den Parteien vereinbart sein (§ 14 Abs. 1 Satz 6 UStG). Ein PDF ohne integrierte Datensätze ist eine sonstige Rechnung (UStAE 14.1 Abs. 2 in der Fassung des BMF-Schreibens vom 15.10.2025).
+Was eine E-Rechnung ist, erklärt [Was ist eine E-Rechnung?](./was-ist-eine-e-rechnung.md) ausführlich. Für das Erstellen zählt: Das Format muss der EN 16931 entsprechen oder zwischen den Parteien vereinbart sein (§ 14 Abs. 1 Satz 6 UStG). Ein PDF ohne integrierte Datensätze ist eine sonstige Rechnung (UStAE 14.1 Abs. 2 in der Fassung des BMF-Schreibens vom 15.10.2025).
 
-E-Rechnung schreiben heißt also: Die Pflichtangaben nach § 14 Abs. 4 UStG stehen im XML, nicht nur auf einem Bild. Laut BMF-Schreiben vom 15.10.2025, Rn. 35, müssen alle umsatzsteuerlichen Pflichtangaben im strukturierten Teil stehen. Bei ZUGFeRD ist bei Abweichungen der XML-Teil maßgebend (BMF-FAQ). Eine XRechnung ist eine reine XML-Datei, eine ZUGFeRD-Rechnung ein PDF/A-3 mit eingebettetem XML. ZUGFeRD ab Version 2.0.1 ist laut UStAE 14.1 Abs. 14 ein zulässiges E-Rechnungsformat, ausgenommen die Profile MINIMUM und BASIC-WL. Mehr dazu in [XRechnung oder ZUGFeRD](./xrechnung-oder-zugferd.md).
+E-Rechnung schreiben heißt also: Die Pflichtangaben nach § 14 Abs. 4 UStG stehen im XML, nicht nur auf einem Bild. Laut BMF-Schreiben vom 15.10.2025, Rn. 35, müssen alle umsatzsteuerlichen Pflichtangaben im strukturierten Teil stehen. Bei ZUGFeRD ist bei Abweichungen der XML-Teil maßgebend (BMF-Schreiben vom 15.10.2025, UStAE 14.4 Abs. 3). Eine XRechnung ist eine reine XML-Datei, eine ZUGFeRD-Rechnung ein PDF/A-3 mit eingebettetem XML. ZUGFeRD ab Version 2.0.1 ist laut UStAE 14.1 Abs. 14 ein zulässiges E-Rechnungsformat, ausgenommen die Profile MINIMUM und BASIC-WL. Mehr dazu in [XRechnung oder ZUGFeRD](./xrechnung-oder-zugferd.md).
 
 ## Wie erstelle ich eine E-Rechnung? Die drei Wege
 
@@ -57,7 +59,7 @@ Damit die Datei als XRechnung gültig ist, braucht sie zusätzlich:
 
 | Angabe | Eingabefeld | Regel |
 | --- | --- | --- |
-| Käuferreferenz | `leitweg_id` (bei Behörden die Leitweg-ID, sonst z.B. `"-"`) | BR-DE-15 |
+| Käuferreferenz | `leitweg_id` (bei Behörden die Leitweg-ID, sonst z. B. `"-"`) | BR-DE-15 |
 | Kontakt des Verkäufers mit Name, Telefon, E-Mail | `verkaeufer.kontakt` | BR-DE-2, BR-DE-5 bis BR-DE-7 |
 | Elektronische Adresse beider Seiten | `verkaeufer.elektronische_adresse`, `kaeufer.elektronische_adresse` | PEPPOL-EN16931-R020, -R010 |
 | Ort und PLZ beider Seiten | `adresse.ort`, `adresse.plz` | BR-DE-3, -4, -8, -9 |
@@ -77,11 +79,11 @@ Diese Eingabe enthält nur, was für eine gültige XRechnung nötig ist. Sie wur
   "datum": "2026-10-15",
   "leitweg_id": "-",
   "verkaeufer": {
-    "name": "Nordlicht Software GmbH",
+    "name": "Nordlicht Beispiel GmbH",
     "adresse": {"strasse": "Musterstraße 1", "plz": "20095", "ort": "Hamburg"},
     "ust_id": "DE123456789",
     "elektronische_adresse": "rechnung@example.com",
-    "kontakt": {"name": "Erika Mustermann", "telefon": "+49 40 1234567", "email": "buchhaltung@example.com"}
+    "kontakt": {"name": "Erika Mustermann", "telefon": "+49 40 66969123", "email": "buchhaltung@example.com"}
   },
   "kaeufer": {
     "name": "Beispiel Handel AG",
@@ -117,12 +119,12 @@ BT steht für Business Term, BG für Business Group der EN 16931. Bei Parteien g
 | `vorgaenger_nummer`, `vorgaenger_datum` | BT-25, BT-26 | Vorgängerrechnung (BG-3), etwa bei Rechnungsart 384 |
 | `leistung_von`, `leistung_bis` | BT-73, BT-74 | Leistungszeitraum der ganzen Rechnung |
 | `vorauszahlung` | BT-113 | Bereits gezahlter Betrag |
-| `befreiungsgruende` | BT-120 | Befreiungsgrund je Steuerkategorie, z.B. `{"AE": "..."}` |
+| `befreiungsgruende` | BT-120 | Befreiungsgrund je Steuerkategorie, z. B. `{"AE": "..."}` |
 | `verkaeufer` / `kaeufer` | BG-4 / BG-7 | Die beiden Parteien |
 | `.name` | BT-27 / BT-44 | Name laut Register |
 | `.handelsname` | BT-28 / BT-45 | Abweichender Handelsname |
 | `.kennung` | BT-29 / BT-46 | Kennung, etwa Kunden- oder Lieferantennummer |
-| `.register` | BT-30 / BT-47 | Registernummer, z.B. HRB 123456 |
+| `.register` | BT-30 / BT-47 | Registernummer, z. B. HRB 000000 |
 | `.ust_id` | BT-31 / BT-48 | USt-IdNr. |
 | `.steuernummer` | BT-32 | Steuernummer des Verkäufers |
 | `.rechtliches` | BT-33 | Weitere rechtliche Angaben des Verkäufers |
@@ -139,7 +141,7 @@ BT steht für Business Term, BG für Business Group der EN 16931. Bei Parteien g
 | `zahlung.bedingungen`, `.skonto_tage`, `.skonto_prozent` | BT-20 | Zahlungsbedingungen; Skonto wird als `#SKONTO#`-Zeile geschrieben |
 | `positionen[]` | BG-25 | Rechnungspositionen |
 | `.id`, `.notiz` | BT-126, BT-127 | Positionsnummer und Bemerkung |
-| `.menge`, `.einheit` | BT-129, BT-130 | Menge und Einheit (UN/ECE Rec 20, z.B. `C62`, `HUR`) |
+| `.menge`, `.einheit` | BT-129, BT-130 | Menge und Einheit (UN/ECE Rec 20, z. B. `C62`, `HUR`) |
 | `.bestellposition` | BT-132 | Position in der Bestellung |
 | `.zeitraum_von`, `.zeitraum_bis` | BT-134, BT-135 | Leistungszeitraum der Position |
 | `.preis`, `.basismenge` | BT-146, BT-149 | Nettopreis und Preisbasismenge |
@@ -166,13 +168,13 @@ BT steht für Business Term, BG für Business Group der EN 16931. Bei Parteien g
 ```console
 $ erechnung erstellen rechnung.json --format xrechnung-cii -o rechnung_cii.xml --validieren
 rechnung_cii.xml: xrechnung-cii, Rechnung RE-2026-0100, Zahlbetrag 357,00 EUR
-  KoSIT: GÜLTIG (EN16931 XRechnung (CII))
+  KoSIT-Regeln: GÜLTIG (EN16931 XRechnung (CII))
 $ erechnung erstellen rechnung.json --format zugferd -o rechnung.pdf --validieren
 rechnung.pdf: zugferd, Rechnung RE-2026-0100, Zahlbetrag 357,00 EUR
-  KoSIT: GÜLTIG (EN16931 (CII))
+  KoSIT-Regeln: GÜLTIG (EN16931 (CII))
 ```
 
-Ohne `--pdf` erzeugt Ghostscript eine einfache PDF/A-3-Lesefassung. Mit `--pdf layout.pdf` nimmt das Werkzeug Ihr eigenes Rechnungslayout als Vorlage; `--pdfa` wandelt die Vorlage vorher nach PDF/A-3b. Bei PDFs prüft `--validieren` das eingebettete XML mit den KoSIT-Regeln, nicht die PDF/A-3-Konformität. Rechnungsarten, die XRechnung nicht kennt, lehnt das Werkzeug bei den XRechnung-Formaten ab (BR-DE-17); erlaubt sind 326, 380, 381, 384, 389, 875, 876 und 877.
+Ohne `--pdf` erzeugt Ghostscript eine einfache PDF/A-3-Ansicht. Mit `--pdf layout.pdf` nimmt das Werkzeug Ihr eigenes Rechnungslayout als Vorlage; `--pdfa` wandelt die Vorlage vorher nach PDF/A-3b. Bei PDFs prüft `--validieren` das eingebettete XML mit den KoSIT-Regeln, nicht die PDF/A-3-Konformität. Rechnungsarten, die XRechnung nicht kennt, lehnt das Werkzeug bei den XRechnung-Formaten ab (BR-DE-17); erlaubt sind 326, 380, 381, 384, 389, 875, 876 und 877.
 
 ## Eingabe als TOML
 
@@ -187,11 +189,11 @@ leistung_von = "2026-09-01"
 leistung_bis = "2026-09-30"
 
 [verkaeufer]
-name = "Nordlicht Software GmbH"
+name = "Nordlicht Beispiel GmbH"
 ust_id = "DE123456789"
 elektronische_adresse = "rechnung@example.com"
 adresse = { strasse = "Musterstraße 1", plz = "20095", ort = "Hamburg" }
-kontakt = { name = "Erika Mustermann", telefon = "+49 40 1234567", email = "buchhaltung@example.com" }
+kontakt = { name = "Erika Mustermann", telefon = "+49 40 66969123", email = "buchhaltung@example.com" }
 
 [kaeufer]
 name = "Beispiel Handel AG"
@@ -216,7 +218,7 @@ preis = "95.00"
 ```console
 $ erechnung erstellen rechnung.toml --validieren
 rechnung.xml: xrechnung-ubl, Rechnung RE-2026-0101, Zahlbetrag 1.356,60 EUR
-  KoSIT: GÜLTIG (EN16931 XRechnung (UBL Invoice))
+  KoSIT-Regeln: GÜLTIG (EN16931 XRechnung (UBL Invoice))
 ```
 
 ## Skonto in der XRechnung: die #SKONTO#-Syntax
@@ -261,12 +263,12 @@ Jede Position hat eine Steuerkategorie (`kategorie`, UNTDID 5305) und einen Satz
 | Kategorie | Bedeutung | Befreiungsgrund |
 | --- | --- | --- |
 | `S`, `Z` | Regelsteuersatz oder ermäßigter Satz; Nullsatz | nicht nötig |
-| `E` | Steuerbefreit, z.B. Kleinunternehmer nach § 19 UStG | Pflicht, selbst angeben |
+| `E` | Steuerbefreit, z. B. Kleinunternehmer nach § 19 UStG | Pflicht, selbst angeben |
 | `AE` | Reverse Charge, § 13b UStG | Pflicht, Standardtext vorhanden |
 | `K` | Innergemeinschaftliche Lieferung | Pflicht, Standardtext vorhanden |
 | `G`, `O` | Ausfuhr außerhalb der EU; nicht steuerbar | Pflicht, Standardtext vorhanden |
 
-Den Befreiungsgrund (BT-120) geben Sie über `befreiungsgruende` an, etwa `{"E": "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."}`. Fehlt er bei `E`, meldet die Vorprüfung `VP-14-4-8` und die KoSIT-Prüfung `BR-E-10`. Bei `AE` und `K` braucht der Käufer eine `ust_id`, sonst meldet die Vorprüfung `VP-13B` bzw. `VP-IG`; vollständige Eingaben zeigen [Beispiel 05](../../beispiele/05_reverse_charge_13b/eingabe.json) und [Beispiel 06](../../beispiele/06_innergemeinschaftlich/eingabe.json). Ob eine Steuerbefreiung im Einzelfall greift, klären Sie mit der Steuerberatung.
+Den Befreiungsgrund (BT-120) geben Sie über `befreiungsgruende` an, etwa `{"E": "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."}`. Fehlt er bei `E`, meldet die Vorprüfung `VP-14-4-8` und die KoSIT-Prüfung `BR-E-10`. Bei `AE` braucht der Käufer eine `ust_id` oder eine Registernummer (`register`), bei `K` eine `ust_id`, sonst meldet die Vorprüfung `VP-13B` bzw. `VP-IG`; vollständige Eingaben zeigen [Beispiel 05](../../beispiele/05_reverse_charge_13b/eingabe.json) und [Beispiel 06](../../beispiele/06_innergemeinschaftlich/eingabe.json). Ob eine Steuerbefreiung im Einzelfall greift, klären Sie mit der Steuerberatung.
 
 ## Wie das Werkzeug Summen und Steuern berechnet
 
@@ -281,11 +283,12 @@ Die Rechenlogik steht in `src/erechnung/rechnen.py` und folgt den Rechenregeln d
 
 ## Prüfen beim Erstellen: `--validieren` und die Vorprüfung
 
-Ohne `--validieren` läuft nach dem Schreiben nur die Vorprüfung. Ihre Hinweise erscheinen auf stderr, die Datei wird trotzdem geschrieben und der Exit-Code ist 0:
+Ohne `--validieren` läuft nach dem Schreiben nur die Vorprüfung. Ihre Hinweise erscheinen auf stderr, die Datei wird trotzdem geschrieben und der Exit-Code ist 0. Bei einem Fehler weist eine Zeile darauf hin, dass die KoSIT-Regeln noch nicht geprüft haben:
 
 ```console
 $ erechnung erstellen ohne_kontakt.json
   FEHLER  VP-BR-DE-2: Kontakt des Verkäufers unvollständig: XRechnung verlangt Name, Telefon und E-Mail (BT-41, BT-42, BT-43).
+  Nicht mit den KoSIT-Regeln geprüft. Prüfen mit: erechnung validieren ohne_kontakt.xml
 ohne_kontakt.xml: xrechnung-ubl, Rechnung RE-2026-0100, Zahlbetrag 357,00 EUR
 ```
 
@@ -294,20 +297,20 @@ Mit `--validieren` prüft das Werkzeug die fertige Datei mit den KoSIT-Regeln un
 ```console
 $ erechnung erstellen ohne_kontakt.json --validieren
 ohne_kontakt.xml: xrechnung-ubl, Rechnung RE-2026-0100, Zahlbetrag 357,00 EUR
-  KoSIT: UNGÜLTIG (EN16931 XRechnung (UBL Invoice))
+  KoSIT-Regeln: UNGÜLTIG (EN16931 XRechnung (UBL Invoice))
   FEHLER  BR-DE-2: [BR-DE-2] Die Gruppe "SELLER CONTACT" (BG-6) muss übermittelt werden.
 ```
 
 Bei `--validieren` zeigt das Werkzeug nur die KoSIT-Befunde. Die Vorprüfungs-Hinweise, etwa zum fehlenden Leistungsdatum, sehen Sie dann mit `erechnung validieren rechnung.xml`. Mit `--bericht berichte` legt dieser Befehl zusätzlich einen Prüfbericht als JSON ab, mit Zeitpunkt, Regelversion und SHA-256 der Datei, etwa `berichte/rechnung.xml.bd53628ed806.validierungsbericht.json`. Die Bedeutung einzelner Meldungen erklärt [E-Rechnung Fehlermeldungen](./e-rechnung-fehlermeldungen.md).
 
-## Beispiele
+## E-Rechnung erstellen: Beispiele für XRechnung und ZUGFeRD
 
 ### Beispiel 1: Minimale XRechnung erzeugen und prüfen
 
 ```console
 $ erechnung erstellen rechnung.json --validieren
 rechnung.xml: xrechnung-ubl, Rechnung RE-2026-0100, Zahlbetrag 357,00 EUR
-  KoSIT: GÜLTIG (EN16931 XRechnung (UBL Invoice))
+  KoSIT-Regeln: GÜLTIG (EN16931 XRechnung (UBL Invoice))
 ```
 
 Brauchen Sie, wenn Sie eine einzelne Rechnung ohne Rechnungsprogramm schreiben. Die Eingabe steht oben im Abschnitt "Minimale, gültige Eingabe".
@@ -317,7 +320,7 @@ Brauchen Sie, wenn Sie eine einzelne Rechnung ohne Rechnungsprogramm schreiben. 
 ```console
 $ erechnung erstellen rechnung.json --format zugferd --pdf layout.pdf --pdfa -o rechnung_zugferd.pdf --validieren
 rechnung_zugferd.pdf: zugferd, Rechnung RE-2026-0100, Zahlbetrag 357,00 EUR
-  KoSIT: GÜLTIG (EN16931 (CII))
+  KoSIT-Regeln: GÜLTIG (EN16931 (CII))
 ```
 
 Brauchen Sie, wenn Ihre Kunden weiter Ihr gewohntes PDF sehen sollen. Das PDF darf noch kein XML enthalten. Wer ein fertiges CII-XML hat, nimmt `erechnung zugferd`, siehe [PDF in ZUGFeRD umwandeln](./pdf-in-zugferd-umwandeln.md).
@@ -385,7 +388,7 @@ Eingabe fehlerhaft: rechnung.datum: Datum im Format JJJJ-MM-TT erwartet, nicht '
 
 Brauchen Sie beim ersten Ausfüllen. Die Meldung nennt den Pfad zum Feld, bei Positionen etwa `rechnung.positionen[0].preis: keine Zahl: 'abc'`.
 
-## Schritt für Schritt
+## Schritt für Schritt: die erste eigene E-Rechnung erstellen
 
 1. Werkzeug installieren (siehe oben) und mit `erechnung --version` testen.
 2. Eine Vorlage holen: `erechnung beispiele meine-beispiele` schreibt neun fertige Eingaben, etwa `meine-beispiele/01_standard.json`. Die Fälle erklärt [E-Rechnung Beispiel](./e-rechnung-beispiel.md).
@@ -396,7 +399,7 @@ Brauchen Sie beim ersten Ausfüllen. Die Meldung nennt den Pfad zum Feld, bei Po
 7. Bei "UNGÜLTIG" die gemeldeten Regeln nachschlagen, die Eingabe korrigieren und Schritt 6 wiederholen.
 8. Mit `erechnung validieren meine-rechnung.xml --bericht berichte` auch die Hinweise der Vorprüfung ansehen und einen Prüfbericht mit SHA-256 ablegen.
 9. Die Datei an den Kunden schicken. Den Versand übernimmt das Werkzeug nicht, es hat keinen Peppol-Zugangspunkt und keinen E-Mail-Versand.
-10. Die Rechnung aufbewahren: 8 Jahre nach § 14b Abs. 1 UStG, siehe [E-Rechnung archivieren](./e-rechnung-archivieren.md).
+10. Die Rechnung aufbewahren: acht Jahre nach § 14b Abs. 1 UStG, siehe [E-Rechnung archivieren](./e-rechnung-archivieren.md).
 
 ## Häufige Fehler
 
@@ -437,7 +440,9 @@ Tragen Sie die Bestellnummer des Kunden oder einen Platzhalter wie "-" ein. Laut
 
 Nein, Rechnungen von Kleinunternehmern dürfen laut BMF-FAQ immer als sonstige Rechnung ausgestellt werden (§ 34a UStDV). Wer trotzdem eine E-Rechnung schickt, nutzt Steuerkategorie `E` mit Befreiungsgrund wie in [Beispiel 07](../../beispiele/07_kleinunternehmer/eingabe.json). Details in [E-Rechnung für Kleinunternehmer](./e-rechnung-kleinunternehmer.md).
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 
@@ -446,4 +451,6 @@ Nein, Rechnungen von Kleinunternehmern dürfen laut BMF-FAQ immer als sonstige R
 - [E-Rechnung prüfen: Validator mit den offiziellen Regeln](./e-rechnung-validator.md)
 - [E-Rechnung Beispiel: Beispieldateien zum Herunterladen](./e-rechnung-beispiel.md)
 - [E-Rechnung mit Python](./e-rechnung-python.md)
+- [Was ist eine E-Rechnung? Definition, Formate und wie sie aussieht](./was-ist-eine-e-rechnung.md)
+- [E-Rechnung Pflicht: ab wann, für wen und welche Übergangsfristen gelten](./e-rechnung-pflicht.md)
 - Beispiele im Repo: [Übersicht](../../beispiele/README.md), [Standardrechnung als Eingabe](../../beispiele/01_standard/eingabe.json), [als XRechnung UBL](../../beispiele/01_standard/xrechnung_ubl.xml)

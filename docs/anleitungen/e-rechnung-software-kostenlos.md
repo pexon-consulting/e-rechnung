@@ -2,7 +2,9 @@
 
 Kostenlose E-Rechnung-Software gibt es für jede Teilaufgabe: Den KoSIT-Validator und die KoSIT-Visualisierung zum Prüfen und Anzeigen von XRechnungen, Mustang und den Quba-Viewer für ZUGFeRD, Python-Bibliotheken wie drafthorse und factur-x für Entwickler und das Kommandozeilen-Werkzeug `erechnung`, das lesen, prüfen, erstellen und DATEV-Export ohne Java verbindet. Alle sind Open Source und laufen lokal. Was kostenlose Werkzeuge nicht leisten, sind Versand über Peppol, Mahnwesen und ein revisionssicheres Archiv; dafür ist eine Buchhaltungssoftware gedacht.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Selbstständige, Buchhaltung und IT, die kostenlose Werkzeuge suchen.
 
 ## Das Wichtigste in Kürze
 
@@ -19,7 +21,7 @@ Ein E-Rechnung-Programm muss vier Dinge können: die Datei lesbar machen, sie ge
 
 | Werkzeug | Lesen | Prüfen | Erstellen | ZUGFeRD | DATEV | Java nötig | Lizenz |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| KoSIT-Validator 1.6.3 | Prüfbericht als HTML | ja, XRechnung und EN 16931 | nein | nur das XML, kein PDF/A-3 | nein | ja, Java 11+ | Apache-2.0 |
+| KoSIT-Validator 1.6.3 | Prüfbericht als HTML, keine Rechnungsansicht | ja, XRechnung und EN 16931 | nein | nur das XML, kein PDF/A-3 | nein | ja, Java 11+ | Apache-2.0 |
 | KoSIT-Visualisierung 2026-10-13 | ja, HTML und PDF | nein | nein | CII-XML, nicht das PDF | nein | XSLT 2.0, braucht Saxon | Apache-2.0 |
 | Mustang 2.26.0 | ja (`visualize`, `extract`) | ja, XML und PDF/A-3 | ja (`combine`, `ubl`) | ja | nein | ja | Apache-2.0 |
 | Quba-Viewer 1.5.1 | ja | optional über den Online-Dienst Mustangserver | nein | ja | nein | nein | Apache-2.0 |
@@ -28,7 +30,7 @@ Ein E-Rechnung-Programm muss vier Dinge können: die Datei lesbar machen, sie ge
 | pycheval 0.3.3 | Factur-X lesen | nicht angegeben | MINIMUM bis EN 16931 | ja, ohne EXTENDED und XRechnung | nein | nein (Python 3.11+) | Apache-2.0 |
 | `erechnung` 0.1.0 | ja, Text, JSON, HTML | ja, KoSIT-Regeln plus Vorprüfung | XRechnung UBL/CII, ZUGFeRD | ja, ohne PDF/A-Prüfung | ja, Buchungsstapel | nein (Python 3.10+) | MIT |
 
-Quellen: GitHub-Releases und PyPI der Projekte, abgefragt am 15.10.2026 (Links unter [Weiterlesen](#weiterlesen)). Funktionen laut Projektdokumentation; bei `erechnung` selbst ausprobiert.
+Quellen: GitHub-Releases und PyPI der Projekte, abgefragt am 15.10.2026 (Links unter [Weiterlesen](#weiterlesen)). Funktionen laut Projektdokumentation; bei `erechnung` selbst ausprobiert. Stand Oktober 2026, geprüft anhand der jeweiligen Dokumentation. Fehler bitte als Issue melden; wir korrigieren sie umgehend.
 
 ## KoSIT-Validator: die Referenz für XRechnung
 
@@ -117,13 +119,13 @@ Ein kostenloses Werkzeug reicht, wenn Ihre Aufgabe klar umrissen ist. Eine Buchh
 | Wenige Ausgangsrechnungen im Monat | ja, zum Beispiel aus einer JSON-Vorlage | bei vielen Rechnungen, Nummernkreisen und Kundenstamm |
 | Versand an Behörden über Peppol | nein, ein Peppol-Zugang fehlt | ja, wenn sie Peppol anbietet |
 | Offene Posten, Mahnwesen, Zahlungsabgleich | nein | ja |
-| Aufbewahrung 8 Jahre (§ 14b Abs. 1 UStG) | Dateien selbst ablegen, Prüfbericht dazu | revisionssicheres Archiv |
+| Aufbewahrung acht Jahre (§ 14b Abs. 1 UStG) | Dateien selbst ablegen, Prüfbericht dazu | revisionssicheres Archiv |
 | Übergabe an die Steuerberatung | Buchungsstapel als Vorschlag | direkte Schnittstelle mit Belegen |
 | Eigene Software oder Shop anbinden | ja, Bibliothek oder Kommandozeile | je nach Schnittstelle |
 
 Laut BMF-Schreiben vom 15.10.2025 (Rn. 60) ist die Speicherung außerhalb eines GoBD-konformen Systems allein umsatzsteuerlich kein Verstoß gegen § 14b UStG; die GoBD gelten trotzdem. Wie Sie archivieren, klären Sie mit der Steuerberatung. Mehr in [E-Rechnung archivieren](./e-rechnung-archivieren.md).
 
-## Beispiele
+## Kostenlos prüfen und anzeigen: Beispiele
 
 Alle Befehle laufen in einem Ordner mit den Beispieldateien (`erechnung beispiele` schreibt sie, die ZUGFeRD-PDFs liegen im Repo unter `beispiele/`).
 
@@ -132,9 +134,9 @@ Alle Befehle laufen in einem Ordner mit den Beispieldateien (`erechnung beispiel
 ```text
 $ erechnung validieren beispiele/01_standard/xrechnung_ubl.xml beispiele/07_kleinunternehmer/zugferd_en16931.pdf
 beispiele/01_standard/xrechnung_ubl.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
 beispiele/07_kleinunternehmer/zugferd_en16931.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
 ```
 
 Für jede eingehende E-Rechnung, bevor sie in die Buchhaltung geht.
@@ -155,21 +157,21 @@ Für PDF-Rechnungen, bei denen unklar ist, ob ein XML enthalten ist. Der Exit-Co
 ```text
 $ erechnung erstellen rechnung.json --format zugferd -o rechnung.pdf --validieren
 rechnung.pdf: zugferd, Rechnung RE-2026-0001, Zahlbetrag 2.009,91 EUR
-  KoSIT: GÜLTIG (EN16931 (CII))
+  KoSIT-Regeln: GÜLTIG (EN16931 (CII))
 ```
 
-Für Ausgangsrechnungen ohne Rechnungsprogramm. `rechnung.json` ist eine Kopie von `beispiele/01_standard/eingabe.json`. Ohne `--pdf VORLAGE.pdf` erzeugt Ghostscript eine einfache PDF/A-3-Lesefassung; Ghostscript muss dafür installiert sein. Mehr in [E-Rechnung erstellen](./e-rechnung-erstellen.md).
+Für Ausgangsrechnungen ohne Rechnungsprogramm. `rechnung.json` ist eine Kopie von `beispiele/01_standard/eingabe.json`. Ohne `--pdf VORLAGE.pdf` erzeugt Ghostscript eine einfache PDF/A-3-Ansicht; Ghostscript muss dafür installiert sein. Mehr in [E-Rechnung erstellen](./e-rechnung-erstellen.md).
 
 ### Beispiel 4: Prüfbericht zum Aufbewahren ablegen
 
 ```text
 $ erechnung validieren rechnung.xml --bericht berichte
 rechnung.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
-  Prüfbericht: berichte/rechnung.xml.1e0e5c550373.validierungsbericht.json
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  Prüfbericht: berichte/rechnung.xml.29ccd409852b.validierungsbericht.json
 ```
 
-Für die Ablage neben der Rechnung. Das BMF-Schreiben vom 15.10.2025 (Rn. 35a) empfiehlt, den Validierungsbericht aufzubewahren.
+Für die Ablage neben der Rechnung. Laut BMF-Schreiben vom 15.10.2025 (Rn. 35a) bietet es sich zum Nachweis an, den Validierungsbericht aufzubewahren.
 
 ### Beispiel 5: Eingangsrechnungen als DATEV-Buchungsstapel
 
@@ -237,7 +239,9 @@ Technisch ja. Weil Sie dabei Daten Ihrer Geschäftspartner an einen Dritten übe
 
 Erstellen ja, zum Beispiel eine XRechnung mit Leitweg-ID. Für den Versand an die Bundesverwaltung ist OZG-RE kostenlos nutzbar (Upload, E-Mail, Weberfassung oder Peppol). Einen eigenen Peppol-Zugang bieten die hier genannten Werkzeuge nicht.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

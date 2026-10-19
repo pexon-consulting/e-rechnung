@@ -95,6 +95,21 @@ def test_erstellen_meldet_vorpruefung(tmp_path, capsys):
     assert "VP-BR-DE-15" in capsys.readouterr().err
 
 
+def test_erstellen_ohne_validieren_sagt_dass_kosit_fehlt(tmp_path, capsys):
+    main(["beispiele", str(tmp_path)])
+    eingabe = tmp_path / "01_standard.json"
+    eingabe.write_text(eingabe.read_text(encoding="utf-8").replace('"leitweg_id": "BH-2026-0815",', ""), encoding="utf-8")
+    assert main(["erstellen", str(eingabe), "-o", str(tmp_path / "x.xml")]) == 0
+    assert "Nicht mit den KoSIT-Regeln geprüft" in capsys.readouterr().err
+
+
+def test_erstellen_ohne_vp_fehler_ohne_kosit_hinweis(tmp_path, capsys):
+    main(["beispiele", str(tmp_path)])
+    capsys.readouterr()
+    assert main(["erstellen", str(tmp_path / "01_standard.json"), "-o", str(tmp_path / "x.xml")]) == 0
+    assert "Nicht mit den KoSIT-Regeln geprüft" not in capsys.readouterr().err
+
+
 def test_leitweg_id_befehl(capsys):
     assert main(["leitweg-id", "04011000-1234512345-06"]) == 0
     assert main(["leitweg-id", "04011000-1234512345-07"]) == 1

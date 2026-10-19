@@ -18,6 +18,21 @@ class Eingabefehler(ValueError):
     pass
 
 
+# Freitextfelder, in denen Zeilenumbrüche erlaubt sind (BT-20 braucht sie für #SKONTO#).
+MEHRZEILIG = {"notizen", "notiz", "beschreibung", "bedingungen"}
+
+
+def _einzeilig(wert: str) -> str:
+    """Zeilenumbrüche und Steuerzeichen durch Leerzeichen ersetzen.
+
+    Namen, Anschriften und Nummern landen in Dateinamen, CSV-Zeilen und
+    Ansichten; ein Umbruch darin kann dort eine eigene Zeile erzeugen.
+    """
+    if any(z in wert for z in "\r\n\t\v\f\x85\u2028\u2029"):
+        return " ".join(wert.split())
+    return wert
+
+
 def _typ(feld_typ: Any) -> tuple[Any, bool]:
     """Kern-Typ und ob es eine Liste ist. ``str | None`` -> (str, False)."""
     herkunft = typing.get_origin(feld_typ)
@@ -72,6 +87,8 @@ def _objekt(klasse: type, daten: Any, pfad: str) -> Any:
             werte[name] = [_wert(typ, x, f"{pfad}.{name}[{i}]") for i, x in enumerate(inhalt)]
         else:
             werte[name] = _wert(typ, inhalt, f"{pfad}.{name}")
+            if typ is str and isinstance(werte[name], str) and name not in MEHRZEILIG:
+                werte[name] = _einzeilig(werte[name])
     try:
         return klasse(**werte)
     except TypeError as e:
@@ -91,7 +108,10 @@ def laden(pfad: str | Path) -> Rechnung:
         try:
             import tomllib
         except ImportError:  # Python 3.10
-            import tomli as tomllib  # type: ignore[no-redef]
+            try:
+                import tomli as tomllib  # type: ignore[no-redef]
+            except ImportError as e:
+                raise Eingabefehler('TOML braucht unter Python 3.10 das Extra toml: pip install "e-rechnung[toml]"') from e
         daten = tomllib.loads(text)
     else:
         daten = json.loads(text)

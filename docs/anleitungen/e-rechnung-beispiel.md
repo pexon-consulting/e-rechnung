@@ -1,8 +1,10 @@
 # E-Rechnung Beispiel: XRechnung und ZUGFeRD Beispieldateien zum Herunterladen
 
-Ein E-Rechnung Beispiel ist eine XML-Datei (XRechnung in UBL oder CII) oder ein PDF/A-3 mit eingebettetem XML (ZUGFeRD), in der alle Rechnungsangaben als strukturierte Daten nach EN 16931 stehen. Im Ordner [`beispiele/`](../../beispiele/README.md) dieses Repos liegen neun gültige Fälle, von der Standardrechnung über Reverse Charge bis zur Rechnung an eine Behörde, jeweils als XRechnung UBL und CII, mit HTML-Ansicht, Eingabedatei und dem Ergebnis der offiziellen KoSIT-Prüfung.
+Ein Beispiel für eine E-Rechnung ist eine XML-Datei (XRechnung in UBL oder CII) oder ein PDF/A-3 mit eingebettetem XML (ZUGFeRD), in der alle Rechnungsangaben als strukturierte Daten nach EN 16931 stehen. Im Ordner [`beispiele/`](../../beispiele/README.md) dieses Repos liegen neun gültige Fälle, von der Standardrechnung über Reverse Charge bis zur Rechnung an eine Behörde, jeweils als XRechnung UBL und CII, mit HTML-Ansicht, Eingabedatei und dem Ergebnis der offiziellen KoSIT-Prüfung.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Buchhaltung, Softwareanbieter und Entwickler, die echte Beispieldateien suchen.
 
 ## Das Wichtigste in Kürze
 
@@ -19,7 +21,7 @@ Ein E-Rechnung Beispiel ist eine XML-Datei (XRechnung in UBL oder CII) oder ein 
 | --- | --- | --- | --- | --- | --- | --- |
 | 01 Standardrechnung | 19 %, Leistungszeitraum, Skonto, SEPA-Überweisung | [UBL](../../beispiele/01_standard/xrechnung_ubl.xml), [CII](../../beispiele/01_standard/xrechnung_cii.xml) | [ZUGFeRD](../../beispiele/01_standard/zugferd_en16931.pdf) | [HTML](../../beispiele/01_standard/ansicht.html) | [JSON](../../beispiele/01_standard/eingabe.json) | [UBL](../../beispiele/01_standard/validierung_ubl.txt), [CII](../../beispiele/01_standard/validierung_cii.txt) |
 | 02 Gemischte Steuersätze | 7 % und 19 %, Nachlass auf Belegebene | [UBL](../../beispiele/02_gemischte_steuersaetze/xrechnung_ubl.xml), [CII](../../beispiele/02_gemischte_steuersaetze/xrechnung_cii.xml) | [ZUGFeRD](../../beispiele/02_gemischte_steuersaetze/zugferd_en16931.pdf) | [HTML](../../beispiele/02_gemischte_steuersaetze/ansicht.html) | [JSON](../../beispiele/02_gemischte_steuersaetze/eingabe.json) | [UBL](../../beispiele/02_gemischte_steuersaetze/validierung_ubl.txt), [CII](../../beispiele/02_gemischte_steuersaetze/validierung_cii.txt) |
-| 03 Gutschrift (381) | Rechnungskorrektur mit Minderung, in UBL als CreditNote | [UBL](../../beispiele/03_gutschrift/xrechnung_ubl.xml), [CII](../../beispiele/03_gutschrift/xrechnung_cii.xml) | - | [HTML](../../beispiele/03_gutschrift/ansicht.html) | [JSON](../../beispiele/03_gutschrift/eingabe.json) | [UBL](../../beispiele/03_gutschrift/validierung_ubl.txt), [CII](../../beispiele/03_gutschrift/validierung_cii.txt) |
+| 03 Minderung (381, kaufmännische Gutschrift) | Rechnungskorrektur mit Minderung, in UBL als CreditNote; keine Gutschrift nach § 14 Abs. 2 Satz 5 UStG (das wäre 389) | [UBL](../../beispiele/03_gutschrift/xrechnung_ubl.xml), [CII](../../beispiele/03_gutschrift/xrechnung_cii.xml) | - | [HTML](../../beispiele/03_gutschrift/ansicht.html) | [JSON](../../beispiele/03_gutschrift/eingabe.json) | [UBL](../../beispiele/03_gutschrift/validierung_ubl.txt), [CII](../../beispiele/03_gutschrift/validierung_cii.txt) |
 | 04 Rechnungskorrektur (384) | Bezug auf die ursprüngliche Rechnung (BG-3) | [UBL](../../beispiele/04_rechnungskorrektur/xrechnung_ubl.xml), [CII](../../beispiele/04_rechnungskorrektur/xrechnung_cii.xml) | - | [HTML](../../beispiele/04_rechnungskorrektur/ansicht.html) | [JSON](../../beispiele/04_rechnungskorrektur/eingabe.json) | [UBL](../../beispiele/04_rechnungskorrektur/validierung_ubl.txt), [CII](../../beispiele/04_rechnungskorrektur/validierung_cii.txt) |
 | 05 Reverse Charge | Steuerkategorie AE, § 13b UStG | [UBL](../../beispiele/05_reverse_charge_13b/xrechnung_ubl.xml), [CII](../../beispiele/05_reverse_charge_13b/xrechnung_cii.xml) | - | [HTML](../../beispiele/05_reverse_charge_13b/ansicht.html) | [JSON](../../beispiele/05_reverse_charge_13b/eingabe.json) | [UBL](../../beispiele/05_reverse_charge_13b/validierung_ubl.txt), [CII](../../beispiele/05_reverse_charge_13b/validierung_cii.txt) |
 | 06 Innergemeinschaftliche Lieferung | Steuerkategorie K, Käufer in Österreich | [UBL](../../beispiele/06_innergemeinschaftlich/xrechnung_ubl.xml), [CII](../../beispiele/06_innergemeinschaftlich/xrechnung_cii.xml) | - | [HTML](../../beispiele/06_innergemeinschaftlich/ansicht.html) | [JSON](../../beispiele/06_innergemeinschaftlich/eingabe.json) | [UBL](../../beispiele/06_innergemeinschaftlich/validierung_ubl.txt), [CII](../../beispiele/06_innergemeinschaftlich/validierung_cii.txt) |
@@ -123,7 +125,7 @@ Die Dateien heißen dann `01_standard.json`, `01_standard_xrechnung_ubl.xml` und
 ```console
 $ erechnung erstellen meine-beispiele/01_standard.json --format zugferd -o rechnung.pdf --validieren
 rechnung.pdf: zugferd, Rechnung RE-2026-0001, Zahlbetrag 2.009,91 EUR
-  KoSIT: GÜLTIG (EN16931 (CII))
+  KoSIT-Regeln: GÜLTIG (EN16931 (CII))
 ```
 
 Ohne eigene PDF-Vorlage braucht das Ghostscript. Wie Sie eine Eingabe an Ihre Rechnung anpassen, beschreibt [E-Rechnung erstellen](./e-rechnung-erstellen.md).
@@ -150,9 +152,9 @@ Sie müssen den Textdateien nicht glauben, sondern können selbst prüfen:
 ```console
 $ erechnung validieren beispiele/05_reverse_charge_13b/xrechnung_ubl.xml beispiele/05_reverse_charge_13b/xrechnung_cii.xml
 beispiele/05_reverse_charge_13b/xrechnung_ubl.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
 beispiele/05_reverse_charge_13b/xrechnung_cii.xml: XRechnung 3.0 (CII)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (CII), 0 Fehler, 0 Warnungen
 ```
 
 Die Prüfung arbeitet wie der KoSIT-Validator: erst das XML-Schema, dann die Schematron-Regeln der EN 16931 und der XRechnung (BR-DE). Bei den ZUGFeRD-PDFs prüft sie das eingebettete XML, Szenario `EN16931 (CII)`; eine Prüfung der PDF/A-3-Konformität leistet der KoSIT-Validator nicht. Eine Prüfung mit anderen Validatoren beschreibt [E-Rechnung prüfen](./e-rechnung-validator.md).
@@ -161,7 +163,7 @@ Die Prüfung arbeitet wie der KoSIT-Validator: erst das XML-Schema, dann die Sch
 
 Die KoSIT pflegt eine eigene Sammlung von Testrechnungen: die [xrechnung-testsuite](https://github.com/itplr-kosit/xrechnung-testsuite), aktuell Version v2026-08-31, Lizenz Apache-2.0. Sie eignet sich als Testmaterial für Software, etwa die Datei `src/test/business-cases/standard/01.01a-INVOICE_ubl.xml` mit dem Geschäftsprozess `urn:fdc:peppol.eu:2017:poacc:billing:01:1.0`. Die Beispiele in diesem Repo sind kleiner, deutsch beschriftet und je auf einen Fall zugeschnitten. Für Softwaretests lohnt sich beides.
 
-## Beispiele
+## Beispieldateien lesen, prüfen und anzeigen
 
 ### Beispiel 1: Standardrechnung mit Skonto (01)
 
@@ -171,7 +173,7 @@ Die KoSIT pflegt eine eigene Sammlung von Testrechnungen: die [xrechnung-testsui
   <cbc:PaymentID>RE-2026-0001</cbc:PaymentID>
   <cac:PayeeFinancialAccount>
     <cbc:ID>DE79000000001234567890</cbc:ID>
-    <cbc:Name>Nordlicht Software GmbH</cbc:Name>
+    <cbc:Name>Nordlicht Beispiel GmbH</cbc:Name>
   </cac:PayeeFinancialAccount>
 </cac:PaymentMeans>
 <cac:PaymentTerms>
@@ -200,7 +202,7 @@ Brauchen Sie als Vorlage für die normale Dienstleistungsrechnung. Code 58 ist d
 
 Brauchen Sie, wenn eine Rechnung 7 % und 19 % enthält. Die Steueraufschlüsselung hat dann zwei `cac:TaxSubtotal`: 10,48 EUR auf 149,70 EUR und 7,58 EUR auf 39,88 EUR. Der Nachlass mindert die 19-%-Gruppe.
 
-### Beispiel 3: Gutschrift als CreditNote (03)
+### Beispiel 3: Minderung (381) als CreditNote (03)
 
 ```xml
 <CreditNote xmlns="urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2">
@@ -339,7 +341,7 @@ factur-x.xml aus beispiele/01_standard/zugferd_en16931.pdf gespeichert als 01_st
 
 Brauchen Sie, um zu sehen, was im PDF steckt. Das XML entspricht `01_standard/xrechnung_cii.xml`, nur die Kennung BT-24 ist `urn:cen.eu:en16931:2017` (Profil EN 16931) statt der XRechnung-Kennung.
 
-## Schritt für Schritt
+## Schritt für Schritt: eine Beispiel-E-Rechnung herunterladen und prüfen
 
 1. In der Tabelle oben den Fall wählen, der Ihrer Rechnung am nächsten kommt.
 2. Die XML-Datei oder das PDF herunterladen (Download-Adresse oder "Raw" auf GitHub).
@@ -369,8 +371,8 @@ Brauchen Sie, um zu sehen, was im PDF steckt. Das XML entspricht `01_standard/xr
 | Beispiel-XML direkt an Kunden schicken | Testdaten (Musterfirmen, Test-IBAN) beim Empfänger | Immer eine eigene Rechnung aus der Eingabe erzeugen |
 | Datei über "Speichern unter" der GitHub-Seite geladen | Datei enthält HTML statt XML, Prüfung schlägt fehl | "Raw" verwenden oder die Download-Adresse nach dem Muster oben |
 | `ansicht.html` für die Rechnung halten | Ansicht wird weitergeleitet oder archiviert | Maßgeblich ist das XML; die Ansicht dient nur zum Lesen |
-| Nur die Bildseite eines ZUGFeRD-PDFs ändern | Bildteil und XML passen nicht zusammen | Eingabe ändern und PDF neu erzeugen; bei Abweichungen gilt laut BMF-FAQ das XML |
-| Gutschrift 381 und 389 verwechseln | Falsche Rechnungsart für den Vorgang | 381 für Korrektur mit Minderung, 389 für Abrechnung durch den Leistungsempfänger |
+| Nur die Bildseite eines ZUGFeRD-PDFs ändern | Bildteil und XML passen nicht zusammen | Eingabe ändern und PDF neu erzeugen; bei Abweichungen gilt laut BMF-Schreiben vom 15.10.2025 (UStAE 14.4 Abs. 3) das XML |
+| Rechnungsart 381 und 389 verwechseln | Falsche Rechnungsart für den Vorgang | 381 für Korrektur mit Minderung, 389 für Abrechnung durch den Leistungsempfänger |
 | Leitweg-ID aus Beispiel 08 übernehmen | Behörde kann die Rechnung nicht zuordnen | Die Leitweg-ID des eigenen Auftraggebers eintragen und prüfen |
 
 ## Häufige Fragen
@@ -399,7 +401,9 @@ Beide Dateien eines Falls enthalten dieselbe Rechnung in zwei zulässigen Syntax
 
 Ja, die Dateien enthalten nur Testwerte und stehen wie das ganze Repo unter der MIT-Lizenz ([LICENSE](../../LICENSE)). Für Tests eignen sich zusätzlich die Testrechnungen der [KoSIT-Testsuite](https://github.com/itplr-kosit/xrechnung-testsuite) (Apache-2.0).
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

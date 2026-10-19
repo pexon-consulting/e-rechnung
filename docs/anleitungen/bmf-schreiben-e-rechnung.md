@@ -2,7 +2,9 @@
 
 Das BMF-Schreiben zur E-Rechnung gibt es in zwei Fassungen: Das erste Schreiben vom 15.10.2024 regelt die Einführung der Pflicht, das zweite vom 15.10.2025 ändert und ergänzt es um Formatfehler (Rn. 6a), Geschäftsregelfehler (Rn. 6b), Rechtsfolgen und Validierung (Rn. 35a) und die Aufbewahrung von acht Jahren (Rn. 60). Praktisch heißt das: Eine Datei mit Formatfehler ist keine E-Rechnung, ein fehlendes BT-10 ist umsatzsteuerlich unbeachtlich, bei Hybridformaten wie ZUGFeRD gilt das XML, und den Validierungsbericht sollten Sie aufbewahren.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Geschäftsführung, Buchhaltung und Steuerkanzleien. Technische Beispiele stehen weiter unten und sind optional.
 
 ## Das Wichtigste in Kürze
 
@@ -10,7 +12,7 @@ Das BMF-Schreiben zur E-Rechnung gibt es in zwei Fassungen: Das erste Schreiben 
 - Eine Datei mit Formatfehlern ist laut Rn. 6a keine E-Rechnung, sondern eine sonstige Rechnung, egal welcher Art der Fehler ist.
 - Geschäftsregelfehler (Rn. 6b) zu Inhalten außerhalb der Pflichtangaben, etwa ein fehlendes BT-10, sind laut Rn. 35a umsatzsteuerlich unbeachtlich.
 - Alle umsatzsteuerlichen Pflichtangaben müssen im strukturierten Teil stehen (Rn. 35); bei Hybridformaten gehen die Daten des XML dem Bildteil vor (UStAE 14.4 Abs. 3).
-- Auf das Ergebnis einer geeigneten Validierungsanwendung darf man sich bei Sorgfalt eines ordentlichen Kaufmanns verlassen; den Validierungsbericht aufzubewahren, bietet sich laut Rn. 35a an.
+- Auf das technische Ergebnis einer Validierung hinsichtlich Format und Geschäftsregeln durch eine geeignete Validierungsanwendung darf man sich bei Beachtung der Sorgfalt eines ordentlichen Kaufmanns verlassen; den Validierungsbericht aufzubewahren, bietet sich laut Rn. 35a zum Nachweis an.
 - Rechnungen sind acht Jahre aufzubewahren, bei E-Rechnungen zumindest der strukturierte Teil unversehrt in seiner ursprünglichen Form (Rn. 60).
 
 ## Welche BMF-Schreiben zur E-Rechnung gibt es?
@@ -84,6 +86,10 @@ Rn. 35a ist die Randnummer mit den meisten praktischen Folgen. Sie sagt vier Din
 3. Eine Validierung ersetzt nicht die Pflicht des Empfängers, die Rechnung auf Vollständigkeit und Richtigkeit zu prüfen, sie unterstützt ihn dabei. Inhaltsfehler können auch vorliegen, wenn die Validierung keinen Fehler findet, zum Beispiel bei einem fehlerhaften Steuersatz.
 4. Ein Unternehmer kann sich bei Sorgfalt eines ordentlichen Kaufmanns auf das technische Ergebnis einer geeigneten Validierungsanwendung verlassen, hinsichtlich Format und Geschäftsregeln. Zum Nachweis bietet es sich an, den Validierungsbericht aufzubewahren.
 
+Die beiden letzten Sätze der Rn. 35a im Wortlaut:
+
+> "Ein Unternehmer kann sich bei Beachtung der Sorgfaltspflichten eines ordentlichen Kaufmanns auf das technische Ergebnis einer Validierung (hinsichtlich des Formats und der Geschäftsregeln) durch eine geeignete Validierungsanwendung verlassen. Zum Nachweis bietet es sich an, den Validierungsbericht aufzubewahren."
+
 Ein Validierungsbericht ist ein Protokoll, das festhält, welche Datei wann mit welchen Regeln geprüft wurde und mit welchem Ergebnis. Genau das legt `erechnung validieren --bericht ORDNER` an: je geprüfter Datei eine JSON-Datei mit Zeitpunkt (UTC), Werkzeugversion, Regelversion der KoSIT-Konfiguration, SHA-256-Prüfsumme der Datei und allen Befunden.
 
 ```bash
@@ -92,7 +98,7 @@ erechnung validieren rechnung.pdf --bericht prüfberichte
 
 ```text
 rechnung.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
   Prüfbericht: prüfberichte/rechnung.pdf.fff3d8c9aba4.validierungsbericht.json
 ```
 
@@ -156,7 +162,7 @@ Die FAQ auf e-rechnung-bund.de nennt an einer Stelle noch "10 Jahre". Das ist du
 
 Das Werkzeug ist keine Archivlösung. Es liefert mit `--bericht` den Prüfbericht, den Sie zusammen mit der Originaldatei ablegen. Mehr in [E-Rechnung archivieren](./e-rechnung-archivieren.md).
 
-## Beispiele
+## BMF-Schreiben in der Praxis: Beispiele aus dem Rechnungseingang
 
 Die Beispiele nutzen die Standardrechnung aus [beispiele/01_standard](../../beispiele/01_standard/xrechnung_ubl.xml) und daraus abgeleitete, absichtlich fehlerhafte Fassungen.
 
@@ -174,7 +180,7 @@ erechnung validieren ohne_bt10.xml
 
 ```text
 ohne_bt10.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-DE-15: [BR-DE-15] Das Element "Buyer reference" (BT-10) muss übermittelt werden.
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-BR-DE-15: Käuferreferenz (BT-10) fehlt. In XRechnung Pflicht, bei Behörden die Leitweg-ID.
@@ -190,7 +196,7 @@ erechnung validieren en16931_ohne_bt10.xml
 
 ```text
 en16931_ohne_bt10.xml: EN 16931 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (UBL Invoice), 0 Fehler, 0 Warnungen
 ```
 
 Hier ist nur die Kennung in BT-24 auf `urn:cen.eu:en16931:2017` geändert. Die Pflicht für BT-10 kommt aus der XRechnung (Regel BR-DE-15), nicht aus der EN 16931. Das zeigt, warum das BMF solche Fehler von den Pflichtangaben trennt.
@@ -203,7 +209,7 @@ erechnung validieren datum_falsch.xml
 
 ```text
 datum_falsch.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  XSD: Element '{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}IssueDate': '15.10.2026' is not a valid value of the atomic type 'xs:date'.
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-14-4-3: Rechnungsdatum fehlt (BT-2, § 14 Abs. 4 Nr. 3 UStG).
@@ -233,7 +239,7 @@ erechnung validieren steuer_falsch.xml
 
 ```text
 steuer_falsch.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 3 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 3 Fehler, 0 Warnungen
   FEHLER  BR-CO-15: [BR-CO-15]-Invoice total amount with VAT (BT-112) = Invoice total amount without VAT (BT-109) + Invoice total VAT amount (BT-110).
   FEHLER  BR-CO-17: [BR-CO-17]-VAT category tax amount (BT-117) = VAT category taxable amount (BT-116) x (VAT category rate (BT-119) / 100), rounded to two decimals.
   FEHLER  BR-S-09: [BR-S-09]-The VAT category tax amount (BT-117) in a VAT breakdown (BG-23) where VAT category code (BT-118) is "Standard rated" shall equal the VAT category taxable amount (BT-116) multiplied by the VAT category rate (BT-119).
@@ -252,7 +258,7 @@ erechnung validieren steuersatz_7.xml
 
 ```text
 steuersatz_7.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
 ```
 
 ```bash
@@ -363,7 +369,7 @@ Ein Formatfehler verletzt die Syntax oder deren technische Vorgaben, die Datei i
 
 ### Muss ich den Validierungsbericht aufbewahren?
 
-Eine ausdrückliche Pflicht nennt das BMF-Schreiben nicht, Rn. 35a empfiehlt es aber zum Nachweis. Mit `erechnung validieren --bericht ORDNER` entsteht je Datei ein Bericht mit Zeitpunkt, Regelversion und SHA-256-Prüfsumme.
+Eine ausdrückliche Pflicht nennt das BMF-Schreiben nicht, laut Rn. 35a bietet es sich aber zum Nachweis an. Mit `erechnung validieren --bericht ORDNER` entsteht je Datei ein Bericht mit Zeitpunkt, Regelversion und SHA-256-Prüfsumme.
 
 ### Was gilt, wenn PDF und XML einer ZUGFeRD-Rechnung abweichen?
 
@@ -373,7 +379,9 @@ Dann gehen die Daten des XML vor (UStAE 14.4 Abs. 3). Weicht der Bildteil bei Re
 
 Acht Jahre, laut Rn. 60 und § 14b Abs. 1 UStG, gerechnet ab dem Ende des Ausstellungsjahres. Aufzubewahren ist mindestens der strukturierte Teil unversehrt in seiner ursprünglichen Form.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

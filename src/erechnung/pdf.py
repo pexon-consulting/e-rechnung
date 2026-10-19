@@ -25,6 +25,7 @@ from pathlib import Path
 
 from lxml import etree
 from pypdf import PdfReader, PdfWriter
+from pypdf.errors import PyPdfError
 from pypdf.generic import ArrayObject, NameObject, NumberObject, TextStringObject
 
 from .codelisten import ZUGFERD_PROFILE
@@ -49,8 +50,10 @@ class KeinXmlImPdf(ValueError):
 def xml_auslesen(pdf: bytes | str | Path) -> tuple[str, bytes]:
     """Name und Inhalt des eingebetteten Rechnungs-XML."""
     daten = Path(pdf).read_bytes() if isinstance(pdf, (str, Path)) else pdf
-    leser = PdfReader(io.BytesIO(daten))
-    anhaenge = leser.attachments
+    try:
+        anhaenge = PdfReader(io.BytesIO(daten)).attachments
+    except (PyPdfError, ValueError, KeyError, TypeError) as e:
+        raise KeinXmlImPdf(f"PDF nicht lesbar, vermutlich beschädigt oder unvollständig: {e}") from e
     for name in BEKANNTE_NAMEN:
         for vorhanden, inhalte in anhaenge.items():
             if vorhanden.lower() == name.lower() and inhalte:
@@ -68,6 +71,9 @@ def xml_auslesen(pdf: bytes | str | Path) -> tuple[str, bytes]:
 
 def _profil(xml: bytes) -> str:
     wurzel = etree.fromstring(xml, etree.XMLParser(resolve_entities=False, no_network=True))
+    if etree.QName(wurzel).localname in ("Invoice", "CreditNote"):
+        raise ValueError("ZUGFeRD braucht CII-XML, das ist UBL. Die Rechnung mit "
+                         "erechnung erstellen ... --format zugferd neu erzeugen oder eine CII-Datei verwenden.")
     gid = (wurzel.findtext(".//{*}GuidelineSpecifiedDocumentContextParameter/{*}ID") or "").strip()
     profil = ZUGFERD_PROFILE.get(gid)
     if not profil:
@@ -215,7 +221,10 @@ def einbetten(pdf: bytes, xml: bytes, dateiname: str | None = None, pdfa: bool =
     if pdfa:
         pdf = nach_pdfa3(pdf)
 
-    schreiber = PdfWriter(clone_from=PdfReader(io.BytesIO(pdf)))
+    try:
+        schreiber = PdfWriter(clone_from=PdfReader(io.BytesIO(pdf)))
+    except (PyPdfError, ValueError, KeyError, TypeError) as e:
+        raise ValueError(f"Vorlage-PDF nicht lesbar, vermutlich beschädigt oder unvollständig: {e}") from e
     for name in list(schreiber.attachments):
         if name.lower() in {n.lower() for n in BEKANNTE_NAMEN}:
             raise ValueError(f"Das PDF enthält bereits {name}. Erst das Original-PDF ohne XML verwenden.")

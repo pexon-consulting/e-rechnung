@@ -2,20 +2,22 @@
 
 Eine E-Rechnung empfangen heißt: Sie nehmen eine strukturierte Rechnungsdatei (XRechnung als XML oder ZUGFeRD als PDF mit eingebettetem XML) entgegen, zum Beispiel per E-Mail, und machen sie mit einem Viewer lesbar. Eine XRechnung ist reines XML, deshalb zeigt ein Doppelklick nur Code; lesbar wird sie erst durch eine Visualisierung wie die offizielle KoSIT-Ansicht oder `erechnung anzeigen rechnung.xml`. Seit dem 01.01.2025 müssen alle inländischen Unternehmer E-Rechnungen empfangen können, ein normales E-Mail-Postfach genügt dafür.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Buchhaltung und alle, die E-Rechnungen öffnen und lesen müssen.
 
 ## Das Wichtigste in Kürze
 
 - Seit dem 01.01.2025 müssen alle inländischen Unternehmer E-Rechnungen empfangen können, ohne Ausnahme, auch Kleinunternehmer nach § 19 UStG.
 - Für den Empfang reicht laut BMF-Schreiben vom 15.10.2025 (UStAE 14.1) ein E-Mail-Postfach, ein gesondertes Postfach ist nicht nötig.
 - Eine XRechnung ist eine XML-Datei; ein Viewer macht daraus eine lesbare Rechnung, rechtlich maßgeblich bleibt das XML.
-- Bei ZUGFeRD steckt das XML im PDF; weichen PDF-Bild und XML voneinander ab, gilt laut BMF-FAQ der strukturierte Teil.
+- Bei ZUGFeRD steckt das XML im PDF; weichen PDF-Bild und XML voneinander ab, gilt laut BMF-Schreiben vom 15.10.2025 (UStAE 14.4 Abs. 3) der strukturierte Teil.
 - `erechnung anzeigen`, `erechnung lesen` und `erechnung validieren` öffnen, lesen und prüfen Eingangsrechnungen lokal, ohne Java und ohne Upload.
 - Bei einer ungültigen E-Rechnung bitten Sie den Lieferanten um eine korrigierte Rechnung; die umsatzsteuerlichen Folgen klären Sie mit der Steuerberatung.
 
 ## Was bedeutet "E-Rechnung empfangen"?
 
-Eine E-Rechnung ist laut § 14 Abs. 1 Satz 3 UStG eine Rechnung, die in einem strukturierten elektronischen Format ausgestellt, übermittelt und empfangen wird und eine elektronische Verarbeitung ermöglicht. Empfangen heißt also nicht, eine besondere Software zu kaufen. Es heißt, die Datei anzunehmen, aufzubewahren und lesen zu können.
+Was eine E-Rechnung ist, erklärt [Was ist eine E-Rechnung?](./was-ist-eine-e-rechnung.md). Empfangen heißt nicht, eine besondere Software zu kaufen. Es heißt, die Datei anzunehmen, aufzubewahren und lesen zu können.
 
 Die Empfangspflicht gilt seit dem 01.01.2025 für alle inländischen Unternehmer. Laut BMF-FAQ und BMF-Schreiben vom 15.10.2025 (UStAE 14.1) gibt es keine Ausnahme, auch nicht für Kleinunternehmer, Land- und Forstwirte oder Unternehmer mit ausschließlich steuerfreien Umsätzen wie Wohnungsvermieter.
 
@@ -26,7 +28,7 @@ Die Empfangspflicht gilt seit dem 01.01.2025 für alle inländischen Unternehmer
 | Müssen Kleinunternehmer empfangen können? | Ja, auch bei der Sonderregelung nach § 19 UStG. | BMF-Schreiben vom 15.10.2025 (UStAE 14.1) |
 | Ab wann? | Seit dem 01.01.2025. | BMF-FAQ |
 
-E-Rechnung empfangen kostenlos geht also mit dem vorhandenen Postfach. Was Sie zusätzlich brauchen, ist ein Weg, die Datei lesbar zu machen und zu prüfen. Dafür reicht ein kostenloser Viewer.
+Kostenlos E-Rechnungen empfangen können Sie also mit Ihrem vorhandenen E-Mail-Postfach. Was Sie zusätzlich brauchen, ist ein Weg, die Datei lesbar zu machen und zu prüfen. Dafür reicht ein kostenloser Viewer.
 
 Bis Ende 2027 dürfen Ihre Lieferanten unter bestimmten Bedingungen noch Papier- oder PDF-Rechnungen schicken (§ 27 Abs. 38 UStG). Sie bekommen deshalb vorerst eine Mischung aus E-Rechnungen und sonstigen Rechnungen. Details stehen in [E-Rechnung Pflicht](./e-rechnung-pflicht.md).
 
@@ -65,7 +67,7 @@ Eine XRechnung enthält kein Layout. Sie besteht nur aus Datenfeldern mit festen
 
 Alles Nötige ist da: Rechnungsnummer (`cbc:ID`), Datum, Fälligkeit, Rechnungsart 380 und Käuferreferenz. Damit ein Mensch es bequem lesen kann, braucht es eine Visualisierung. Das BMF empfiehlt laut BMF-FAQ, den XML-Teil selbst zu visualisieren, statt sich auf ein mitgeliefertes Bild zu verlassen.
 
-## XRechnung Viewer: welche Möglichkeiten gibt es?
+## XRechnung-Viewer und ZUGFeRD-Viewer: E-Rechnung kostenlos öffnen
 
 Ein E-Rechnung-Viewer wandelt das XML in eine lesbare Ansicht um. Die Ansicht ist keine Rechnung im rechtlichen Sinn. Laut KoSIT sind Visualisierungen keine gültigen XRechnungen und nicht zur Archivierung gedacht; das Original bleibt das XML.
 
@@ -100,7 +102,7 @@ RE-2026-0001
 E-Rechnung nach EN 16931
 XRechnung 3.0 (UBL)
 Verkäufer
-Nordlicht Software GmbH
+Nordlicht Beispiel GmbH
 ...
 Positionen
 Pos.  Bezeichnung                               Menge  Einheit  Preis   USt     Netto
@@ -167,7 +169,7 @@ Format:       XRechnung 3.0 (UBL)
 E-Rechnung:   ja, strukturiert nach EN 16931
 Art:          380 (Rechnung)
 Nummer:       RE-2026-0001 vom 15.10.2026
-Verkäufer:    Nordlicht Software GmbH, 20095 Hamburg, USt-IdNr. DE123456789
+Verkäufer:    Nordlicht Beispiel GmbH, 20095 Hamburg, USt-IdNr. DE123456789
 Käufer:       Beispiel Handel AG, 80331 München
 Käuferref.:   BH-2026-0815
 Positionen:   2
@@ -191,7 +193,7 @@ erechnung lesen rechnung.xml --json
   "nummer": "RE-2026-0001",
   "datum": "2026-10-15",
   "verkaeufer": {
-    "name": "Nordlicht Software GmbH",
+    "name": "Nordlicht Beispiel GmbH",
     "ust_id": "DE123456789"
   },
   "summen": {
@@ -210,7 +212,7 @@ Der Auszug ist gekürzt; die echte Ausgabe enthält zusätzlich Adressen, Positi
 
 ## ZUGFeRD-PDF: das XML herausholen
 
-Eine ZUGFeRD-Rechnung ist ein PDF/A-3 mit eingebettetem XML. Das PDF öffnen Sie wie jedes PDF. Für Prüfung und Buchung zählt aber das XML, denn laut BMF-FAQ ist bei Abweichungen der strukturierte Teil maßgebend. `erechnung lesen`, `anzeigen` und `validieren` arbeiten direkt mit dem PDF. Wenn Sie das XML als eigene Datei brauchen, holen Sie es mit `erechnung extrahieren`:
+Eine ZUGFeRD-Rechnung ist ein PDF/A-3 mit eingebettetem XML. Das PDF öffnen Sie wie jedes PDF. Für Prüfung und Buchung zählt aber das XML, denn laut BMF-Schreiben vom 15.10.2025 (UStAE 14.4 Abs. 3) ist bei Abweichungen der strukturierte Teil maßgebend. `erechnung lesen`, `anzeigen` und `validieren` arbeiten direkt mit dem PDF. Wenn Sie das XML als eigene Datei brauchen, holen Sie es mit `erechnung extrahieren`:
 
 ```bash
 erechnung extrahieren kleinunternehmer.pdf
@@ -292,13 +294,13 @@ erechnung validieren eingang/fehlerhaft.xml
 
 ```text
 eingang/fehlerhaft.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): UNGÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 1 Fehler, 0 Warnungen
   FEHLER  BR-DE-15: [BR-DE-15] Das Element "Buyer reference" (BT-10) muss übermittelt werden.
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-BR-DE-15: Käuferreferenz (BT-10) fehlt. In XRechnung Pflicht, bei Behörden die Leitweg-ID.
 ```
 
-Laut BMF-Schreiben vom 15.10.2025 (Rn. 35a) ersetzt eine Validierung die Prüfpflicht des Empfängers nicht. Sie dürfen sich aber bei der Sorgfalt eines ordentlichen Kaufmanns auf das Ergebnis einer geeigneten Validierungsanwendung verlassen. Das BMF empfiehlt, den Validierungsbericht aufzubewahren; dafür gibt es `--bericht`. Mehr zur Prüfung steht in [E-Rechnung prüfen](./e-rechnung-validator.md).
+Laut BMF-Schreiben vom 15.10.2025 (Rn. 35a) darf sich ein Unternehmen bei Beachtung der Sorgfalt eines ordentlichen Kaufmanns auf das technische Ergebnis einer Validierung hinsichtlich Format und Geschäftsregeln verlassen. Inhaltliche Fehler wie ein falscher Steuersatz erkennt eine Validierung nicht immer; die eigene Prüfpflicht bleibt. Zum Nachweis bietet es sich laut BMF an, den Validierungsbericht aufzubewahren. Dafür gibt es `--bericht`. Ob `e-rechnung` in Ihrem Fall als geeignete Validierungsanwendung gilt, entscheidet nicht das Werkzeug, sondern Sie mit Ihrer Steuerberatung. Mehr zur Prüfung steht in [E-Rechnung prüfen](./e-rechnung-validator.md).
 
 ## Was tun bei einer ungültigen E-Rechnung?
 
@@ -319,7 +321,7 @@ So gehen Sie vor:
 
 Für die Fehlercodes selbst gibt es [E-Rechnung Fehlermeldungen](./e-rechnung-fehlermeldungen.md).
 
-## Beispiele
+## XRechnung öffnen und anzeigen: Beispiele
 
 ### Beispiel 1: XRechnung im Browser lesbar machen
 
@@ -425,7 +427,7 @@ Ja, seit dem 01.01.2025 gilt die Empfangspflicht ohne Ausnahme, auch bei der Son
 
 ### Was ist bei einer ZUGFeRD-Rechnung maßgeblich, das PDF oder das XML?
 
-Das XML. Laut BMF-FAQ ist bei Abweichungen zwischen Bildteil und XML der strukturierte Teil maßgebend; das BMF empfiehlt, den XML-Teil selbst zu visualisieren.
+Das XML. Laut BMF-Schreiben vom 15.10.2025 (UStAE 14.4 Abs. 3) ist bei Abweichungen zwischen Bildteil und XML der strukturierte Teil maßgebend; das BMF empfiehlt, den XML-Teil selbst zu visualisieren.
 
 ### Werden meine Rechnungen bei `erechnung` irgendwohin hochgeladen?
 
@@ -439,7 +441,9 @@ Ob Sie zahlen oder zurückweisen, ist eine kaufmännische Entscheidung; die Prü
 
 Nein, das Werkzeug ist kein Peppol-Zugangspunkt und holt keine E-Mails ab. Es verarbeitet Dateien, die schon auf Ihrem Rechner liegen.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

@@ -39,7 +39,7 @@ class KeineERechnung(ValueError):
 class Format:
     syntax: str  # UBL-Invoice, UBL-CreditNote, CII
     spezifikation: str  # BT-24
-    bezeichnung: str  # z.B. "XRechnung 3.0 (UBL)", "ZUGFeRD EN 16931"
+    bezeichnung: str  # z. B. "XRechnung 3.0 (UBL)", "ZUGFeRD EN 16931"
     ist_e_rechnung: bool  # strukturiert nach EN 16931 im Sinne von § 14 UStG
     pdf: bool = False
     anhang: str = ""  # Dateiname des eingebetteten XML
@@ -72,6 +72,8 @@ def xml_aus_eingabe(quelle: str | Path | bytes) -> tuple[bytes, bool, str]:
         daten = Path(quelle).read_bytes()
     else:
         daten = quelle
+    if not daten.strip():
+        raise KeineERechnung("Die Datei ist leer.")
     if daten[:5] == b"%PDF-":
         from .pdf import xml_auslesen
 

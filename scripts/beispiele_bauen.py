@@ -33,7 +33,9 @@ JETZT = datetime(2026, 10, 15, 12, 0, 0)
 FAELLE = {
     "01_standard": ("Standardrechnung", "Dienstleistung mit Leistungszeitraum, 19 % USt, Skonto, Überweisung"),
     "02_gemischte_steuersaetze": ("Gemischte Steuersätze", "7 % und 19 % in einer Rechnung, Nachlass auf Belegebene"),
-    "03_gutschrift": ("Gutschrift (381)", "Rechnungskorrektur mit Minderung, in UBL als CreditNote"),
+    "03_gutschrift": ("Minderung (381, kaufmännische Gutschrift)",
+                      "Minderung einer früheren Rechnung, in UBL als CreditNote; keine Gutschrift nach "
+                      "§ 14 Abs. 2 Satz 5 UStG (das wäre Rechnungsart 389)"),
     "04_rechnungskorrektur": ("Rechnungskorrektur (384)", "Korrektur mit Bezug auf die ursprüngliche Rechnung (BG-3)"),
     "05_reverse_charge_13b": ("Reverse Charge § 13b UStG", "Steuerkategorie AE, Steuerschuldnerschaft des Leistungsempfängers"),
     "06_innergemeinschaftlich": ("Innergemeinschaftliche Lieferung", "Steuerkategorie K, Käufer in Österreich"),
@@ -97,14 +99,18 @@ def bauen(ordner: Path, mit_pdf: bool) -> dict[str, bytes]:
 
 def _index() -> str:
     zeilen = [
-        "# Beispiele: XRechnung, ZUGFeRD und DATEV",
+        "# Beispieldateien für XRechnung und ZUGFeRD",
         "",
-        "Alle Dateien in diesem Ordner sind mit `python scripts/beispiele_bauen.py` aus den Eingaben in",
-        "`src/erechnung/beispiele/` erzeugt und gegen die offiziellen KoSIT-Regeln",
-        f"(`{offiziell.KONFIG_VERSION}`) geprüft. Die CI prüft, dass der Ordner zum Code passt.",
+        "Neun gültige E-Rechnungen zum Herunterladen, von der Standardrechnung bis zur Rechnung an eine",
+        "Behörde, jeweils als XRechnung UBL und CII, mit lesbarer HTML-Ansicht und dem Ergebnis der",
+        f"offiziellen KoSIT-Prüfregeln (`{offiziell.KONFIG_VERSION}`). Was jeder Fall zeigt, erklärt die",
+        "Anleitung [E-Rechnung Beispiel](../docs/anleitungen/e-rechnung-beispiel.md). Erzeugt werden die",
+        "Dateien mit `python scripts/beispiele_bauen.py` aus den Eingaben in `src/erechnung/beispiele/`,",
+        "die CI prüft, dass sie zum Code passen.",
         "",
-        "Namen, Adressen, IBAN (`DE79000000001234567890`) und Gläubiger-ID (`DE98ZZZ09999999999`) sind",
-        "Testwerte und gehören keiner echten Firma.",
+        "Firmen, Namen, Anschriften, Telefonnummern (aus den Bereichen der Bundesnetzagentur für Film und",
+        "Fernsehen), IBAN (`DE79000000001234567890`), Gläubiger-ID (`DE98ZZZ09999999999`) und",
+        "USt-IdNr. sind Testwerte und gehören keiner echten Firma oder Person.",
         "",
         "| Fall | Was er zeigt | Dateien |",
         "| --- | --- | --- |",

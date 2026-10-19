@@ -1,35 +1,37 @@
 # E-Rechnung Pflicht: ab wann, für wen und welche Übergangsfristen gelten
 
-Die E-Rechnung-Pflicht gilt in Deutschland in zwei Stufen: Seit dem 01.01.2025 müssen alle inländischen Unternehmer E-Rechnungen empfangen können, ohne Ausnahme und auch als Kleinunternehmer. Für den Versand gelten nach § 27 Abs. 38 UStG Übergangsfristen: Bis Ende 2026 sind Papier und (mit Zustimmung des Empfängers) PDF noch erlaubt, 2027 nur noch bei einem Vorjahresumsatz bis 800.000 EUR oder für EDI-Verfahren, und ab dem 01.01.2028 ist die E-Rechnung für alle inländischen B2B-Umsätze Pflicht.
+Die E-Rechnung-Pflicht gilt in Deutschland in zwei Stufen: Seit dem 01.01.2025 müssen alle inländischen Unternehmer E-Rechnungen empfangen können, ohne Ausnahme und auch als Kleinunternehmer. Für den Versand gelten nach § 27 Abs. 38 UStG Übergangsfristen: Für Umsätze aus 2025 und 2026 sind Papier und (mit Zustimmung des Empfängers) PDF noch erlaubt, wenn die Rechnung bis Ende 2026 übermittelt wird, 2027 nur noch bei einem Vorjahresumsatz bis 800.000 EUR oder für EDI-Verfahren, und ab dem 01.01.2028 ist die E-Rechnung für alle inländischen B2B-Umsätze Pflicht.
 
-> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil von [E-Rechnung in Python](../../README.md).
+> Stand: 15.10.2026. Rechtsstand BMF-Schreiben vom 15.10.2025, XRechnung 3.0.2, ZUGFeRD 2.5.2. Keine Steuerberatung. Teil der Sammlung [E-Rechnung: Anleitungen und kostenloses Prüfwerkzeug](../../README.md).
+
+Für: Geschäftsführung, Buchhaltung und Steuerkanzleien. Technische Beispiele stehen weiter unten und sind optional.
 
 ## Das Wichtigste in Kürze
 
 - Seit dem 01.01.2025 muss jeder inländische Unternehmer E-Rechnungen empfangen können, ein normales E-Mail-Postfach genügt dafür.
-- Beim Versand dürfen Sie Umsätze bis zum 31.12.2026 noch mit Papierrechnung oder (mit Zustimmung des Empfängers) als PDF abrechnen.
-- Im Jahr 2027 gilt diese Erleichterung nur noch, wenn Ihr Gesamtumsatz im Vorjahr nicht mehr als 800.000 EUR betrug; EDI-Verfahren bleiben mit Zustimmung unabhängig vom Umsatz bis Ende 2027 zulässig.
+- Beim Versand dürfen Sie Umsätze aus 2025 und 2026 noch mit Papierrechnung oder (mit Zustimmung des Empfängers) als PDF abrechnen, wenn die Rechnung bis zum 31.12.2026 übermittelt wird.
+- Für Umsätze aus 2027 gilt diese Erleichterung nur noch, wenn Ihr Gesamtumsatz im Vorjahr nicht mehr als 800.000 EUR betrug und die Rechnung bis zum 31.12.2027 übermittelt wird; EDI-Verfahren bleiben mit Zustimmung unabhängig vom Umsatz bis Ende 2027 zulässig.
 - Ab dem 01.01.2028 ist die E-Rechnung für alle Umsätze zwischen inländischen Unternehmern Pflicht.
 - Kleinbetragsrechnungen bis 250 EUR, Fahrausweise und Rechnungen von Kleinunternehmern dürfen dauerhaft sonstige Rechnungen sein; Rechnungen an Privatpersonen (B2C) sind nicht betroffen.
 - Mit `erechnung validieren` und `erechnung anzeigen` prüfen und lesen Sie eingehende XRechnung- und ZUGFeRD-Dateien lokal, ohne Java und ohne Upload.
 
 ## Ab wann gilt die E-Rechnung-Pflicht? Der Zeitstrahl
 
-Maßgeblich ist der Zeitpunkt, an dem der Umsatz ausgeführt wird, also wann Sie geliefert oder geleistet haben. Die Tabelle fasst die Fristen nach § 27 Abs. 38 UStG und die BMF-FAQ zusammen.
+Maßgeblich sind zwei Zeitpunkte: wann der Umsatz ausgeführt wurde und wann die Rechnung übermittelt wird. Eine sonstige Rechnung für einen Umsatz aus 2025 oder 2026 muss bis zum 31.12.2026 beim Empfänger sein, eine für einen Umsatz aus 2027 bis zum 31.12.2027 (§ 27 Abs. 38 UStG). Wer einen Dezember-Umsatz erst im Januar abrechnet, braucht dafür unter Umständen schon eine E-Rechnung. Die Tabelle fasst die Fristen nach § 27 Abs. 38 UStG und die BMF-FAQ zusammen.
 
 | Zeitraum | Empfang | Versand an inländische Unternehmer | Rechtsgrundlage |
 | --- | --- | --- | --- |
 | seit 27.11.2020 | - | Auftragnehmer des Bundes schicken E-Rechnungen an Bundesbehörden (B2G) | E-Rechnungsverordnung des Bundes (ERechV) |
 | ab 01.01.2025 | Pflicht für alle inländischen Unternehmer | neue Definition der E-Rechnung gilt, Übergangsfristen beginnen | § 14 UStG (Wachstumschancengesetz) |
-| 01.01.2025 - 31.12.2026 | Pflicht | Papierrechnung immer zulässig, sonstiges elektronisches Format (z. B. PDF) nur mit Zustimmung des Empfängers | § 27 Abs. 38 UStG |
-| 01.01.2027 - 31.12.2027 | Pflicht | E-Rechnung Pflicht, außer der Gesamtumsatz (§ 19 Abs. 2 UStG) im Vorjahr lag bei höchstens 800.000 EUR; EDI nach Empfehlung 94/820/EG mit Zustimmung unabhängig vom Umsatz | § 27 Abs. 38 UStG |
+| 01.01.2025 - 31.12.2026 | Pflicht | Papierrechnung immer zulässig, sonstiges elektronisches Format (z. B. PDF) nur mit Zustimmung des Empfängers; Rechnung bis 31.12.2026 übermittelt | § 27 Abs. 38 UStG |
+| 01.01.2027 - 31.12.2027 | Pflicht | E-Rechnung Pflicht, außer der Gesamtumsatz (§ 19 Abs. 2 UStG) im Vorjahr lag bei höchstens 800.000 EUR und die Rechnung wird bis 31.12.2027 übermittelt; EDI nach Empfehlung 94/820/EG mit Zustimmung unabhängig vom Umsatz | § 27 Abs. 38 UStG |
 | ab 01.01.2028 | Pflicht | E-Rechnung für alle inländischen B2B-Umsätze | § 14 Abs. 2 UStG |
 
 Hinweis zur 800.000-EUR-Grenze: Das Gesetz stellt auf den Gesamtumsatz nach § 19 Abs. 2 UStG des Rechnungsausstellers im Vorjahr ab. Die BMF-FAQ spricht vereinfacht vom "Vorjahresumsatz". Für 2027 zählt also der Gesamtumsatz 2026.
 
 ## E-Rechnung Pflicht 2025: Empfangen müssen alle
 
-Eine E-Rechnung ist nach § 14 Abs. 1 Satz 3 UStG "eine Rechnung, die in einem strukturierten elektronischen Format ausgestellt, übermittelt und empfangen wird und eine elektronische Verarbeitung ermöglicht". Praktisch heißt das: Die Rechnung kommt als XML-Datei (XRechnung) oder als PDF mit eingebettetem XML (ZUGFeRD, Factur-X).
+Eine E-Rechnung ist eine Rechnung als strukturierter Datensatz nach § 14 Abs. 1 Satz 3 UStG, Details in [Was ist eine E-Rechnung?](./was-ist-eine-e-rechnung.md). Praktisch heißt das: Die Rechnung kommt als XML-Datei (XRechnung) oder als PDF mit eingebettetem XML (ZUGFeRD, Factur-X).
 
 Die Empfangspflicht gilt seit dem 01.01.2025 für alle inländischen Unternehmer, auch für:
 
@@ -45,16 +47,16 @@ Empfangen allein reicht im Alltag aber nicht. Eine XRechnung ist eine reine XML-
 
 Beim Versand ist der Übergang gestaffelt. Die Übergangsfristen nach § 27 Abs. 38 UStG erlauben für eine begrenzte Zeit noch sonstige Rechnungen, also Papier oder PDF.
 
-| Zeitraum (Umsatz ausgeführt) | Zulässig statt E-Rechnung |
+| Umsatz ausgeführt / Rechnung übermittelt bis | Zulässig statt E-Rechnung |
 | --- | --- |
-| 01.01.2025 - 31.12.2026 | Papierrechnung immer; sonstige elektronische Formate (z. B. PDF) nur mit Zustimmung des Empfängers |
-| 01.01.2027 - 31.12.2027 | Papier oder (mit Zustimmung) sonstiges elektronisches Format, wenn der Gesamtumsatz (§ 19 Abs. 2 UStG) des Ausstellers im Vorjahr nicht mehr als 800.000 EUR betrug |
-| 01.01.2027 - 31.12.2027 | EDI-Verfahren (Empfehlung 94/820/EG), das nicht EN-16931-konform ist, mit Zustimmung des Empfängers, unabhängig vom Umsatz |
+| 01.01.2025 - 31.12.2026 / bis 31.12.2026 | Papierrechnung immer; sonstige elektronische Formate (z. B. PDF) nur mit Zustimmung des Empfängers |
+| 01.01.2027 - 31.12.2027 / bis 31.12.2027 | Papier oder (mit Zustimmung) sonstiges elektronisches Format, wenn der Gesamtumsatz (§ 19 Abs. 2 UStG) des Ausstellers im Vorjahr nicht mehr als 800.000 EUR betrug |
+| 01.01.2027 - 31.12.2027 / ausgestellt bis 31.12.2027 | EDI-Verfahren (Empfehlung 94/820/EG), das nicht EN-16931-konform ist, mit Zustimmung des Empfängers, unabhängig vom Umsatz |
 | ab 01.01.2028 | keine Erleichterung mehr: E-Rechnung für alle inländischen B2B-Umsätze |
 
 Zwei Rechenbeispiele für 2027:
 
-- Ein Handwerksbetrieb hatte 2026 einen Gesamtumsatz von 750.000 EUR. Er darf Umsätze aus 2027 noch als Papierrechnung oder (mit Zustimmung) als PDF abrechnen.
+- Ein Handwerksbetrieb hatte 2026 einen Gesamtumsatz von 750.000 EUR. Er darf Umsätze aus 2027 noch als Papierrechnung oder (mit Zustimmung) als PDF abrechnen, wenn er die Rechnung bis zum 31.12.2027 übermittelt.
 - Eine Agentur hatte 2026 einen Gesamtumsatz von 900.000 EUR. Für Umsätze ab dem 01.01.2027 muss sie E-Rechnungen ausstellen, außer sie nutzt mit Zustimmung ein EDI-Verfahren.
 
 Wichtig: Die Übergangsfristen betreffen nur den Versand. Freiwillig E-Rechnungen zu schicken, ist schon heute erlaubt und braucht bei Pflichtumsätzen keine Zustimmung des Empfängers (§ 14 Abs. 1 Satz 5 UStG).
@@ -72,7 +74,7 @@ Ob Ihr konkretes EDI-Verfahren die zweite Bedingung erfüllt, klären Sie mit Ih
 
 Ab dem 01.01.2028 enden alle Übergangsfristen. Jede Rechnung über einen Umsatz an einen anderen inländischen Unternehmer für dessen Unternehmen muss dann eine E-Rechnung sein (§ 14 Abs. 2 Satz 2 Nr. 1 UStG), außer es greift eine der dauerhaften Ausnahmen.
 
-Wer nach Ablauf der Übergangsfrist trotz Pflicht eine sonstige Rechnung ausstellt, stellt laut BMF-Schreiben vom 15.10.2025 (UStAE 15.2a) keine ordnungsmäßige Rechnung aus. Die Rechnung lässt sich durch eine nachträgliche E-Rechnung berichtigen.
+Wer nach Ablauf der Übergangsfrist trotz Pflicht eine sonstige Rechnung ausstellt, stellt laut BMF-Schreiben vom 15.10.2025 (UStAE 15.2a Abs. 1) keine ordnungsmäßige Rechnung aus. Die Rechnung lässt sich durch eine nachträgliche E-Rechnung berichtigen (UStAE 15.2a Abs. 7). Für den Vorsteuerabzug des Kunden reicht nach UStAE 15.2a Abs. 1a in der Regel trotzdem eine inhaltlich richtige und vollständige sonstige Rechnung; ob das im Einzelfall genügt, klären Sie mit der Steuerberatung.
 
 ## E-Rechnung Pflicht Ausnahmen: wann keine E-Rechnung nötig ist
 
@@ -86,7 +88,7 @@ Für einige Rechnungen gilt die Ausstellungspflicht nie. Die Empfangspflicht ble
 | Rechnung an Privatpersonen (B2C) | nein, nicht betroffen | BMF-FAQ |
 | Leistung an juristische Personen, die nicht Unternehmer sind (z. B. viele Vereine, staatliche Einrichtungen) | nein, nicht erfasst | BMF-FAQ |
 | bestimmte Leistungen an Endverbraucher im Zusammenhang mit einem Grundstück | nein, nicht erfasst | BMF-FAQ |
-| steuerfreie Umsätze nach § 4 Nr. 8 bis 29 UStG | nein, keine Rechnungspflicht | BMF-FAQ |
+| steuerfreie Umsätze nach § 4 Nr. 8 bis 29 UStG | nein, keine Rechnungspflicht, außer bei Option zur Steuerpflicht nach § 9 UStG | BMF-FAQ, BMF-Schreiben vom 15.10.2025, Rn. 17 |
 | Leistender ohne Ansässigkeit im Inland | nein, nicht erfasst | BMF-FAQ |
 
 Bei Kleinbetragsrechnungen, Fahrausweisen und Rechnungen von Kleinunternehmern ist laut BMF-Schreiben vom 15.10.2025 (UStAE 14.5 Abs. 14) auch keine fortlaufende Rechnungsnummer nötig. Wer will, darf trotzdem eine E-Rechnung schicken.
@@ -129,9 +131,9 @@ Die Tabelle zeigt, was für typische Unternehmensarten beim Empfang und beim Ver
 | Gesamtumsatz im Vorjahr bis 800.000 EUR | E-Rechnungen seit 01.01.2025 empfangen können | Papier oder (mit Zustimmung) PDF erlaubt | Papier oder (mit Zustimmung) PDF weiter erlaubt | E-Rechnung |
 | Kleinunternehmer (§ 19 UStG) | E-Rechnungen seit 01.01.2025 empfangen können | sonstige Rechnung erlaubt (§ 34a UStDV) | sonstige Rechnung erlaubt | sonstige Rechnung weiter erlaubt, E-Rechnung freiwillig |
 | nur Kunden, die Privatpersonen sind (B2C) | Eingangsrechnungen von Lieferanten als E-Rechnung empfangen können | keine E-Rechnung nötig | keine E-Rechnung nötig | keine E-Rechnung nötig |
-| nur steuerfreie Umsätze nach § 4 Nr. 8 bis 29 UStG (z. B. Wohnungsvermietung) | E-Rechnungen seit 01.01.2025 empfangen können | keine Rechnungspflicht für diese Umsätze | keine Rechnungspflicht | keine Rechnungspflicht |
+| nur steuerfreie Umsätze nach § 4 Nr. 8 bis 29 UStG (z. B. Wohnungsvermietung) | E-Rechnungen seit 01.01.2025 empfangen können | keine Rechnungspflicht für diese Umsätze, außer bei Option zur Steuerpflicht nach § 9 UStG | wie 2025-2026 | wie 2025-2026 |
 | Unternehmen mit EDI (z. B. EDIFACT) | E-Rechnungen seit 01.01.2025 empfangen können | EDI mit Zustimmung | EDI mit Zustimmung, unabhängig vom Umsatz | nur EDI, das die vollständige Extraktion nach EN 16931 erlaubt |
-| Auftragnehmer von Bundesbehörden (B2G) | wie oben | XRechnung mit Leitweg-ID nach ERechV seit 27.11.2020 | wie 2025-2026 | wie 2025-2026 |
+| Auftragnehmer von Bundesbehörden (B2G) | wie oben | E-Rechnung nach ERechV seit 27.11.2020, grundsätzlich XRechnung mit Leitweg-ID; Direktaufträge bis 1.000 EUR ausgenommen | wie 2025-2026 | wie 2025-2026 |
 
 Zum B2G-Fall: Die ERechV gilt neben dem UStG, ein Rangverhältnis gibt es nicht. Direktaufträge bis 1.000 EUR Auftragswert sind laut e-rechnung-bund.de ausgenommen. Die Länder haben eigene Regeln und Portale. Details stehen in [Leitweg-ID](./leitweg-id.md).
 
@@ -140,7 +142,7 @@ Was alle Unternehmen jetzt tun sollten:
 1. Eine Adresse für den Empfang festlegen und Lieferanten mitteilen, zum Beispiel `rechnungseingang@example.com`.
 2. Ein Programm einrichten, das XRechnung und ZUGFeRD anzeigt und prüft.
 3. E-Rechnungen im Ursprungsformat aufbewahren, laut BMF-Schreiben vom 15.10.2025, Rn. 60, acht Jahre.
-4. Den eigenen Gesamtumsatz des Vorjahres prüfen, um zu wissen, ob 2027 oder 2028 der Stichtag für den Versand ist.
+4. Den eigenen Gesamtumsatz des Vorjahres prüfen, um zu wissen, ob 2027 oder 2028 der Stichtag für den Versand ist. Ob diese Regel für Ihr Unternehmen gilt, klärt Ihre Steuerberatung.
 
 ## Empfangspflicht praktisch erfüllen: lesen, prüfen, anzeigen
 
@@ -175,7 +177,7 @@ Was der Exit-Code von `erechnung validieren` bedeutet:
 
 Grenzen des Werkzeugs: Es ist kein Postfach und kein Peppol-Zugangspunkt, es holt also keine Rechnungen ab und verschickt keine. Es ist auch keine Archivlösung. Den Empfangsweg (E-Mail, Portal) und die Ablage organisieren Sie selbst.
 
-## Beispiele
+## Rechnungseingang prüfen: Beispiele mit dem Werkzeug erechnung
 
 ### Beispiel 1: Eine ZUGFeRD-Rechnung vom Lieferanten lesen
 
@@ -189,7 +191,7 @@ Format:       ZUGFeRD/Factur-X Profil EN 16931 (COMFORT) (eingebettet als factur
 E-Rechnung:   ja, strukturiert nach EN 16931
 Art:          380 (Rechnung)
 Nummer:       RE-2026-0001 vom 15.10.2026
-Verkäufer:    Nordlicht Software GmbH, 20095 Hamburg, USt-IdNr. DE123456789
+Verkäufer:    Nordlicht Beispiel GmbH, 20095 Hamburg, USt-IdNr. DE123456789
 Käufer:       Beispiel Handel AG, 80331 München
 Käuferref.:   BH-2026-0815
 Positionen:   2
@@ -212,11 +214,11 @@ erechnung validieren eingang/*
 
 ```text
 eingang/2026-10-15_buchhandlung.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
 eingang/2026-10-15_nordlicht.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
 eingang/2026-10-16_grafikdesign.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
 eingang/2026-10-16_scan.pdf: unbekannt
   Vorprüfung (Erklärungen, nicht maßgeblich):
   FEHLER  VP-LESEN: Das PDF enthält kein eingebettetes Rechnungs-XML. Ein reines PDF ist nach § 14 UStG eine sonstige Rechnung, keine E-Rechnung.
@@ -232,15 +234,15 @@ erechnung validieren eingang/* --bericht prüfberichte/2026-10
 
 ```text
 eingang/2026-10-15_buchhandlung.xml: XRechnung 3.0 (UBL)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 XRechnung (UBL Invoice), 0 Fehler, 0 Warnungen
   Prüfbericht: prüfberichte/2026-10/2026-10-15_buchhandlung.xml.7fba94710c3a.validierungsbericht.json
 eingang/2026-10-15_nordlicht.pdf: ZUGFeRD/Factur-X Profil EN 16931 (COMFORT)
-  KoSIT (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
+  KoSIT-Regeln (xrechnung-3.0.2-validator-configuration-2026-08-31): GÜLTIG, Szenario EN16931 (CII), 0 Fehler, 0 Warnungen
   Prüfbericht: prüfberichte/2026-10/2026-10-15_nordlicht.pdf.fff3d8c9aba4.validierungsbericht.json
 ...
 ```
 
-Je Datei entsteht eine JSON-Datei mit Zeitpunkt, Regelversion und SHA-256-Prüfsumme der geprüften Rechnung. Das BMF-Schreiben vom 15.10.2025, Rn. 35a, empfiehlt, den Validierungsbericht aufzubewahren. Mehr dazu in [BMF-Schreiben zur E-Rechnung](./bmf-schreiben-e-rechnung.md).
+Je Datei entsteht eine JSON-Datei mit Zeitpunkt, Regelversion und SHA-256-Prüfsumme der geprüften Rechnung. Laut BMF-Schreiben vom 15.10.2025, Rn. 35a, bietet es sich zum Nachweis an, den Validierungsbericht aufzubewahren. Mehr dazu in [BMF-Schreiben zur E-Rechnung](./bmf-schreiben-e-rechnung.md).
 
 ### Beispiel 4: Eine E-Rechnung für Menschen anzeigen
 
@@ -252,7 +254,7 @@ erechnung anzeigen eingang/2026-10-15_nordlicht.pdf -o ansichten/2026-10-15_nord
 Ansicht geschrieben: ansichten/2026-10-15_nordlicht.html
 ```
 
-Die HTML-Datei öffnen Sie im Browser. Sie zeigt den Inhalt des XML, nicht das Bild im PDF. Das ist Absicht: Bei Abweichungen zwischen XML und Bildteil ist laut BMF-FAQ der strukturierte Teil maßgebend, und das BMF empfiehlt, den XML-Teil selbst zu visualisieren. Der Zielordner muss vorher existieren.
+Die HTML-Datei öffnen Sie im Browser. Sie zeigt den Inhalt des XML, nicht das Bild im PDF. Das ist Absicht: Bei Abweichungen zwischen XML und Bildteil ist laut BMF-Schreiben vom 15.10.2025 (UStAE 14.4 Abs. 3) der strukturierte Teil maßgebend, und das BMF empfiehlt, den XML-Teil selbst zu visualisieren. Der Zielordner muss vorher existieren.
 
 ### Beispiel 5: Eine XRechnung mit der offiziellen KoSIT-Ansicht anzeigen
 
@@ -291,7 +293,7 @@ E-Rechnung:   ja, strukturiert nach EN 16931
 ...
 Verkäufer:    Grafikdesign Lena Beispiel, 50667 Köln, Steuernummer 214/5678/1234
 ...
-USt:          E (Steuerbefreit (z.B. § 4 UStG, Kleinun 0 %: 0,00 EUR auf 850,00 EUR
+USt:          E (Steuerbefreit, z. B. § 4 UStG oder Kleinunternehmer § 19 UStG) 0 %: 0,00 EUR auf 850,00 EUR
 Brutto:       850,00 EUR
 ```
 
@@ -305,7 +307,7 @@ Die Datei stammt aus [beispiele/07_kleinunternehmer](../../beispiele/07_kleinunt
 
 ## Schritt für Schritt: Rechnungseingang für die E-Rechnung-Pflicht einrichten
 
-Diese Anleitung funktioniert auch ohne Python-Kenntnisse. Sie brauchen nur ein Terminal (macOS: Terminal, Windows: PowerShell).
+Für die Schritte 2 bis 5 brauchen Sie ein Terminal (macOS: Terminal, Windows: PowerShell), Programmierkenntnisse aber nicht. Wer kein Terminal nutzen möchte, zeigt E-Rechnungen mit dem kostenlosen [Quba-Viewer](https://github.com/ZUGFeRD/quba-viewer) an (Programm mit Fenster für Windows, macOS und Linux) und lässt die Prüfung von der Buchhaltungssoftware oder der Steuerkanzlei erledigen; die Schritte 1, 6, 7 und 8 gelten trotzdem.
 
 1. Legen Sie fest, wie E-Rechnungen ankommen. Eine bestehende E-Mail-Adresse genügt; teilen Sie sie Ihren Lieferanten mit.
 2. Installieren Sie Python 3.10 oder neuer und `pipx`, dann das Werkzeug mit dem Befehl aus dem Abschnitt oben.
@@ -314,7 +316,7 @@ Diese Anleitung funktioniert auch ohne Python-Kenntnisse. Sie brauchen nur ein T
 5. Öffnen Sie jede Rechnung zum fachlichen Prüfen mit `erechnung anzeigen DATEI -o ansichten/DATEI.html` im Browser. Prüfen Sie wie bisher, ob Leistung, Betrag und Steuer stimmen; die technische Prüfung ersetzt das nicht (BMF-Schreiben vom 15.10.2025, Rn. 35a).
 6. Bei ungültigen Dateien bitten Sie den Lieferanten um eine korrigierte E-Rechnung. Was einzelne Fehlermeldungen bedeuten, steht in [E-Rechnung Fehlermeldungen](./e-rechnung-fehlermeldungen.md).
 7. Bewahren Sie die Originaldatei unverändert und den Prüfbericht acht Jahre auf (§ 14b Abs. 1 UStG). Die Ansicht als HTML ist keine Rechnung und ersetzt das Original nicht.
-8. Prüfen Sie Ihren Gesamtumsatz des Vorjahres, um zu wissen, ab wann Sie selbst E-Rechnungen verschicken müssen. Wie das geht, zeigt [E-Rechnung erstellen](./e-rechnung-erstellen.md).
+8. Prüfen Sie Ihren Gesamtumsatz 2026 (§ 19 Abs. 2 UStG): Lag er über 800.000 EUR, müssen Sie Umsätze ab 01.01.2027 als E-Rechnung abrechnen, sonst ab 01.01.2028. Ob diese Regel für Ihr Unternehmen gilt, klärt Ihre Steuerberatung. Wie Sie dann selbst E-Rechnungen erzeugen, zeigt [E-Rechnung erstellen](./e-rechnung-erstellen.md).
 
 ## Ausblick: XRechnung 4.0, Meldesystem und ViDA
 
@@ -339,18 +341,18 @@ Das Werkzeug prüft derzeit gegen XRechnung 3.0.2. XRechnung 4.0 unterstützt es
 | Nur das PDF-Bild einer ZUGFeRD-Rechnung prüfen | Beträge im Bild und im XML weichen ab, gebucht wird das Falsche | XML mit `erechnung anzeigen` darstellen, maßgebend ist der strukturierte Teil |
 | 800.000-EUR-Grenze am Umsatz des laufenden Jahres messen | falscher Stichtag für den Versand | Gesamtumsatz nach § 19 Abs. 2 UStG des Vorjahres zugrunde legen, im Zweifel mit der Steuerberatung klären |
 | Empfangspflicht mit Versandpflicht verwechseln | Kleinunternehmer glauben, sie seien nicht betroffen | Empfangen müssen alle seit 01.01.2025, nur der Versand hat Ausnahmen |
-| Nur die HTML-Ansicht archivieren | Original fehlt bei einer Prüfung durch das Finanzamt | Originaldatei unverändert aufbewahren, die Ansicht ist nur eine Lesehilfe |
+| Nur die HTML-Ansicht archivieren | Original fehlt bei einer Prüfung durch das Finanzamt | Originaldatei unverändert aufbewahren, die Ansicht ersetzt das Original nicht |
 | Zielordner für `anzeigen -o` fehlt | `Fehler: [Errno 2] No such file or directory` | Ordner vorher anlegen, z. B. `mkdir ansichten` |
 
 ## Häufige Fragen
 
 ### Ab wann ist die E-Rechnung Pflicht?
 
-Der Empfang ist seit dem 01.01.2025 Pflicht für alle inländischen Unternehmer. Der Versand wird schrittweise Pflicht: ab 01.01.2027 für Unternehmen mit mehr als 800.000 EUR Gesamtumsatz im Vorjahr, ab 01.01.2028 für alle (§ 27 Abs. 38 UStG).
+Der Empfang ist seit dem 01.01.2025 Pflicht für alle inländischen Unternehmer. Der Versand wird schrittweise Pflicht: ab 01.01.2027 für Unternehmen mit mehr als 800.000 EUR Gesamtumsatz im Vorjahr, ab 01.01.2028 für alle (§ 27 Abs. 38 UStG). Für die Übergangsfrist zählt auch, wann die Rechnung übermittelt wird: Eine sonstige Rechnung über einen Umsatz aus 2026 muss bis zum 31.12.2026 beim Empfänger sein.
 
 ### Was gilt bei der E-Rechnung Pflicht 2026?
 
-Im Jahr 2026 müssen Sie E-Rechnungen empfangen können, dürfen aber selbst noch Papierrechnungen oder, mit Zustimmung des Empfängers, PDF-Rechnungen schicken. Das gilt für alle Umsätze, die bis zum 31.12.2026 ausgeführt werden.
+Im Jahr 2026 müssen Sie E-Rechnungen empfangen können, dürfen aber selbst noch Papierrechnungen oder, mit Zustimmung des Empfängers, PDF-Rechnungen schicken. Das gilt für alle Umsätze, die bis zum 31.12.2026 ausgeführt werden, wenn die Rechnung ebenfalls bis zum 31.12.2026 übermittelt wird.
 
 ### Was ändert sich bei der E-Rechnung ab 2027?
 
@@ -370,9 +372,11 @@ Nein, Rechnungen an Privatpersonen (B2C) sind von der Pflicht nicht erfasst. Die
 
 ### Was passiert, wenn ich nach der Übergangsfrist noch PDF-Rechnungen schicke?
 
-Dann stellen Sie laut BMF-Schreiben vom 15.10.2025 (UStAE 15.2a) keine ordnungsmäßige Rechnung aus. Sie können die Rechnung durch eine nachträgliche E-Rechnung berichtigen. Welche Folgen das im Einzelfall für den Vorsteuerabzug Ihres Kunden hat, klären Sie mit der Steuerberatung.
+Dann stellen Sie laut BMF-Schreiben vom 15.10.2025 (UStAE 15.2a Abs. 1) keine ordnungsmäßige Rechnung aus. Sie können die Rechnung durch eine nachträgliche E-Rechnung berichtigen. Nach UStAE 15.2a Abs. 1a bleibt der Vorsteuerabzug Ihres Kunden bei einer inhaltlich richtigen und vollständigen sonstigen Rechnung in der Regel möglich. Welche Folgen das im Einzelfall für den Vorsteuerabzug Ihres Kunden hat, klären Sie mit der Steuerberatung.
 
-> **Hinweis:** Diese Anleitung erklärt Gesetz, BMF-Schreiben und technische Standards nach dem Stand vom 15.10.2026. Sie ist keine Steuer- oder Rechtsberatung, die Autoren sind keine Steuerberater. Für die Beurteilung eines konkreten Falls wenden Sie sich an Ihre Steuerberatung oder Ihr Finanzamt. Alle Angaben ohne Gewähr.
+> **Hinweis:** Diese Anleitung erklärt Technik und Rechtslage allgemein, Stand siehe oben. Sie ist keine Steuer- oder Rechtsberatung. Die Autoren sind weder Steuerberater noch Rechtsanwälte. Die Autoren erbringen keine Hilfeleistung in Steuersachen. Für Ihren Einzelfall wenden Sie sich an Ihre Steuerberatung. Alle Angaben ohne Gewähr.
+>
+> DATEV, Lexware, sevdesk, SAP, ELSTER, ZUGFeRD, Factur-X und XRechnung sind Marken oder Bezeichnungen ihrer jeweiligen Inhaber. Dieses Projekt ist mit keinem dieser Anbieter, mit der KoSIT oder dem FeRD verbunden.
 
 ## Weiterlesen
 

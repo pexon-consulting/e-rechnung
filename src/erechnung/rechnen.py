@@ -96,7 +96,7 @@ def berechnen(r: Rechnung) -> Rechnung:
 
 
 def skonto_zeile(tage: int, prozent: Decimal, basis: Decimal | None = None) -> str:
-    """Skonto im XRechnung-Format für BT-20, z.B. ``#SKONTO#TAGE=14#PROZENT=2.00#``."""
+    """Skonto im XRechnung-Format für BT-20, z. B. ``#SKONTO#TAGE=14#PROZENT=2.00#``."""
     zeile = f"#SKONTO#TAGE={int(tage)}#PROZENT={Decimal(prozent).quantize(CENT)}#"
     if basis is not None:
         zeile += f"BASISBETRAG={runden(basis)}#"
