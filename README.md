@@ -392,7 +392,7 @@ erechnung erstellen invoice.json --format zugferd -o invoice.pdf
 
 Commands are German: `lesen` (read), `validieren` (validate), `anzeigen` (view), `erstellen` (create), `extrahieren` (extract), `datev`, `leitweg-id`, `beispiele` (examples). The Python API: `from erechnung import laden, lesen, ubl, cii, validieren`. Covered standards: EN 16931, XRechnung 3.0.2 (UBL and CII), ZUGFeRD 2.x / Factur-X in CII D16B (profiles EN 16931 and XRECHNUNG for output, all profiles for reading).
 
-**Disclaimer:** This project explains technology and the general legal situation. It is not tax or legal advice; the authors are neither tax advisors nor lawyers. Not affiliated with KoSIT, FeRD or DATEV. No warranty, see LICENSE.
+**Disclaimer:** This is a technical aid, not advice. It explains technology and the general legal situation; it is not tax or legal advice, and the authors are neither tax advisors nor lawyers. Output produced by an AI assistant using this tool comes from the language model, not from us, and we accept no liability for the output of AI systems. Check every result before you send, file or import it. Not affiliated with KoSIT, FeRD or DATEV. No warranty, see LICENSE.
 
 ## Mitmachen, Lizenz und Quellen
 
@@ -411,7 +411,8 @@ Primärquellen: [§ 14 UStG](https://www.gesetze-im-internet.de/ustg_1980/__14.h
 
 ### Haftungsausschluss
 
-- **Keine Steuer- oder Rechtsberatung.** Die Anleitungen und das Werkzeug erklären Gesetz, BMF-Schreiben und technische Standards nach dem genannten Stand. Die Autoren sind keine Steuerberater und keine Rechtsanwälte. Ob ein Vorgang steuerlich richtig behandelt ist, klären Sie mit Ihrer Steuerberatung oder Ihrem Finanzamt.
+- **Technisches Hilfswerk, keine Beratung.** Die Anleitungen und das Werkzeug erklären Gesetz, BMF-Schreiben und technische Standards nach dem genannten Stand. Sie ersetzen keine fachliche Prüfung und keine Steuer- oder Rechtsberatung. Die Autoren sind keine Steuerberater und keine Rechtsanwälte. Ob ein Vorgang steuerlich richtig behandelt ist, klären Sie mit Ihrer Steuerberatung oder Ihrem Finanzamt.
+- **Keine Haftung für KI-Ausgaben.** Was ein KI-Assistent mit diesem Werkzeug oder dem MCP-Server erzeugt, vorschlägt oder erklärt, stammt vom Sprachmodell und nicht von uns. Solche Ausgaben können falsch, unvollständig oder erfunden sein, auch wenn eine Datei die Formatregeln erfüllt. Für den Output von KI-Systemen übernehmen wir keine Haftung. Prüfen Sie jede Ausgabe, bevor Sie sie versenden, einreichen oder importieren.
 - **Keine Gewähr.** Die Software steht unter der MIT-Lizenz und wird ohne jede Gewährleistung bereitgestellt. Ein Ergebnis "gültig" bedeutet, dass die Datei die offiziellen Formatregeln erfüllt, nicht, dass die Rechnung inhaltlich oder steuerlich richtig ist.
 - **Kein Ersatz für die Prüfung beim Empfänger.** Rechnungsplattformen von Bund und Ländern und die Systeme Ihrer Kunden können zusätzliche Regeln anwenden.
 - **DATEV-Buchungsvorschläge** (Konten, BU-Schlüssel) sind Vorschläge und müssen vor dem Import von der Buchhaltung oder Steuerberatung freigegeben werden.
