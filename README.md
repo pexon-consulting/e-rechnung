@@ -419,4 +419,6 @@ Primärquellen: [§ 14 UStG](https://www.gesetze-im-internet.de/ustg_1980/__14.h
 
 Dieses Projekt ist unabhängig und nicht mit der KoSIT, dem FeRD oder der DATEV eG verbunden. XRechnung, ZUGFeRD und DATEV sind Marken ihrer jeweiligen Inhaber.
 
-Gepflegt von Pexon Consulting. Wer den Rechnungseingang von der E-Rechnung bis zur Buchung automatisieren will, findet bei uns [Rechnungseingang automatisieren mit KI](https://pexon-consulting.de/ki-beratung/ai-workflows/n8n-rechnungseingang-automatisierung-ki/).
+Gepflegt von der Pexon Consulting GmbH. Wer den Rechnungseingang von der E-Rechnung bis zur Buchung automatisieren will, findet bei uns [Rechnungseingang automatisieren mit KI](https://pexon-consulting.de/ki-beratung/ai-workflows/n8n-rechnungseingang-automatisierung-ki/).
+
+Anbieterkennzeichnung: [Impressum](https://pexon-consulting.de/impressum/) · [Datenschutz](https://pexon-consulting.de/datenschutz/)
